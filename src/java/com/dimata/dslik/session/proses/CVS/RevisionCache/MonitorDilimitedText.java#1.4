@@ -1,0 +1,105 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package com.dimata.dslik.session.proses;
+
+/**
+ *
+ * @author dimata005
+ */
+public class MonitorDilimitedText implements Runnable {
+    
+    private String Proggess="";
+    private FileSent fileSent=null;
+    
+    public MonitorDilimitedText(FileSent fileSent) {
+        try{
+            this.fileSent = fileSent;
+            
+            this.Proggess ="";
+
+        }catch(Exception e){
+            System.out.println(" ! EXC : initiate thread =  "+e.toString());
+
+        }
+
+    }
+    
+    public void run() {
+
+        System.out.println("start .... ");
+    
+        while (ManagerDilimitedText.running) {
+            
+            try {
+                
+                /*proses transfer*/
+                ProsesDilimitedText prosesDilimitedText = new ProsesDilimitedText();
+                
+                /*proses debitur perorangan*/
+                fileSent.setTypeSegment(Configurasi.FLD_SEGMENT_DEBITUR_PERORANGAN);
+                prosesDilimitedText.actionDilimitedText(fileSent);
+                
+                /*proses debitur badan usaha*/
+                fileSent.setTypeSegment(Configurasi.FLD_SEGMENT_DEBITUR_BADAN_USAHA);
+                prosesDilimitedText.actionDilimitedText(fileSent);
+                
+                /*proses kredit*/
+                fileSent.setTypeSegment(Configurasi.FLD_SEGMENT_KREDIT);
+                prosesDilimitedText.actionDilimitedText(fileSent);
+                
+                /*proses kredit join*/
+                fileSent.setTypeSegment(Configurasi.FLD_SEGMENT_KREDIT_JOIN_ACCOUNT);
+                prosesDilimitedText.actionDilimitedText(fileSent);
+                
+                /*surat berharga*/
+                fileSent.setTypeSegment(Configurasi.FLD_SEGMENT_SURAT_BERHARGA);
+                prosesDilimitedText.actionDilimitedText(fileSent);
+                
+                /*irrevocable*/
+                fileSent.setTypeSegment(Configurasi.FLD_SEGMENT_IRREVOCABLE_LC);
+                prosesDilimitedText.actionDilimitedText(fileSent);
+                
+                /*bank garansi*/ 
+                fileSent.setTypeSegment(Configurasi.FLD_SEGMENT_BANK_GARANSI);
+                prosesDilimitedText.actionDilimitedText(fileSent);
+                
+                /*fasilitas lainnya*/
+                fileSent.setTypeSegment(Configurasi.FLD_SEGMENT_FASILITAS_LAINNYA);
+                prosesDilimitedText.actionDilimitedText(fileSent);
+                
+                /*proses agunan*/
+                fileSent.setTypeSegment(Configurasi.FLD_SEGMENT_DATA_AGUNAN);
+                prosesDilimitedText.actionDilimitedText(fileSent);
+                
+                /*penjamin*/
+                fileSent.setTypeSegment(Configurasi.FLD_SEGMENT_PENJAMIN);
+                prosesDilimitedText.actionDilimitedText(fileSent);
+                
+                
+                /*proses pengurus dan pemilik*/
+                fileSent.setTypeSegment(Configurasi.FLD_SEGMENT_PENGURUS_PEMILIK);
+                prosesDilimitedText.actionDilimitedText(fileSent);
+                
+                /*laporan keuangan*/
+                fileSent.setTypeSegment(Configurasi.FLD_SEGMENT_LAPORAN_KEUANGAN_DEBITUR);
+                prosesDilimitedText.actionDilimitedText(fileSent);
+                
+                if(fileSent.isCreateSummary()){
+                    /*laporan keuangan*/
+                    fileSent.setTypeSegment(Configurasi.FLD_SEGMENT_SUMMARY_FASILITAS);
+                    prosesDilimitedText.actionDilimitedText(fileSent);
+                }
+                
+                
+            } catch (Exception e) {
+                System.out.println("Interrupted " + e);
+            }
+            
+            ManagerDilimitedText.running=false;
+        }
+        System.out.println("stop .... ");
+    }
+}

@@ -1,0 +1,519 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package com.dimata.dslik.entity.debiturindividu;
+
+/**
+ *
+ * @author m20n9
+ */
+import com.dimata.common.entity.logger.I_LogHistory;
+import com.dimata.qdep.entity.Entity;
+import java.util.Date;
+
+public class DebiturIndividu extends Entity implements I_LogHistory{
+
+    private String flagDetail = "";
+    private String cif = "";
+    private String jenisIdentitas = "";
+    private String nik = "";
+    private String namaIdentitas = "";
+    private String namaLengkap = "";
+    private String kodeStatusGelar = "";
+    private String jekel = "";
+    private String tempatLahir = "";
+    private Date tglLahir = null;
+    private String npwp = "";
+    private String alamat = "";
+    private String kelurahan = "";
+    private String kecamatan = "";
+    private String kodeKab = "";
+    private String kodePos = "";
+    private String telepon = "";
+    private String nomorHp = "";
+    private String email = "";
+    private String kodeDomisili = "";
+    private String kodePekerjaan = "";
+    private String tempatBekerja = "";
+    private String kodeUsahaTempatBekerja = "";
+    private String alamatTempatBekerja = "";
+    private double penghasilanKotor = 0;
+    private String kodePenghasilan = "";
+    private int jmlTanggungan = 0;
+    private String kodeHub = "";
+    private String kodeGol = "";
+    private String status = "";
+    private String nikPasangan = "";
+    private String namaPasangan = "";
+    private Date tglLahirPasangan = null;
+    private String perjanjianPisahHarga = "";
+    private String melanggarBmpk = "";
+    private String melampauiBmpk = "";
+    private String namaIbuKandung = "";
+    private String kodeKantorCabang = "";
+    private String operasiData = "";
+    private String historySql = "";
+
+    public String getFlagDetail() {
+        return flagDetail;
+    }
+
+    public void setFlagDetail(String flagDetail) {
+        this.flagDetail = flagDetail;
+    }
+
+    public String getCif() {
+        return cif;
+    }
+
+    public void setCif(String cif) {
+        this.cif = cif;
+    }
+
+    public String getJenisIdentitas() {
+        return jenisIdentitas;
+    }
+
+    public void setJenisIdentitas(String jenisIdentitas) {
+        this.jenisIdentitas = jenisIdentitas;
+    }
+
+    public String getNik() {
+        return nik;
+    }
+
+    public void setNik(String nik) {
+        this.nik = nik;
+    }
+
+    public String getNamaIdentitas() {
+        return namaIdentitas;
+    }
+
+    public void setNamaIdentitas(String namaIdentitas) {
+        this.namaIdentitas = namaIdentitas;
+    }
+
+    public String getNamaLengkap() {
+        return namaLengkap;
+    }
+
+    public void setNamaLengkap(String namaLengkap) {
+        this.namaLengkap = namaLengkap;
+    }
+
+    public String getKodeStatusGelar() {
+        return kodeStatusGelar;
+    }
+
+    public void setKodeStatusGelar(String kodeStatusGelar) {
+        this.kodeStatusGelar = kodeStatusGelar;
+    }
+
+    public String getJekel() {
+        return jekel;
+    }
+
+    public void setJekel(String jekel) {
+        this.jekel = jekel;
+    }
+
+    public String getTempatLahir() {
+        return tempatLahir;
+    }
+
+    public void setTempatLahir(String tempatLahir) {
+        this.tempatLahir = tempatLahir;
+    }
+
+    public Date getTglLahir() {
+        return tglLahir;
+    }
+
+    public void setTglLahir(Date tglLahir) {
+        this.tglLahir = tglLahir;
+    }
+
+    public String getNpwp() {
+        return npwp;
+    }
+
+    public void setNpwp(String npwp) {
+        this.npwp = npwp;
+    }
+
+    public String getAlamat() {
+        return alamat;
+    }
+
+    public void setAlamat(String alamat) {
+        this.alamat = alamat;
+    }
+
+    public String getKelurahan() {
+        return kelurahan;
+    }
+
+    public void setKelurahan(String kelurahan) {
+        this.kelurahan = kelurahan;
+    }
+
+    public String getKecamatan() {
+        return kecamatan;
+    }
+
+    public void setKecamatan(String kecamatan) {
+        this.kecamatan = kecamatan;
+    }
+
+    public String getKodeKab() {
+        return kodeKab;
+    }
+
+    public void setKodeKab(String kodeKab) {
+        this.kodeKab = kodeKab;
+    }
+
+    public String getKodePos() {
+        return kodePos;
+    }
+
+    public void setKodePos(String kodePos) {
+        this.kodePos = kodePos;
+    }
+
+    public String getTelepon() {
+        return telepon;
+    }
+
+    public void setTelepon(String telepon) {
+        this.telepon = telepon;
+    }
+
+    public String getNomorHp() {
+        return nomorHp;
+    }
+
+    public void setNomorHp(String nomorHp) {
+        this.nomorHp = nomorHp;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getKodeDomisili() {
+        return kodeDomisili;
+    }
+
+    public void setKodeDomisili(String kodeDomisili) {
+        this.kodeDomisili = kodeDomisili;
+    }
+
+    public String getKodePekerjaan() {
+        return kodePekerjaan;
+    }
+
+    public void setKodePekerjaan(String kodePekerjaan) {
+        this.kodePekerjaan = kodePekerjaan;
+    }
+
+    public String getTempatBekerja() {
+        return tempatBekerja;
+    }
+
+    public void setTempatBekerja(String tempatBekerja) {
+        this.tempatBekerja = tempatBekerja;
+    }
+
+    public String getKodeUsahaTempatBekerja() {
+        return kodeUsahaTempatBekerja;
+    }
+
+    public void setKodeUsahaTempatBekerja(String kodeUsahaTempatBekerja) {
+        this.kodeUsahaTempatBekerja = kodeUsahaTempatBekerja;
+    }
+
+    public double getPenghasilanKotor() {
+        return penghasilanKotor;
+    }
+
+    public void setPenghasilanKotor(double penghasilanKotor) {
+        this.penghasilanKotor = penghasilanKotor;
+    }
+
+    public String getKodePenghasilan() {
+        return kodePenghasilan;
+    }
+
+    public void setKodePenghasilan(String kodePenghasilan) {
+        this.kodePenghasilan = kodePenghasilan;
+    }
+
+    public int getJmlTanggungan() {
+        return jmlTanggungan;
+    }
+
+    public void setJmlTanggungan(int jmlTanggungan) {
+        this.jmlTanggungan = jmlTanggungan;
+    }
+
+    public String getKodeHub() {
+        return kodeHub;
+    }
+
+    public void setKodeHub(String kodeHub) {
+        this.kodeHub = kodeHub;
+    }
+
+    public String getKodeGol() {
+        return kodeGol;
+    }
+
+    public void setKodeGol(String kodeGol) {
+        this.kodeGol = kodeGol;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public String getNikPasangan() {
+        return nikPasangan;
+    }
+
+    public void setNikPasangan(String nikPasangan) {
+        this.nikPasangan = nikPasangan;
+    }
+
+    public String getNamaPasangan() {
+        return namaPasangan;
+    }
+
+    public void setNamaPasangan(String namaPasangan) {
+        this.namaPasangan = namaPasangan;
+    }
+
+    public Date getTglLahirPasangan() {
+        return tglLahirPasangan;
+    }
+
+    public void setTglLahirPasangan(Date tglLahirPasangan) {
+        this.tglLahirPasangan = tglLahirPasangan;
+    }
+
+    public String getPerjanjianPisahHarga() {
+        return perjanjianPisahHarga;
+    }
+
+    public void setPerjanjianPisahHarga(String perjanjianPisahHarga) {
+        this.perjanjianPisahHarga = perjanjianPisahHarga;
+    }
+
+    public String getMelanggarBmpk() {
+        return melanggarBmpk;
+    }
+
+    public void setMelanggarBmpk(String melanggarBmpk) {
+        this.melanggarBmpk = melanggarBmpk;
+    }
+
+    public String getMelampauiBmpk() {
+        return melampauiBmpk;
+    }
+
+    public void setMelampauiBmpk(String melampauiBmpk) {
+        this.melampauiBmpk = melampauiBmpk;
+    }
+
+    public String getNamaIbuKandung() {
+        return namaIbuKandung;
+    }
+
+    public void setNamaIbuKandung(String namaIbuKandung) {
+        this.namaIbuKandung = namaIbuKandung;
+    }
+
+    public String getKodeKantorCabang() {
+        return kodeKantorCabang;
+    }
+
+    public void setKodeKantorCabang(String kodeKantorCabang) {
+        this.kodeKantorCabang = kodeKantorCabang;
+    }
+
+    public String getOperasiData() {
+        return operasiData;
+    }
+
+    public void setOperasiData(String operasiData) {
+        this.operasiData = operasiData;
+    }
+
+    /**
+     * @return the alamatTempatBekerja
+     */
+    public String getAlamatTempatBekerja() {
+        return alamatTempatBekerja;
+    }
+
+    /**
+     * @param alamatTempatBekerja the alamatTempatBekerja to set
+     */
+    public void setAlamatTempatBekerja(String alamatTempatBekerja) {
+        this.alamatTempatBekerja = alamatTempatBekerja;
+    }
+    
+    @Override
+    public String getLogDetail(Entity prevDoc) {
+        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        String history="";
+        DebiturIndividu prevMat = (DebiturIndividu)prevDoc;
+        try {
+            if( !prevMat.getFlagDetail().equals(this.getFlagDetail())){
+                if (prevMat== null){
+                    history=history+" Flag Detail diubah menjadi "+this.getFlagDetail()+"/n";
+                }else{
+                    history=history+" Flag Detail diubah dari "+prevMat.getFlagDetail()+" menjadi "+this.getFlagDetail()+"/n";
+                }
+
+            }
+            if( prevMat==null || !prevMat.getCif().equals(this.getCif())){
+                history=history+" CIF diubah dari "+prevMat.getCif()+" menjadi "+this.getCif()+"/n";
+            }        
+            if(  prevMat==null || !prevMat.getJenisIdentitas().equals(this.getJenisIdentitas())){
+                 history=history+" Jenis Identitas diubah dari "+prevMat.getJenisIdentitas()+" menjadi "+this.getJenisIdentitas()+"/n";
+            }
+            if( prevMat==null || !prevMat.getCif().equals(this.getCif())){
+                 history=history+" CIF duibah dari dari "+prevMat.getCif()+" menjadi "+this.getCif()+"/n";
+            }
+            if( prevMat==null || !prevMat.getNik().equals(this.getNik())){
+                 history=history+" NIK diubah dari "+prevMat.getNik()+" menjadi "+this.getNik()+"/n";
+            }
+            if( prevMat==null || !prevMat.getNamaLengkap().equals(this.getNamaLengkap())){
+                 history=history+" Nama Lengkap diubah dari "+prevMat.getNamaLengkap()+" menjadi "+this.getNamaLengkap()+"/n";
+            }
+            if(  prevMat==null || !prevMat.getStatus().equals(this.getStatus())){
+                 history=history+" Kode Status/Gelar Debitur diubah dari "+prevMat.getStatus()+" menjadi "+this.getStatus()+"/n";
+            }
+            if( prevMat==null || !prevMat.getJekel().equals(this.getJekel())){
+                 history=history+" Jenis Kelamin diubah dari "+prevMat.getJekel()+" menjadi "+this.getJekel()+"/n";
+            }
+            if( prevMat==null || !prevMat.getTempatLahir().equals(this.getTempatLahir())){
+                 history=history+" Tempat lahir KTP diubah dari "+prevMat.getTempatLahir()+" menjadi "+this.getTempatLahir()+"/n";
+            }
+            if( prevMat==null || !prevMat.getTglLahir().equals(this.getTglLahir())){
+                history=history+" Tanggal Lahir diubah dari "+prevMat.getTglLahir()+" menjadi "+this.getTglLahir()+"/n";
+            }
+            if( prevMat==null || !prevMat.getNpwp().equals(this.getNpwp())){
+                history=history+" NPWP diubah dari "+prevMat.getNpwp()+" menjadi "+this.getNpwp()+"/n";
+            }
+            if( prevMat==null || !prevMat.getAlamat().equals(this.getAlamat())){
+                history=history+" Alamat diubah dari "+prevMat.getAlamat()+" menjadi "+this.getAlamat()+"/n";
+            }
+            if( prevMat==null || !prevMat.getKelurahan().equals(this.getKelurahan())){
+                history=history+" Kelurahan diubah dari "+prevMat.getKelurahan()+" menjadi "+this.getKelurahan()+"/n";
+            }
+            if( prevMat==null || !prevMat.getKecamatan().equals(this.getKecamatan())){
+                history=history+" Kecamatan diubah dari "+prevMat.getKecamatan()+" menjadi "+this.getKecamatan()+"/n";
+            }
+            if( prevMat==null || !prevMat.getKodeKab().equals(this.getKodeKab())){
+                history=history+" Kode Kab/Kota (Dati ii) diubah dari "+prevMat.getKodeKab()+" menjadi "+this.getKodeKab()+"/n";
+            }
+            if( prevMat==null || !prevMat.getKodePos().equals(this.getKodePos())){
+                history=history+" Kode Pos diubah dari "+prevMat.getKodePos()+" menjadi "+this.getKodePos()+"/n";
+            }
+            if( prevMat==null || !prevMat.getTelepon().equals(this.getTelepon())){
+                history=history+" Telepon diubah dari "+prevMat.getTelepon()+" menjadi "+this.getTelepon()+"/n";
+            }
+            if( prevMat==null || !prevMat.getKodeDomisili().equals(this.getKodeDomisili())){
+                history=history+" Kode Negara Domisili dari "+prevMat.getKodeDomisili()+" menjadi "+this.getKodeDomisili()+"/n";
+            }
+            if( prevMat==null || !prevMat.getKodePekerjaan().equals(this.getKodePekerjaan())){
+                history=history+" Kode Pekerjaan diubah dari "+prevMat.getKodePekerjaan()+" menjadi "+this.getKodePekerjaan()+"/n";
+            }
+            if( prevMat==null || !prevMat.getTempatBekerja().equals(this.getTempatBekerja())){
+                history=history+" Tempat Bekerja diubah dari "+prevMat.getTempatBekerja()+" menjadi "+this.getTempatBekerja()+"/n";
+            }
+            if( prevMat==null || !prevMat.getKodeUsahaTempatBekerja().equals(this.getKodeUsahaTempatBekerja())){
+                history=history+" Kode Bidang Usaha Tempat Bekerja Debitur diubah dari "+prevMat.getKodeUsahaTempatBekerja()+" menjadi "+this.getKodeUsahaTempatBekerja()+"/n";
+            }
+            if( prevMat==null || !prevMat.getAlamatTempatBekerja().equals(this.getAlamatTempatBekerja())){
+                history=history+" Alamat Tempat Bekerja Debitur diubah dari "+prevMat.getKodeUsahaTempatBekerja()+" menjadi "+this.getKodeUsahaTempatBekerja()+"/n";
+            }
+            if( prevMat==null || prevMat.getPenghasilanKotor() != this.getPenghasilanKotor()){
+                history=history+" Penghasilan Kotor Per Tahun diubah dari "+prevMat.getPenghasilanKotor()+" menjadi "+this.getPenghasilanKotor()+"/n";
+            }  
+            if( prevMat==null || !prevMat.getKodePenghasilan().equals(this.getKodePenghasilan())){
+                history=history+" Kode SUmber Penghasilan diubah dari "+prevMat.getKodePenghasilan()+" menjadi "+this.getKodePenghasilan()+"/n";
+            }
+            if( prevMat==null || prevMat.getJmlTanggungan() != this.getJmlTanggungan()){
+                history=history+" Jumlah Tanggungan diubah dari "+prevMat.getJmlTanggungan()+" menjadi "+this.getJmlTanggungan()+"/n";
+            }
+            if( prevMat==null || !prevMat.getKodeHub().equals(this.getKodeHub())){
+                history=history+" Kode Hubungan diubah dari "+prevMat.getKodeHub()+" menjadi "+this.getKodeHub()+"/n";
+            }
+            if( prevMat==null || !prevMat.getKodeGol().equals(this.getKodeGol())){
+                history=history+" Kode Golongan Debitur diubah dari "+prevMat.getKodeGol()+" menjadi "+this.getKodeGol()+"/n";
+            }
+            if( prevMat==null || !prevMat.getStatus().equals(this.getStatus())){
+                history=history+" Staus Perkawinan Debitur diubah dari "+prevMat.getStatus()+" menjadi "+this.getStatus()+"/n";
+            }
+            if( prevMat==null || !prevMat.getNikPasangan().equals(this.getNikPasangan())){
+                history=history+" NIK atau Passport Pasangan diubah dari "+prevMat.getNikPasangan()+" menjadi "+this.getNikPasangan()+"/n";
+            }
+            if( prevMat==null || !prevMat.getNamaPasangan().equals(this.getNamaPasangan())){
+                history=history+" Nama Pasangan diubah dari "+prevMat.getNamaPasangan()+" menjadi "+this.getNamaPasangan()+"/n";
+            }
+            if( prevMat==null || !prevMat.getTglLahirPasangan().equals(this.getTglLahirPasangan())){
+                history=history+" Tanggal Lahir Pasangan diubah dari "+prevMat.getTglLahirPasangan()+" menjadi "+this.getTglLahirPasangan()+"/n";
+            }
+            if( prevMat==null || !prevMat.getNamaIbuKandung().equals(this.getNamaIbuKandung())){
+                history=history+" Nama Ibu Kandung Pasangan diubah dari "+prevMat.getNamaIbuKandung()+" menjadi "+this.getNamaIbuKandung()+"/n";
+            }
+            if( prevMat==null || !prevMat.getPerjanjianPisahHarga().equals(this.getPerjanjianPisahHarga())){
+                history=history+" Perjanjian  Pisah Harga diubah dari "+prevMat.getPerjanjianPisahHarga()+" menjadi "+this.getPerjanjianPisahHarga()+"/n";
+            }
+            if( prevMat==null || !prevMat.getMelanggarBmpk().equals(this.getMelanggarBmpk())){
+                history=history+" Melanggar BMPK/BMPD diubah dari "+prevMat.getMelanggarBmpk()+" menjadi "+this.getMelanggarBmpk()+"/n";
+            }
+            if( prevMat==null || !prevMat.getMelampauiBmpk().equals(this.getMelampauiBmpk())){
+                history=history+" Melampaui BMPK/BMPD diubah dari "+prevMat.getMelampauiBmpk()+" menjadi "+this.getMelampauiBmpk()+"/n";
+            }
+            if( prevMat==null || !prevMat.getKodeKantorCabang().equals(this.getKodeKantorCabang())){
+                history=history+" Kode Kantor Cabang diubah dari "+prevMat.getKodeKantorCabang()+" menjadi "+this.getKodeKantorCabang()+"/n";
+            }
+        } catch (Exception e) {
+            System.out.println(""+e.toString()+"");
+        }
+        
+        
+        
+        //lanjutkan
+        
+        return history;
+    }
+
+    /**
+     * @return the historySql
+     */
+    public String getHistorySql() {
+        return historySql;
+    }
+
+    /**
+     * @param historySql the historySql to set
+     */
+    public void setHistorySql(String historySql) {
+        this.historySql = historySql;
+    }
+}

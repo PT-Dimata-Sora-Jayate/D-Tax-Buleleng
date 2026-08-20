@@ -1,0 +1,288 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package com.dimata.dslik.form.kreditjoinaccount;
+
+/**
+ *
+ * @author m20n9
+ */
+import com.dimata.dslik.entity.kreditjoinaccount.*;
+import com.dimata.qdep.form.FRMHandler;
+import com.dimata.qdep.form.I_FRMInterface;
+import com.dimata.qdep.form.I_FRMType;
+import com.dimata.util.Formater;
+import javax.servlet.http.HttpServletRequest;
+
+public class FrmKreditJoinAccount extends FRMHandler implements I_FRMInterface, I_FRMType {
+
+    private KreditJoinAccount entKreditJoinAccount;
+    public static final String FRM_NAME_KREDIT_JOIN_ACCOUNT = "FRM_NAME_KREDIT_JOIN_ACCOUNT";
+    public static final int FRM_FIELD_KREDIT_JOIN_ACNT_OID = 0;
+    public static final int FRM_FIELD_FLAG_DETAIL = 1;
+    public static final int FRM_FIELD_NO_REKENING = 2;
+    public static final int FRM_FIELD_CIF = 3;
+    public static final int FRM_FIELD_SQUENCE_DEBJOIN = 4;
+    public static final int FRM_FIELD_KODE_SIFAT = 5;
+    public static final int FRM_FIELD_KODE_JENIS = 6;
+    public static final int FRM_FIELD_KODE_AKAD = 7;
+    public static final int FRM_FIELD_NO_AKAD_AWAL = 8;
+    public static final int FRM_FIELD_TGL_AKAD_AWAL = 9;
+    public static final int FRM_FIELD_NO_AKAD_AKHIR = 10;
+    public static final int FRM_FIELD_TGL_AKAD_AKHIR = 11;
+    public static final int FRM_FIELD_BARU_PERPANJANGAN = 12;
+    public static final int FRM_FIELD_TGL_AWAL_KREDIT = 13;
+    public static final int FRM_FIELD_TGL_MULAI = 14;
+    public static final int FRM_FIELD_TGL_JATUH_TEMPO = 15;
+    public static final int FRM_FIELD_KODE_KAT_DEB = 16;
+    public static final int FRM_FIELD_KODE_JENIS_PENGGUNAAN = 17;
+    public static final int FRM_FIELD_KODE_ORIENTASI_PENGGUNAAN = 18;
+    public static final int FRM_FIELD_KODE_SEKTOR_EKONOMI = 19;
+    public static final int FRM_FIELD_KODE_KAB = 20;
+    public static final int FRM_FIELD_NILAI_PROYEK = 21;
+    public static final int FRM_FIELD_KODE_VALUTA = 22;
+    public static final int FRM_FIELD_PROSENTASE_BUNGA = 23;
+    public static final int FRM_FIELD_JENIS_BUNGA = 24;
+    public static final int FRM_FIELD_KREDIT_PROGRAM_PEMERINTAH = 25;
+    public static final int FRM_FIELD_TAKEOVER = 26;
+    public static final int FRM_FIELD_SUMBER_DANA = 27;
+    public static final int FRM_FIELD_PLAFON_AWAL = 28;
+    public static final int FRM_FIELD_PLAFON = 29;
+    public static final int FRM_FIELD_REALISASI = 30;
+    public static final int FRM_FIELD_DENDA = 31;
+    public static final int FRM_FIELD_BAKI_DEBET = 32;
+    public static final int FRM_FIELD_NILAI_UANG_ASAL = 33;
+    public static final int FRM_FIELD_KODE_KOLEKTIBILITAS = 34;
+    public static final int FRM_FIELD_TGL_MACET = 35;
+    public static final int FRM_FIELD_KODE_SEBAB_MACET = 36;
+    public static final int FRM_FIELD_TUNGGAKAN_POKOK = 37;
+    public static final int FRM_FIELD_TUNGGAKAN_BUNGA = 38;
+    public static final int FRM_FIELD_JML_HARI_TUNGGAKAN = 39;
+    public static final int FRM_FIELD_FREKUENSI_TUNGGAKAN = 40;
+    public static final int FRM_FIELD_FREKUENSI_RESTRUKTURISASI = 41;
+    public static final int FRM_FIELD_TGL_RESTRUKTURISASI_AWAL = 42;
+    public static final int FRM_FIELD_TGL_RESTRUKTIRISASI_AKHIR = 43;
+    public static final int FRM_FIELD_KODE_KONDISI = 44;
+    public static final int FRM_FIELD_KODE_CARA = 45;
+    public static final int FRM_FIELD_TGL_KONDISI = 46;
+    public static final int FRM_FIELD_KETERANGAN = 47;
+    public static final int FRM_FIELD_KODEKANTOR_CABANG = 48;
+    public static final int FRM_FIELD_OPERASI_DATA = 49;
+    public static final int FRM_FIELD_OPEN_DATE = 50;
+    public static final int FRM_FIELD_STATUS_DATA = 51;
+    public static final int FRM_FIELD_PERIODE_ID = 52;
+    public static String[] fieldNames = {
+        "FRM_FIELD_KREDIT_JOIN_ACNT_OID",
+        "FRM_FIELD_FLAG_DETAIL",
+        "FRM_FIELD_NO_REKENING",
+        "FRM_FIELD_CIF",
+        "FRM_FIELD_SQUENCE_DEBJOIN",
+        "FRM_FIELD_KODE_SIFAT",
+        "FRM_FIELD_KODE_JENIS",
+        "FRM_FIELD_KODE_AKAD",
+        "FRM_FIELD_NO_AKAD_AWAL",
+        "FRM_FIELD_TGL_AKAD_AWAL",
+        "FRM_FIELD_NO_AKAD_AKHIR",
+        "FRM_FIELD_TGL_AKAD_AKHIR",
+        "FRM_FIELD_BARU_PERPANJANGAN",
+        "FRM_FIELD_TGL_AWAL_KREDIT",
+        "FRM_FIELD_TGL_MULAI",
+        "FRM_FIELD_TGL_JATUH_TEMPO",
+        "FRM_FIELD_KODE_KAT_DEB",
+        "FRM_FIELD_KODE_JENIS_PENGGUNAAN",
+        "FRM_FIELD_KODE_ORIENTASI_PENGGUNAAN",
+        "FRM_FIELD_KODE_SEKTOR_EKONOMI",
+        "FRM_FIELD_KODE_KAB",
+        "FRM_FIELD_NILAI_PROYEK",
+        "FRM_FIELD_KODE_VALUTA",
+        "FRM_FIELD_PROSENTASE_BUNGA",
+        "FRM_FIELD_JENIS_BUNGA",
+        "FRM_FIELD_KREDIT_PROGRAM_PEMERINTAH",
+        "FRM_FIELD_TAKEOVER",
+        "FRM_FIELD_SUMBER_DANA",
+        "FRM_FIELD_PLAFON_AWAL",
+        "FRM_FIELD_PLAFON",
+        "FRM_FIELD_REALISASI",
+        "FRM_FIELD_DENDA",
+        "FRM_FIELD_BAKI_DEBET",
+        "FRM_FIELD_NILAI_UANG_ASAL",
+        "FRM_FIELD_KODE_KOLEKTIBILITAS",
+        "FRM_FIELD_TGL_MACET",
+        "FRM_FIELD_KODE_SEBAB_MACET",
+        "FRM_FIELD_TUNGGAKAN_POKOK",
+        "FRM_FIELD_TUNGGAKAN_BUNGA",
+        "FRM_FIELD_JML_HARI_TUNGGAKAN",
+        "FRM_FIELD_FREKUENSI_TUNGGAKAN",
+        "FRM_FIELD_FREKUENSI_RESTRUKTURISASI",
+        "FRM_FIELD_TGL_RESTRUKTURISASI_AWAL",
+        "FRM_FIELD_TGL_RESTRUKTIRISASI_AKHIR",
+        "FRM_FIELD_KODE_KONDISI",
+        "FRM_FIELD_KODE_CARA",
+        "FRM_FIELD_TGL_KONDISI",
+        "FRM_FIELD_KETERANGAN",
+        "FRM_FIELD_KODEKANTOR_CABANG",
+        "FRM_FIELD_OPERASI_DATA",
+        "FRM_FIELD_OPEN_DATE",
+        "FRM_FIELD_STATUS_DATE",
+        "FRM_FIELD_PERIODE_ID"
+    };
+    public static int[] fieldTypes = {
+        TYPE_LONG,
+        TYPE_STRING,
+        TYPE_STRING,
+        TYPE_STRING,
+        TYPE_INT,
+        TYPE_STRING,
+        TYPE_STRING,
+        TYPE_STRING,
+        TYPE_STRING,
+        TYPE_STRING,
+        TYPE_STRING,
+        TYPE_STRING,
+        TYPE_INT,
+        TYPE_STRING,
+        TYPE_STRING,
+        TYPE_STRING,
+        TYPE_STRING,
+        TYPE_STRING,
+        TYPE_STRING,
+        TYPE_STRING,
+        TYPE_STRING,
+        TYPE_FLOAT,
+        TYPE_STRING,
+        TYPE_INT,
+        TYPE_STRING,
+        TYPE_STRING,
+        TYPE_STRING,
+        TYPE_STRING,
+        TYPE_FLOAT,
+        TYPE_FLOAT,
+        TYPE_FLOAT,
+        TYPE_FLOAT,
+        TYPE_FLOAT,
+        TYPE_FLOAT,
+        TYPE_STRING,
+        TYPE_STRING,
+        TYPE_STRING,
+        TYPE_FLOAT,
+        TYPE_FLOAT,
+        TYPE_INT,
+        TYPE_INT,
+        TYPE_INT,
+        TYPE_STRING,
+        TYPE_STRING,
+        TYPE_STRING,
+        TYPE_STRING,
+        TYPE_STRING,
+        TYPE_STRING,
+        TYPE_STRING,
+        TYPE_STRING,
+        TYPE_STRING,
+        TYPE_INT,
+        TYPE_LONG
+    };
+
+    public FrmKreditJoinAccount() {
+    }
+
+    public FrmKreditJoinAccount(KreditJoinAccount entKreditJoinAccount) {
+        this.entKreditJoinAccount = entKreditJoinAccount;
+    }
+
+    public FrmKreditJoinAccount(HttpServletRequest request, KreditJoinAccount entKreditJoinAccount) {
+        super(new FrmKreditJoinAccount(entKreditJoinAccount), request);
+        this.entKreditJoinAccount = entKreditJoinAccount;
+    }
+
+    public String getFormName() {
+        return FRM_NAME_KREDIT_JOIN_ACCOUNT;
+    }
+
+    public int[] getFieldTypes() {
+        return fieldTypes;
+    }
+
+    public String[] getFieldNames() {
+        return fieldNames;
+    }
+
+    public int getFieldSize() {
+        return fieldNames.length;
+    }
+
+    public KreditJoinAccount getEntityObject() {
+        return entKreditJoinAccount;
+    }
+
+    public void requestEntityObject(KreditJoinAccount entKreditJoinAccount) {
+        try {
+            this.requestParam();
+            //entKreditJoinAccount.setKreditJoinAcntOid(getLong(FRM_FIELD_KREDIT_JOIN_ACNT_OID));
+            entKreditJoinAccount.setFlagDetail(getString(FRM_FIELD_FLAG_DETAIL));
+            entKreditJoinAccount.setNoRekening(getString(FRM_FIELD_NO_REKENING));
+            entKreditJoinAccount.setCif(getString(FRM_FIELD_CIF));
+            entKreditJoinAccount.setSquenceDebJoin(getInt(FRM_FIELD_SQUENCE_DEBJOIN));
+            entKreditJoinAccount.setKodeSifat(getString(FRM_FIELD_KODE_SIFAT));
+            entKreditJoinAccount.setKodeJenis(getString(FRM_FIELD_KODE_JENIS));
+            entKreditJoinAccount.setKodeAkad(getString(FRM_FIELD_KODE_AKAD));
+            entKreditJoinAccount.setNoAkadAwal(getString(FRM_FIELD_NO_AKAD_AWAL));
+            String tglAkadAwal = getString(FRM_FIELD_TGL_AKAD_AWAL);
+            entKreditJoinAccount.setTglAkadAwal(Formater.formatDate(tglAkadAwal, "yyyy-MM-dd"));
+            entKreditJoinAccount.setNoAkadAkhir(getString(FRM_FIELD_NO_AKAD_AKHIR));
+            String tglAkadAkhir = getString(FRM_FIELD_TGL_AKAD_AKHIR);
+            entKreditJoinAccount.setTglAkadAkhir(Formater.formatDate(tglAkadAwal, "yyyy-MM-dd"));
+            entKreditJoinAccount.setBaruPerpanjangan(getInt(FRM_FIELD_BARU_PERPANJANGAN));
+            String tglAwalKredit = getString(FRM_FIELD_TGL_AWAL_KREDIT);
+            entKreditJoinAccount.setTglAwalKredit(Formater.formatDate(tglAwalKredit, "yyyy-MM-dd"));
+            String tglMulai = getString(FRM_FIELD_TGL_MULAI);
+            entKreditJoinAccount.setTglMulai(Formater.formatDate(tglMulai, "yyyy-MM-dd"));
+            String tglJatuhTempo = getString(FRM_FIELD_TGL_JATUH_TEMPO);
+            entKreditJoinAccount.setTglJatuhTempo(Formater.formatDate(tglJatuhTempo, "yyyy-MM-dd"));
+            entKreditJoinAccount.setKodeKatDeb(getString(FRM_FIELD_KODE_KAT_DEB));
+            entKreditJoinAccount.setKodeJenisPenggunaan(getString(FRM_FIELD_KODE_JENIS_PENGGUNAAN));
+            entKreditJoinAccount.setKodeOrientasiPenggunaan(getString(FRM_FIELD_KODE_ORIENTASI_PENGGUNAAN));
+            entKreditJoinAccount.setKodeSektorEkonomi(getString(FRM_FIELD_KODE_SEKTOR_EKONOMI));
+            entKreditJoinAccount.setKodeKab(getString(FRM_FIELD_KODE_KAB));
+            entKreditJoinAccount.setNilaiProyek(getFloat(FRM_FIELD_NILAI_PROYEK));
+            entKreditJoinAccount.setKodeValuta(getString(FRM_FIELD_KODE_VALUTA));
+            entKreditJoinAccount.setProsentaseBunga(getInt(FRM_FIELD_PROSENTASE_BUNGA));
+            entKreditJoinAccount.setJenisBunga(getString(FRM_FIELD_JENIS_BUNGA));
+            entKreditJoinAccount.setKreditPrgPemerintah(getString(FRM_FIELD_KREDIT_PROGRAM_PEMERINTAH));
+            entKreditJoinAccount.setTakeover(getString(FRM_FIELD_TAKEOVER));
+            entKreditJoinAccount.setSumberDana(getString(FRM_FIELD_SUMBER_DANA));
+            entKreditJoinAccount.setPlafonAwal(getFloat(FRM_FIELD_PLAFON_AWAL));
+            entKreditJoinAccount.setPlafon(getFloat(FRM_FIELD_PLAFON));
+            entKreditJoinAccount.setRealisasi(getFloat(FRM_FIELD_REALISASI));
+            entKreditJoinAccount.setDenda(getFloat(FRM_FIELD_DENDA));
+            entKreditJoinAccount.setBakiDebet(getFloat(FRM_FIELD_BAKI_DEBET));
+            entKreditJoinAccount.setNilaiUangAsal(getFloat(FRM_FIELD_NILAI_UANG_ASAL));
+            entKreditJoinAccount.setKodeKolektibilitas(getString(FRM_FIELD_KODE_KOLEKTIBILITAS));
+            String tglMacet = getString(FRM_FIELD_TGL_MACET);
+            entKreditJoinAccount.setTglMacet(Formater.formatDate(tglMacet, "yyyy-MM-dd"));
+            entKreditJoinAccount.setKodeSebabMacet(getString(FRM_FIELD_KODE_SEBAB_MACET));
+            entKreditJoinAccount.setTunggakanPokok(getFloat(FRM_FIELD_TUNGGAKAN_POKOK));
+            entKreditJoinAccount.setTunggakanBunga(getFloat(FRM_FIELD_TUNGGAKAN_BUNGA));
+            entKreditJoinAccount.setJmlHariTunggakan(getInt(FRM_FIELD_JML_HARI_TUNGGAKAN));
+            entKreditJoinAccount.setFrekuensiTunggakan(getInt(FRM_FIELD_FREKUENSI_TUNGGAKAN));
+            entKreditJoinAccount.setFrekuensiRestrukturisasi(getInt(FRM_FIELD_FREKUENSI_RESTRUKTURISASI));
+            String tglRestrukturisasiAwal = getString(FRM_FIELD_TGL_RESTRUKTURISASI_AWAL);
+            entKreditJoinAccount.setTglRestrukturisasiAwal(Formater.formatDate(tglRestrukturisasiAwal, "yyyy-MM-dd"));
+            String tglRestruktirisasiAkhir = getString(FRM_FIELD_TGL_RESTRUKTIRISASI_AKHIR);
+            entKreditJoinAccount.setTglRestruktirisasiAkhir(Formater.formatDate(tglRestruktirisasiAkhir, "yyyy-MM-dd"));
+            entKreditJoinAccount.setKodeKondisi(getString(FRM_FIELD_KODE_KONDISI));
+            entKreditJoinAccount.setKodeCara(getString(FRM_FIELD_KODE_CARA));
+            String tglKondisi = getString(FRM_FIELD_TGL_KONDISI);
+            entKreditJoinAccount.setTglKondisi(Formater.formatDate(tglKondisi, "yyyy-MM-dd"));
+            entKreditJoinAccount.setKeterangan(getString(FRM_FIELD_KETERANGAN));
+            entKreditJoinAccount.setKodeKantorCabang(getString(FRM_FIELD_KODEKANTOR_CABANG));
+            entKreditJoinAccount.setOperasiData(getString(FRM_FIELD_OPERASI_DATA));
+            String openDate = getString(FRM_FIELD_OPEN_DATE);
+            entKreditJoinAccount.setOpenDate(Formater.formatDate(openDate, "yyyy-MM-dd"));
+            entKreditJoinAccount.setStatusData(getInt(FRM_FIELD_STATUS_DATA));
+            entKreditJoinAccount.setPeriodeId(getLong(FRM_FIELD_PERIODE_ID));
+        } catch (Exception e) {
+            System.out.println("Error on requestEntityObject : " + e.toString());
+        }
+    }
+}

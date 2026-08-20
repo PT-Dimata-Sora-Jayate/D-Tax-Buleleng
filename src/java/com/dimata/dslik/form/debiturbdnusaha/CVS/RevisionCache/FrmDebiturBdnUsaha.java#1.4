@@ -1,0 +1,201 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package com.dimata.dslik.form.debiturbdnusaha;
+
+/**
+ *
+ * @author m20n9
+ */
+import com.dimata.dslik.entity.debiturbdnusaha.*;
+import com.dimata.qdep.form.FRMHandler;
+import com.dimata.qdep.form.I_FRMInterface;
+import com.dimata.qdep.form.I_FRMType;
+import com.dimata.util.Formater;
+import javax.servlet.http.HttpServletRequest;
+
+public class FrmDebiturBdnUsaha extends FRMHandler implements I_FRMInterface, I_FRMType {
+
+    private DebiturBdnUsaha entDebiturBdnUsaha;
+    public static final String FRM_NAME_DEBITUR_BDN_USAHA = "FRM_NAME_DEBITUR_BDN_USAHA";
+    public static final int FRM_FIELD_DEBITUR_BDN_USHA_OID = 0;
+    public static final int FRM_FIELD_FLAG_DETAIL = 1;
+    public static final int FRM_FIELD_CIF = 2;
+    public static final int FRM_FIELD_NO_IDENTITAS = 3;
+    public static final int FRM_FIELD_NAMA = 4;
+    public static final int FRM_FIELD_KODE_JENIS = 5;
+    public static final int FRM_FIELD_TEMPAT = 6;
+    public static final int FRM_FIELD_NO_AKTE = 7;
+    public static final int FRM_FIELD_TGL_AKTE_PENDIRIAN = 8;
+    public static final int FRM_FIELD_NO_AKTE_PERUBAHAN = 9;
+    public static final int FRM_FIELD_TGL_AKTE_PERUBAHAN = 10;
+    public static final int FRM_FIELD_TELEPON = 11;
+    public static final int FRM_FIELD_EMAIL = 12;
+    public static final int FRM_FIELD_ALAMAT = 13;
+    public static final int FRM_FIELD_KELURAHAN = 14;
+    public static final int FRM_FIELD_KECAMATAN = 15;
+    public static final int FRM_FIELD_KODE_KAB = 16;
+    public static final int FRM_FIELD_KODE_POS = 17;
+    public static final int FRM_FIELD_KODE_NEGARA = 18;
+    public static final int FRM_FIELD_KODE_BIDANG_USAHA = 19;
+    public static final int FRM_FIELD_KODE_HUB_LJK = 20;
+    public static final int FRM_FIELD_MELANGGAR_BMPK = 21;
+    public static final int FRM_FIELD_MELAMPAUI_BMPK = 22;
+    public static final int FRM_FIELD_GO_PUBLIC = 23;
+    public static final int FRM_FIELD_KODE_GOL = 24;
+    public static final int FRM_FIELD_PERINGKAT = 25;
+    public static final int FRM_FIELD_LEMBAGA_PEMERINGKAT = 26;
+    public static final int FRM_FIELD_TGLPEMERINGKAT = 27;
+    public static final int FRM_FIELD_NAMAGROUP = 28;
+    public static final int FRM_FIELD_KODE_KANTOR_CABANG = 29;
+    public static final int FRM_FIELD_OPERASI_DATA = 30;
+    public static final int FRM_FIELD_PERIODE_ID = 31;
+    public static final int FRM_FIELD_KODE_JENIS_NSB = 32;
+    public static String[] fieldNames = {
+        "FRM_FIELD_DEBITUR_BDN_USHA_OID",
+        "FRM_FIELD_FLAG_DETAIL",
+        "FRM_FIELD_CIF",
+        "FRM_FIELD_NO_IDENTITAS",
+        "FRM_FIELD_NAMA",
+        "FRM_FIELD_KODE_JENIS",
+        "FRM_FIELD_TEMPAT",
+        "FRM_FIELD_NO_AKTE",
+        "FRM_FIELD_TGL_AKTE_PENDIRIAN",
+        "FRM_FIELD_NO_AKTE_PERUBAHAN",
+        "FRM_FIELD_TGL_AKTE_PERUBAHAN",
+        "FRM_FIELD_TELEPON",
+        "FRM_FIELD_EMAIL",
+        "FRM_FIELD_ALAMAT",
+        "FRM_FIELD_KELURAHAN",
+        "FRM_FIELD_KECAMATAN",
+        "FRM_FIELD_KODE_KAB",
+        "FRM_FIELD_KODE_POS",
+        "FRM_FIELD_KODE_NEGARA",
+        "FRM_FIELD_KODE_BIDANG_USAHA",
+        "FRM_FIELD_KODE_HUB_LJK",
+        "FRM_FIELD_MELANGGAR_BMPK",
+        "FRM_FIELD_MELAMPAUI_BMPK",
+        "FRM_FIELD_GO_PUBLIC",
+        "FRM_FIELD_KODE_GOL",
+        "FRM_FIELD_PERINGKAT",
+        "FRM_FIELD_LEMBAGA_PEMERINGKAT",
+        "FRM_FIELD_TGLPEMERINGKAT",
+        "FRM_FIELD_NAMAGROUP",
+        "FRM_FIELD_KODE_KANTOR_CABANG",
+        "FRM_FIELD_OPERASI_DATA",
+        "FRM_FIELD_PERIODE_ID",
+        "FRM_FIELD_KODE_JENIS_NSB"
+    };
+    public static int[] fieldTypes = {
+        TYPE_LONG,
+        TYPE_STRING,
+        TYPE_STRING,
+        TYPE_STRING,
+        TYPE_STRING,
+        TYPE_STRING,
+        TYPE_STRING,
+        TYPE_STRING,
+        TYPE_STRING,
+        TYPE_STRING,
+        TYPE_STRING,
+        TYPE_STRING,
+        TYPE_STRING,
+        TYPE_STRING,
+        TYPE_STRING,
+        TYPE_STRING,
+        TYPE_STRING,
+        TYPE_STRING,
+        TYPE_STRING,
+        TYPE_STRING,
+        TYPE_STRING,
+        TYPE_STRING,
+        TYPE_STRING,
+        TYPE_STRING,
+        TYPE_STRING,
+        TYPE_STRING,
+        TYPE_STRING,
+        TYPE_STRING,
+        TYPE_STRING,
+        TYPE_STRING,
+        TYPE_STRING,
+        TYPE_LONG,
+        TYPE_STRING
+    };
+
+    public FrmDebiturBdnUsaha() {
+    }
+
+    public FrmDebiturBdnUsaha(DebiturBdnUsaha entDebiturBdnUsaha) {
+        this.entDebiturBdnUsaha = entDebiturBdnUsaha;
+    }
+
+    public FrmDebiturBdnUsaha(HttpServletRequest request, DebiturBdnUsaha entDebiturBdnUsaha) {
+        super(new FrmDebiturBdnUsaha(entDebiturBdnUsaha), request);
+        this.entDebiturBdnUsaha = entDebiturBdnUsaha;
+    }
+
+    public String getFormName() {
+        return FRM_NAME_DEBITUR_BDN_USAHA;
+    }
+
+    public int[] getFieldTypes() {
+        return fieldTypes;
+    }
+
+    public String[] getFieldNames() {
+        return fieldNames;
+    }
+
+    public int getFieldSize() {
+        return fieldNames.length;
+    }
+
+    public DebiturBdnUsaha getEntityObject() {
+        return entDebiturBdnUsaha;
+    }
+
+    public void requestEntityObject(DebiturBdnUsaha entDebiturBdnUsaha) {
+        try {
+            this.requestParam();
+            //entDebiturBdnUsaha.setDebiturBdnUshaOid(getLong(FRM_FIELD_DEBITUR_BDN_USHA_OID));
+            entDebiturBdnUsaha.setFlagDetail(getString(FRM_FIELD_FLAG_DETAIL));
+            entDebiturBdnUsaha.setCif(getString(FRM_FIELD_CIF));
+            entDebiturBdnUsaha.setNoIdentitas(getString(FRM_FIELD_NO_IDENTITAS));
+            entDebiturBdnUsaha.setNama(getString(FRM_FIELD_NAMA));
+            entDebiturBdnUsaha.setKodeJenis(getString(FRM_FIELD_KODE_JENIS));
+            entDebiturBdnUsaha.setTempat(getString(FRM_FIELD_TEMPAT));
+            entDebiturBdnUsaha.setNoAkte(getString(FRM_FIELD_NO_AKTE));
+            String tglAktePendirian = getString(FRM_FIELD_TGL_AKTE_PENDIRIAN);
+            entDebiturBdnUsaha.setTglAktePendirian(Formater.formatDate(tglAktePendirian, "yyyy-MM-dd"));
+            entDebiturBdnUsaha.setNoAktePerubahan(getString(FRM_FIELD_NO_AKTE_PERUBAHAN));
+            String tglAktePerubahan = getString(FRM_FIELD_TGL_AKTE_PERUBAHAN);
+            entDebiturBdnUsaha.setTglAktePerubahan(Formater.formatDate(tglAktePerubahan, "yyyy-MM-dd"));
+            entDebiturBdnUsaha.setTelepon(getString(FRM_FIELD_TELEPON));
+            entDebiturBdnUsaha.setEmail(getString(FRM_FIELD_EMAIL));
+            entDebiturBdnUsaha.setAlamat(getString(FRM_FIELD_ALAMAT));
+            entDebiturBdnUsaha.setKelurahan(getString(FRM_FIELD_KELURAHAN));
+            entDebiturBdnUsaha.setKecamatan(getString(FRM_FIELD_KECAMATAN));
+            entDebiturBdnUsaha.setKodeKab(getString(FRM_FIELD_KODE_KAB));
+            entDebiturBdnUsaha.setKodePos(getString(FRM_FIELD_KODE_POS));
+            entDebiturBdnUsaha.setKodeNegara(getString(FRM_FIELD_KODE_NEGARA));
+            entDebiturBdnUsaha.setKodeBidangUsaha(getString(FRM_FIELD_KODE_BIDANG_USAHA));
+            entDebiturBdnUsaha.setKodeHubLjk(getString(FRM_FIELD_KODE_HUB_LJK));
+            entDebiturBdnUsaha.setMelanggarBmpk(getString(FRM_FIELD_MELANGGAR_BMPK));
+            entDebiturBdnUsaha.setMelampauiBmpk(getString(FRM_FIELD_MELAMPAUI_BMPK));
+            entDebiturBdnUsaha.setGoPublic(getString(FRM_FIELD_GO_PUBLIC));
+            entDebiturBdnUsaha.setKodeGol(getString(FRM_FIELD_KODE_GOL));
+            entDebiturBdnUsaha.setPeringkat(getString(FRM_FIELD_PERINGKAT));
+            entDebiturBdnUsaha.setLembagaPemeringkat(getString(FRM_FIELD_LEMBAGA_PEMERINGKAT));
+            String tglPemeringkat = getString(FRM_FIELD_TGLPEMERINGKAT);
+            entDebiturBdnUsaha.setTglPemeringkat(Formater.formatDate(tglPemeringkat, "yyyy-MM-dd"));
+            entDebiturBdnUsaha.setNamaGroup(getString(FRM_FIELD_NAMAGROUP));
+            entDebiturBdnUsaha.setKodeKtrCabang(getString(FRM_FIELD_KODE_KANTOR_CABANG));
+            entDebiturBdnUsaha.setOperasiData(getString(FRM_FIELD_OPERASI_DATA));
+            entDebiturBdnUsaha.setPeriodeId(getLong(FRM_FIELD_PERIODE_ID));
+            entDebiturBdnUsaha.setKodeJenisNsb(getString(FRM_FIELD_KODE_JENIS_NSB));
+        } catch (Exception e) {
+            System.out.println("Error on requestEntityObject : " + e.toString());
+        }
+    }
+}

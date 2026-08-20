@@ -1,0 +1,64 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package com.dimata.dslik.session.proses;
+
+import com.dimata.qdep.db.DBHandler;
+import com.dimata.qdep.db.DBResultSet;
+import java.sql.ResultSet;
+
+/**
+ *
+ * @author dimata005
+ */
+public class SessionProsesPerlengkapan {
+    public static int getCountJoin(String whereClause) {
+        DBResultSet dbrs = null;
+        try {
+            String sql ="SELECT  COUNT(l.NO_REKENING) FROM dslik_kredit l LEFT JOIN dslik_debitur r " +
+                        "ON r.CIF = l.CIF " +
+                        "WHERE r.CIF IS NULL ";
+            if (whereClause != null && whereClause.length() > 0) {
+                sql = sql + " AND " + whereClause;
+            }
+            dbrs = DBHandler.execQueryResult(sql);
+            ResultSet rs = dbrs.getResultSet();
+            int count = 0;
+            while (rs.next()) {
+                count = rs.getInt(1);
+            }
+            rs.close();
+            return count;
+        } catch (Exception e) {
+            return 0;
+        } finally {
+            DBResultSet.close(dbrs);
+        }
+    }
+    
+    public static int getCountJoinForDebitur(String whereClause) {
+        DBResultSet dbrs = null;
+        try {
+            String sql ="SELECT  COUNT(l.CIF) FROM dslik_debitur  l LEFT JOIN dslik_kredit r " +
+                        "ON r.CIF = l.CIF " +
+                        "WHERE r.CIF IS NULL ";
+            if (whereClause != null && whereClause.length() > 0) {
+                sql = sql + " AND " + whereClause;
+            }
+            dbrs = DBHandler.execQueryResult(sql);
+            ResultSet rs = dbrs.getResultSet();
+            int count = 0;
+            while (rs.next()) {
+                count = rs.getInt(1);
+            }
+            rs.close();
+            return count;
+        } catch (Exception e) {
+            return 0;
+        } finally {
+            DBResultSet.close(dbrs);
+        }
+    }
+}

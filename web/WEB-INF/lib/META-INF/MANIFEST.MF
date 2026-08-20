@@ -1,0 +1,60 @@
+Manifest-Version: 1.0
+Specification-Title:  Java Project X Core
+Specification-Vendor: Sun Microsystems
+Created-By: 1.2 (Sun Microsystems Inc.)
+Specification-Version: 0.8.0
+
+Name: org/xml/sax/helpers
+Sealed: true
+Specification-Title:  Simple API to XML
+Package-Vendor: Sun Microsystems, Inc.
+Specification-Version: 1.0.0
+Specification-Vendor: David Megginson
+Package-Version: 1.0.0
+Package-Title: org.xml.sax.helpers
+
+Name: com/sun/xml/parser/resources
+Sealed: false
+Specification-Title:  Sun XML Parser Localization Resources
+Package-Vendor: Sun Microsystems, Inc.
+Specification-Version: 0.8.0
+Specification-Vendor: Sun Microsystems
+Package-Version: 0.8.0
+Package-Title: com.sun.xml.parser.resources
+
+Name: com/sun/xml/parser
+Sealed: true
+Specification-Title:  Sun XML Parsers
+Package-Vendor: Sun Microsystems, Inc.
+Specification-Version: 0.8.0
+Specification-Vendor: Sun Microsystems
+Package-Version: 0.8.0
+Package-Title: com.sun.xml.parser
+
+Name: com/sun/xml/tree
+Sealed: true
+Specification-Title:  Sun DOM Implementation
+Package-Vendor: Sun Microsystems, Inc.
+Specification-Version: 0.8.0
+Specification-Vendor: Sun Microsystems
+Package-Version: 0.8.0
+Package-Title: com.sun.xml.tree
+
+Name: org/w3c/dom
+Sealed: true
+Specification-Title:  Document Object Model, Level 1 Core
+Package-Vendor: Sun Microsystems, Inc.
+Specification-Version: 1.0.0
+Specification-Vendor: World Wide Web Consortium
+Package-Version: 1.0.0
+Package-Title:  org.w3c.dom
+
+Name: org/xml/sax
+Package-Version: 1.0.0
+Specification-Title:  Simple API to XML
+Specification-Vendor: David Megginson
+Sealed: true
+Specification-Version: 1.0.0
+Package-Vendor: Sun Microsystems, Inc.
+Package-Title: org.xml.sax
+

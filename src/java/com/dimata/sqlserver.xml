@@ -1,0 +1,59 @@
+<?xml version="1.0"?>
+
+<!DOCTYPE pizza [
+	<!ELEMENT tms (database, logs)>
+
+	<!ELEMENT database (dbdriver, dburl, dbuser, dbpasswd, dbminconn, dbmaxconn)>
+	<!ELEMENT dbdriver (#PCDATA)>
+	<!ELEMENT dburl (#PCDATA)>
+	<!ELEMENT dbuser (#PCDATA)>
+	<!ELEMENT dbpasswd (#PCDATA)>
+	<!ELEMENT dbminconn (#PCDATA)>
+	<!ELEMENT dbmaxconn (#PCDATA)>
+
+	<!ELEMENT logs (logconn, logsize)>
+	<!ELEMENT logconn (#PCDATA)>
+	<!ELEMENT logsize (#PCDATA)>
+
+	<!ELEMENT format (fordate, fordecimal, forcurrency)>
+	<!ELEMENT fordate (#PCDATA)>
+	<!ELEMENT fordecimal (#PCDATA)>
+	<!ELEMENT forcurrency (#PCDATA)>
+
+]>
+
+<tms>
+	<!-- 
+	  database configuration 	  
+	-->	
+	<database>
+            <!--<dbdriver>net.sourceforge.jtds.jdbc.Driver</dbdriver>
+            <dburl>jdbc:jtds:sqlserver://SVR-BACKUP/PENDAPATAN2016;instance=simpadadbs</dburl>
+            <dbuser>simda</dbuser>
+            <dbpasswd>123</dbpasswd>
+            <dbminconn>5</dbminconn>
+            <dbmaxconn>50</dbmaxconn>-->
+            <dbdriver>net.sourceforge.jtds.jdbc.Driver</dbdriver>
+            <dburl>jdbc:jtds:sqlserver://WITAR-PC/Testt;instance=SQLEXPRESS</dburl>
+            <dbuser>admino</dbuser>
+            <dbpasswd>admin</dbpasswd>
+            <dbminconn>5</dbminconn>
+            <dbmaxconn>50</dbmaxconn>
+	</database>
+	<!-- 
+	  @logconn	 	- file name that contain application log/history
+	  @logsize		- maximum size of log file, in MB
+	-->
+	<logs>
+		<logconn>tmsconn.log</logconn>
+		<logapp>tmsapp.log</logapp>
+		<logsize>5</logsize>
+	</logs>
+
+	<format>
+		<fordate>MMM-dd-yyyy</fordate>
+		<fordecimal>###,###.##</fordecimal>
+		<forcurrency>###,###.00</forcurrency>
+	</format>
+
+</tms>

@@ -1,0 +1,47 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package com.dimata.dslik.session.proses;
+
+import com.dimata.dslik.entity.masterdata.OutletConnection;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+
+/**
+ *
+ * @author dimata005
+ */
+public class ProsesDilimitedText {
+    public String actionDilimitedTextDebitur() {
+        return "";
+    }
+    
+    public String actionDilimitedText(FileSent fileSent, OutletConnection outletConnection) {
+        String resp_status = new String();
+        String resp_code = new String();
+        try {
+            // TODO code application logic here
+            ByteArrayOutputStream out = new ByteArrayOutputStream();
+            String patchFileUpload = "";
+            try {
+                CreateFile sent = new CreateFile();
+                patchFileUpload = sent.sentDataToDilimited(fileSent,outletConnection);
+                if(!ManagerDilimitedText.running){
+                    resp_status="Stop";
+                    return resp_status;
+                }
+                
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+                e.printStackTrace();
+            }
+            
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return resp_status;
+    }
+    
+}

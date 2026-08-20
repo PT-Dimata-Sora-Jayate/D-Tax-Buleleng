@@ -1,0 +1,849 @@
+<%-- 
+    Document   : home_marketing
+    Created on : May 5, 2016, 11:23:02 AM
+    Author     : dimata005
+--%>
+<%@page import="com.dimata.dslik.entity.kreditjoinaccount.PstKreditJoinAccount"%>
+<%@page import="java.util.Date"%>
+<%@page import="com.dimata.dslik.entity.pengurusataupemilik.PstPengurusAtauPemilik"%>
+<%@page import="com.dimata.dslik.entity.laporankeuangandebitur.PstLaporanKeuanganDebitur"%>
+<%@page import="com.dimata.dslik.entity.fasilitaslain.PstFasilitasLain"%>
+<%@page import="com.dimata.dslik.entity.bankgaransi.PstBankGaransi"%>
+<%@page import="com.dimata.dslik.entity.irrevocablelc.PstIrrevocableLc"%>
+<%@page import="com.dimata.dslik.entity.suratberharga.PstSuratBerharga"%>
+<%@page import="com.dimata.dslik.entity.kredit.PstKredit"%>
+<%@page import="com.dimata.dslik.entity.penjamin.PstPenjamin"%>
+<%@page import="com.dimata.dslik.entity.agunan.PstAgunan"%>
+<%@page import="com.dimata.dslik.entity.debitur.PstDebitur"%>
+<%@page import="com.dimata.util.Formater"%>
+<%@page import="java.util.Vector"%>
+<%@page import="com.dimata.dslik.entity.masterdata.PstPeriode"%>
+<%@page import="com.dimata.dslik.entity.masterdata.Periode"%>
+<%@page import="com.dimata.util.Command"%>
+<!DOCTYPE html>
+<%@include file="main/javainit_slik.jsp" %>
+<%    
+    //TOP SIDE
+    String whereClause = "debitur."+PstDebitur.fieldNames[PstDebitur.FLD_STATUS_DATA]+"='0' AND debitur."+PstDebitur.fieldNames[PstDebitur.FLD_KODE_JENIS_NSB]+"='1'";
+    int countDebiturIndividu = PstDebitur.getCountJoin(whereClause);
+    
+    whereClause = "debitur."+PstDebitur.fieldNames[PstDebitur.FLD_STATUS_DATA]+"='0' AND debitur."+PstDebitur.fieldNames[PstDebitur.FLD_KODE_JENIS_NSB]+"!='1'";
+    int countDebiturBadanUsaha = PstDebitur.getCountJoin(whereClause);
+    
+    whereClause = "agunan."+PstAgunan.fieldNames[PstAgunan.FLD_STATUS_DATA]+"='0'";
+    int countAgunan = PstAgunan.getCountJoin(whereClause);
+    
+    whereClause = "penjamin."+PstPenjamin.fieldNames[PstPenjamin.FLD_STATUS_DATA]+"='0'";
+    int countPenjamin = PstPenjamin.getCountJoin(whereClause);
+    
+    whereClause = "kredit."+PstKredit.fieldNames[PstPenjamin.FLD_STATUS_DATA]+"='0'";
+    int countKredit = PstKredit.getCountJoin(whereClause);
+    
+    whereClause = "kj."+PstKreditJoinAccount.fieldNames[PstKreditJoinAccount.FLD_STATUS_DATA]+"='0'";
+    int countKreditJoin = PstKreditJoinAccount.getCountJoin(whereClause);
+    
+    whereClause = "sb."+PstSuratBerharga.fieldNames[PstSuratBerharga.FLD_STATUS_DATA]+"='0'";
+    int countSuratBerharga = PstSuratBerharga.getCountJoin(whereClause);
+    
+    whereClause = "ilc."+PstIrrevocableLc.fieldNames[PstIrrevocableLc.FLD_STATUS_DATA]+"='0'";
+    int countIrrevocable = PstIrrevocableLc.getCountJoin(whereClause);
+    
+    whereClause = "bg."+PstBankGaransi.fieldNames[PstBankGaransi.FLD_STATUS_DATA]+"='0'";
+    int countBankGaransi = PstBankGaransi.getCountJoin(whereClause);
+    
+    whereClause = "fl."+PstFasilitasLain.fieldNames[PstFasilitasLain.FLD_STATUS_DATA]+"='0'";
+    int countFasilitasLain = PstFasilitasLain.getCountJoin(whereClause);
+    
+    whereClause = "laporan."+PstLaporanKeuanganDebitur.fieldNames[PstLaporanKeuanganDebitur.FLD_STATUS_DATA]+"='0'";
+    int countLaporan = PstLaporanKeuanganDebitur.getCountJoin(whereClause);
+    
+    whereClause = "pengurus."+PstPengurusAtauPemilik.fieldNames[PstPengurusAtauPemilik.FLD_STATUS_DATA]+"='0'";
+    int countPengurus = PstPengurusAtauPemilik.getCountJoin(whereClause);
+    
+    //BOTTOM SIDE
+    whereClause = "debitur."+PstDebitur.fieldNames[PstDebitur.FLD_STATUS_DATA]+" IS NULL AND debitur."+PstDebitur.fieldNames[PstDebitur.FLD_KODE_JENIS_NSB]+"='1'";
+    int countDebiturIndividuNull = PstDebitur.getCountJoin(whereClause);
+    
+    whereClause = "debitur."+PstDebitur.fieldNames[PstDebitur.FLD_STATUS_DATA]+" IS NULL AND debitur."+PstDebitur.fieldNames[PstDebitur.FLD_KODE_JENIS_NSB]+"!='1'";
+    int countDebiturBadanUsahaNull = PstDebitur.getCountJoin(whereClause);
+    
+    whereClause = "agunan."+PstAgunan.fieldNames[PstAgunan.FLD_STATUS_DATA]+" IS NULL";
+    int countAgunanNull = PstAgunan.getCountJoin(whereClause);
+    
+    whereClause = "penjamin."+PstPenjamin.fieldNames[PstPenjamin.FLD_STATUS_DATA]+" IS NULL";
+    int countPenjaminNull = PstPenjamin.getCountJoin(whereClause);
+    
+    whereClause = "kredit."+PstKredit.fieldNames[PstPenjamin.FLD_STATUS_DATA]+" IS NULL";
+    int countKreditNull = PstKredit.getCountJoin(whereClause);
+    
+    whereClause = "kj."+PstKreditJoinAccount.fieldNames[PstKreditJoinAccount.FLD_STATUS_DATA]+" IS NULL";
+    int countKreditJoinNull = PstKreditJoinAccount.getCountJoin(whereClause);
+    
+    whereClause = "sb."+PstSuratBerharga.fieldNames[PstSuratBerharga.FLD_STATUS_DATA]+" IS NULL";
+    int countSuratBerhargaNull = PstSuratBerharga.getCountJoin(whereClause);
+    
+    whereClause = "ilc."+PstIrrevocableLc.fieldNames[PstIrrevocableLc.FLD_STATUS_DATA]+" IS NULL";
+    int countIrrevocableNull = PstIrrevocableLc.getCountJoin(whereClause);
+    
+    whereClause = "bg."+PstBankGaransi.fieldNames[PstBankGaransi.FLD_STATUS_DATA]+" IS NULL";
+    int countBankGaransiNull = PstBankGaransi.getCountJoin(whereClause);
+    
+    whereClause = "fl."+PstFasilitasLain.fieldNames[PstFasilitasLain.FLD_STATUS_DATA]+" IS NULL";
+    int countFasilitasLainNull = PstFasilitasLain.getCountJoin(whereClause);
+    
+    whereClause = "laporan."+PstLaporanKeuanganDebitur.fieldNames[PstLaporanKeuanganDebitur.FLD_STATUS_DATA]+" IS NULL";
+    int countLaporanNull = PstLaporanKeuanganDebitur.getCountJoin(whereClause);
+    
+    whereClause = "pengurus."+PstPengurusAtauPemilik.fieldNames[PstPengurusAtauPemilik.FLD_STATUS_DATA]+" IS NULL";
+    int countPengurusNull = PstPengurusAtauPemilik.getCountJoin(whereClause);
+    
+%>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>SLIK | HOME</title>
+        <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
+        <%@include file="template-component/css-component.jsp" %>
+    </head>
+    <body class="<%=skin%>">
+        <div class="wrapper">
+
+            <%@include file="template-component/header-component.jsp" %>
+            <%@include file="template-component/sidebar-component.jsp" %>
+            <!-- Content Wrapper. Contains page content -->
+            <div class="content-wrapper">
+                <!-- Content Header (Page header) -->
+                <section class="content-header">
+                    <h1>
+                        Dashboard
+                    </h1>
+                    <ol class="breadcrumb">
+                        <li><a href="#"><i class="fa fa-home"></i> Dashboard</a></li>
+                    </ol>
+                </section>
+
+                <!-- Main content -->
+                <section class="content">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class='box box-primary'>
+                                <div class="box-header">
+                                    <h3 class="box-title">
+                                        Periode yang aktif : <%= (periode.getTglAwal() == null ? "" : Formater.formatDate(periode.getTglAwal(), "MMMM yyyy"))%>
+                                    </h3>
+                                </div>
+                                <div class="box-body">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <b>Konfirmasi Perubahan Data Debitur</b><br>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            &nbsp;
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-lg-2 col-xs-6">
+                                            <!-- small box -->
+                                            <div class="small-box bg-aqua">
+                                                <div class="inner">
+                                                    <h3>
+                                                        <%= countDebiturIndividu %>
+                                                    </h3>
+                                                    <p>
+                                                        Debitur Individu
+                                                    </p>
+                                                </div>
+                                                <div class="icon">
+                                                    <i class="ion ion-bag"></i>
+                                                </div>
+                                                <a href="javascript:" class="small-box-footer showlist" data-command="<%= Command.NONE %>" data-for="showlistindividu" data-status="0" data-target="AjaxDebiturIndividu">More info <i class="fa fa-arrow-circle-right"></i>
+                                                </a>
+                                            </div>
+                                        </div><!-- ./col -->
+                                        <div class="col-lg-2 col-xs-6">
+                                            <!-- small box -->
+                                            <div class="small-box bg-green">
+                                                <div class="inner">
+                                                    <h3>
+                                                        <%= countDebiturBadanUsaha %>
+                                                    </h3>
+                                                    <p>
+                                                        Badan Usaha
+                                                    </p>
+                                                </div>
+                                                <div class="icon">
+                                                    <i class="ion ion-stats-bars"></i>
+                                                </div>
+                                                <a href="javascript:" class="small-box-footer showlist" data-command="<%= Command.NONE %>" data-for="showlistbadanusaha" data-status="0" data-target="AjaxDebiturBadanUsaha">
+                                                    More info <i class="fa fa-arrow-circle-right"></i>
+                                                </a>
+                                            </div>
+                                        </div><!-- ./col -->
+                                        <div class="col-lg-2 col-xs-6">
+                                            <!-- small box -->
+                                            <div class="small-box bg-yellow">
+                                                <div class="inner">
+                                                    <h3>
+                                                        <%= countAgunan %>
+                                                    </h3>
+                                                    <p>
+                                                        Agunan
+                                                    </p>
+                                                </div>
+                                                <div class="icon">
+                                                    <i class="ion ion-person-add"></i>
+                                                </div>
+                                                <a href="javascript:" class="small-box-footer showlist" data-command="<%= Command.NONE %>" data-for="showlistagunan" data-status="0" data-target="AjaxAgunan">
+                                                    More info <i class="fa fa-arrow-circle-right"></i>
+                                                </a>
+                                            </div>
+                                        </div><!-- ./col -->
+                                        <div class="col-lg-2 col-xs-6">
+                                            <!-- small box -->
+                                            <div class="small-box bg-red">
+                                                <div class="inner">
+                                                    <h3>
+                                                        <%= countPenjamin %>
+                                                    </h3>
+                                                    <p>
+                                                        Penjamin
+                                                    </p>
+                                                </div>
+                                                <div class="icon">
+                                                    <i class="ion ion-pie-graph"></i>
+                                                </div>
+                                                <a href="javascript:" class="small-box-footer showlist" data-command="<%= Command.NONE %>" data-for="showlistpenjamin" data-status="0" data-target="AjaxPenjamin">
+                                                    More info <i class="fa fa-arrow-circle-right"></i>
+                                                </a>
+                                            </div>
+                                        </div><!-- ./col -->
+                                        <div class="col-lg-2 col-xs-6">
+                                            <!-- small box -->
+                                            <div class="small-box bg-blue">
+                                                <div class="inner">
+                                                    <h3>
+                                                        <%= countKredit %>
+                                                    </h3>
+                                                    <p>
+                                                        Kredit
+                                                    </p>
+                                                </div>
+                                                <div class="icon">
+                                                    <i class="ion ion-ios7-cart-outline"></i>
+                                                </div>
+                                                <a href="javascript:" class="small-box-footer showlist" data-command="<%= Command.NONE %>" data-for="showlistkredit" data-status="0" data-target="AjaxKredit">
+                                                    More info <i class="fa fa-arrow-circle-right"></i>
+                                                </a>
+                                            </div>
+                                        </div><!-- ./col -->
+                                        <div class="col-lg-2 col-xs-6">
+                                            <!-- small box -->
+                                            <div class="small-box bg-purple">
+                                                <div class="inner">
+                                                    <h3>
+                                                        <%= countSuratBerharga %>
+                                                    </h3>
+                                                    <p>
+                                                        Surat Berharga
+                                                    </p>
+                                                </div>
+                                                <div class="icon">
+                                                    <i class="ion ion-ios7-briefcase-outline"></i>
+                                                </div>
+                                                <a href="javascript:" class="small-box-footer showlist" data-command="<%= Command.NONE %>" data-for="showlistsuratberharga" data-status="0" data-target="AjaxSuratBerharga">
+                                                    More info <i class="fa fa-arrow-circle-right"></i>
+                                                </a>
+                                            </div>
+                                        </div><!-- ./col -->
+                                    </div><!-- /.row -->
+
+                                    <div class="row">
+                                        <div class="col-lg-2 col-xs-6">
+                                            <!-- small box -->
+                                            <div class="small-box bg-blue">
+                                                <div class="inner">
+                                                    <h3>
+                                                        <%= countKreditJoin %>
+                                                    </h3>
+                                                    <p>
+                                                        Kredit Join
+                                                    </p>
+                                                </div>
+                                                <div class="icon">
+                                                    <i class="ion ion-ios7-cart-outline"></i>
+                                                </div>
+                                                <a href="javascript:" class="small-box-footer showlist" data-command="<%= Command.NONE %>" data-for="showlistkreditjoin" data-status="0" data-target="AjaxKreditJoin">
+                                                    More info <i class="fa fa-arrow-circle-right"></i>
+                                                </a>
+                                            </div>
+                                        </div><!-- ./col -->
+                                        <div class="col-lg-2 col-xs-6">
+                                            <!-- small box -->
+                                            <div class="small-box bg-teal">
+                                                <div class="inner">
+                                                    <h3>
+                                                        <%= countIrrevocable %>
+                                                    </h3>
+                                                    <p>
+                                                        Irrevocable L/C
+                                                    </p>
+                                                </div>
+                                                <div class="icon">
+                                                    <i class="ion ion-ios7-alarm-outline"></i>
+                                                </div>
+                                                <a href="javascript:" class="small-box-footer showlist" data-command="<%= Command.NONE %>" data-for="showlistirrevocable" data-status="0" data-target="AjaxIrrevocable">
+                                                    More info <i class="fa fa-arrow-circle-right"></i>
+                                                </a>
+                                            </div>
+                                        </div><!-- ./col -->
+                                        <div class="col-lg-2 col-xs-6">
+                                            <!-- small box -->
+                                            <div class="small-box bg-maroon">
+                                                <div class="inner">
+                                                    <h3>
+                                                        <%= countBankGaransi %>
+                                                    </h3>
+                                                    <p>
+                                                        Bank Garansi
+                                                    </p>
+                                                </div>
+                                                <div class="icon">
+                                                    <i class="ion ion-ios7-pricetag-outline"></i>
+                                                </div>
+                                                <a href="javascript:" class="small-box-footer showlist" data-command="<%= Command.NONE %>" data-for="showlistbankgaransi" data-status="0" data-target="AjaxBankGaransi">
+                                                    More info <i class="fa fa-arrow-circle-right"></i>
+                                                </a>
+                                            </div>
+                                        </div><!-- ./col -->
+                                        <div class="col-lg-2 col-xs-6">
+                                            <!-- small box -->
+                                            <div class="small-box bg-olive">
+                                                <div class="inner">
+                                                    <h3>
+                                                        <%= countFasilitasLain %>
+                                                    </h3>
+                                                    <p>
+                                                        Fasilitas Lainnya
+                                                    </p>
+                                                </div>
+                                                <div class="icon">
+                                                    <i class="ion ion-ios7-cart-outline"></i>
+                                                </div>
+                                                <a href="javascript:" class="small-box-footer showlist" data-command="<%= Command.NONE %>" data-for="showlistfasilitaslain" data-status="0" data-target="AjaxFasilitasLainnya">
+                                                    More info <i class="fa fa-arrow-circle-right"></i>
+                                                </a>
+                                            </div>
+                                        </div><!-- ./col -->
+                                        
+                                        <div class="col-lg-2 col-xs-6">
+                                            <!-- small box -->
+                                            <div class="small-box bg-navy">
+                                                <div class="inner">
+                                                    <h3>
+                                                        <%= countLaporan %>
+                                                    </h3>
+                                                    <p>
+                                                        Lap. Keuangan
+                                                    </p>
+                                                </div>
+                                                <div class="icon">
+                                                    <i class="ion ion-ios7-alarm-outline"></i>
+                                                </div>
+                                                <a href="javascript:" class="small-box-footer showlist" data-command="<%= Command.NONE %>" data-for="showlistlaporankeuangandebitur" data-status="0" data-target="AjaxLaporanKeuanganDebitur">
+                                                    More info <i class="fa fa-arrow-circle-right"></i>
+                                                </a>
+                                            </div>
+                                        </div><!-- ./col -->
+                                        <div class="col-lg-2 col-xs-6">
+                                            <!-- small box -->
+                                            <div class="small-box bg-fuchsia">
+                                                <div class="inner">
+                                                    <h3>
+                                                        <%= countPengurus %>
+                                                    </h3>
+                                                    <p>
+                                                            Pengurus/Pemilik
+                                                    </p>
+                                                </div>
+                                                <div class="icon">
+                                                    <i class="ion ion-ios7-pricetag-outline"></i>
+                                                </div>
+                                                <a href="javascript:" class="small-box-footer showlist" data-command="<%= Command.NONE %>" data-for="showlistpenguruspemilik" data-status="0" data-target="AjaxPengurusPemilik">
+                                                    More info <i class="fa fa-arrow-circle-right"></i>
+                                                </a>
+                                            </div>
+                                        </div><!-- ./col -->
+                                    </div><!-- /.row -->
+                                </div>
+                            </div>
+                        </div><!-- ./col -->
+                    </div><!-- /.row -->
+                    <!-- Small boxes (Stat box) -->
+                    <%-- finish final --%>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class='box box-primary'>
+                                <div class="box-body">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <b>Daftar Data Nasabah Yang Tidak Lengkap Periode <%= Formater.formatDate(new Date(),"MMMM") %></b><br>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            &nbsp;
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-lg-2 col-xs-6">
+                                            <!-- small box -->
+                                            <div class="small-box bg-aqua">
+                                                <div class="inner">
+                                                    <h3>
+                                                        <%= countDebiturIndividuNull %>
+                                                    </h3>
+                                                    <p>
+                                                        Debitur Individu
+                                                    </p>
+                                                </div>
+                                                <div class="icon">
+                                                    <i class="ion ion-bag"></i>
+                                                </div>
+                                                <a href="javascript:" class="small-box-footer showlist" data-command="<%= Command.NONE %>" data-for="showlistindividu" data-status="null" data-target="AjaxDebiturIndividu">More info <i class="fa fa-arrow-circle-right"></i>
+                                                </a>
+                                            </div>
+                                        </div><!-- ./col -->
+                                        <div class="col-lg-2 col-xs-6">
+                                            <!-- small box -->
+                                            <div class="small-box bg-green">
+                                                <div class="inner">
+                                                    <h3>
+                                                        <%= countDebiturBadanUsahaNull %>
+                                                    </h3>
+                                                    <p>
+                                                        Badan Usaha
+                                                    </p>
+                                                </div>
+                                                <div class="icon">
+                                                    <i class="ion ion-stats-bars"></i>
+                                                </div>
+                                                <a href="javascript:" class="small-box-footer showlist" data-command="<%= Command.NONE %>" data-for="showlistbadanusaha" data-status="null" data-target="AjaxDebiturBadanUsaha">
+                                                    More info <i class="fa fa-arrow-circle-right"></i>
+                                                </a>
+                                            </div>
+                                        </div><!-- ./col -->
+                                        <div class="col-lg-2 col-xs-6">
+                                            <!-- small box -->
+                                            <div class="small-box bg-yellow">
+                                                <div class="inner">
+                                                    <h3>
+                                                        <%= countAgunanNull %>
+                                                    </h3>
+                                                    <p>
+                                                        Agunan
+                                                    </p>
+                                                </div>
+                                                <div class="icon">
+                                                    <i class="ion ion-person-add"></i>
+                                                </div>
+                                                <a href="javascript:" class="small-box-footer showlist" data-command="<%= Command.NONE %>" data-for="showlistagunan" data-status="null" data-target="AjaxAgunan">
+                                                    More info <i class="fa fa-arrow-circle-right"></i>
+                                                </a>
+                                            </div>
+                                        </div><!-- ./col -->
+                                        <div class="col-lg-2 col-xs-6">
+                                            <!-- small box -->
+                                            <div class="small-box bg-red">
+                                                <div class="inner">
+                                                    <h3>
+                                                        <%= countPenjaminNull %>
+                                                    </h3>
+                                                    <p>
+                                                        Penjamin
+                                                    </p>
+                                                </div>
+                                                <div class="icon">
+                                                    <i class="ion ion-pie-graph"></i>
+                                                </div>
+                                                <a href="javascript:" class="small-box-footer showlist" data-command="<%= Command.NONE %>" data-for="showlistpenjamin" data-status="null" data-target="AjaxPenjamin">
+                                                    More info <i class="fa fa-arrow-circle-right"></i>
+                                                </a>
+                                            </div>
+                                        </div><!-- ./col -->
+                                        <div class="col-lg-2 col-xs-6">
+                                            <!-- small box -->
+                                            <div class="small-box bg-blue">
+                                                <div class="inner">
+                                                    <h3>
+                                                        <%= countKreditNull %>
+                                                    </h3>
+                                                    <p>
+                                                        Kredit
+                                                    </p>
+                                                </div>
+                                                <div class="icon">
+                                                    <i class="ion ion-ios7-cart-outline"></i>
+                                                </div>
+                                                <a href="javascript:" class="small-box-footer showlist" data-command="<%= Command.NONE %>" data-for="showlistkredit" data-status="null" data-target="AjaxKredit">
+                                                    More info <i class="fa fa-arrow-circle-right"></i>
+                                                </a>
+                                            </div>
+                                        </div><!-- ./col -->
+                                        <div class="col-lg-2 col-xs-6">
+                                            <!-- small box -->
+                                            <div class="small-box bg-purple">
+                                                <div class="inner">
+                                                    <h3>
+                                                        <%= countSuratBerhargaNull %>
+                                                    </h3>
+                                                    <p>
+                                                        Surat Berharga
+                                                    </p>
+                                                </div>
+                                                <div class="icon">
+                                                    <i class="ion ion-ios7-briefcase-outline"></i>
+                                                </div>
+                                                <a href="javascript:" class="small-box-footer showlist" data-command="<%= Command.NONE %>" data-for="showlistsuratberharga" data-status="null" data-target="AjaxSuratBerharga">
+                                                    More info <i class="fa fa-arrow-circle-right"></i>
+                                                </a>
+                                            </div>
+                                        </div><!-- ./col -->
+                                    </div><!-- /.row -->
+
+                                    <div class="row">
+                                        <div class="col-lg-2 col-xs-6">
+                                            <!-- small box -->
+                                            <div class="small-box bg-blue">
+                                                <div class="inner">
+                                                    <h3>
+                                                        <%= countKreditJoinNull %>
+                                                    </h3>
+                                                    <p>
+                                                        Kredit Join
+                                                    </p>
+                                                </div>
+                                                <div class="icon">
+                                                    <i class="ion ion-ios7-cart-outline"></i>
+                                                </div>
+                                                <a href="javascript:" class="small-box-footer showlist" data-command="<%= Command.NONE %>" data-for="showlistkreditjoin" data-status="null" data-target="AjaxKreditJoin">
+                                                    More info <i class="fa fa-arrow-circle-right"></i>
+                                                </a>
+                                            </div>
+                                        </div><!-- ./col -->
+                                        <div class="col-lg-2 col-xs-6">
+                                            <!-- small box -->
+                                            <div class="small-box bg-black">
+                                                <div class="inner">
+                                                    <h3>
+                                                        <%= countIrrevocableNull %>
+                                                    </h3>
+                                                    <p>
+                                                        Irrevocable L/C
+                                                    </p>
+                                                </div>
+                                                <div class="icon">
+                                                    <i class="ion ion-ios7-alarm-outline"></i>
+                                                </div>
+                                                <a href="javascript:" class="small-box-footer showlist" data-command="<%= Command.NONE %>" data-for="showlistirrevocable" data-status="null" data-target="AjaxIrrevocable">
+                                                    More info <i class="fa fa-arrow-circle-right"></i>
+                                                </a>
+                                            </div>
+                                        </div><!-- ./col -->
+                                        <div class="col-lg-2 col-xs-6">
+                                            <!-- small box -->
+                                            <div class="small-box bg-maroon">
+                                                <div class="inner">
+                                                    <h3>
+                                                        <%= countBankGaransiNull %>
+                                                    </h3>
+                                                    <p>
+                                                        Bank Garansi
+                                                    </p>
+                                                </div>
+                                                <div class="icon">
+                                                    <i class="ion ion-ios7-pricetag-outline"></i>
+                                                </div>
+                                                <a href="javascript:" class="small-box-footer showlist" data-command="<%= Command.NONE %>" data-for="showlistbankgaransi" data-status="null" data-target="AjaxBankGaransi">
+                                                    More info <i class="fa fa-arrow-circle-right"></i>
+                                                </a>
+                                            </div>
+                                        </div><!-- ./col -->
+                                        <div class="col-lg-2 col-xs-6">
+                                            <!-- small box -->
+                                            <div class="small-box bg-olive">
+                                                <div class="inner">
+                                                    <h3>
+                                                        <%= countFasilitasLainNull %>
+                                                    </h3>
+                                                    <p>
+                                                        Fasilitas Lainnya
+                                                    </p>
+                                                </div>
+                                                <div class="icon">
+                                                    <i class="ion ion-ios7-cart-outline"></i>
+                                                </div>
+                                                <a href="javascript:" class="small-box-footer showlist" data-command="<%= Command.NONE %>" data-for="showlistfasilitaslain" data-status="null" data-target="AjaxFasilitasLainnya">
+                                                    More info <i class="fa fa-arrow-circle-right"></i>
+                                                </a>
+                                            </div>
+                                        </div><!-- ./col -->
+                                        <div class="col-lg-2 col-xs-6">
+                                            <!-- small box -->
+                                            <div class="small-box bg-navy">
+                                                <div class="inner">
+                                                    <h3>
+                                                        <%= countLaporanNull %>
+                                                    </h3>
+                                                    <p>
+                                                        Lap. Keuangan 
+                                                    </p>
+                                                </div>
+                                                <div class="icon">
+                                                    <i class="ion ion-ios7-alarm-outline"></i>
+                                                </div>
+                                                <a href="javascript:" class="small-box-footer showlist" data-command="<%= Command.NONE %>" data-for="showlistlaporankeuangandebitur" data-status="null" data-target="AjaxLaporanKeuanganDebitur">
+                                                    More info <i class="fa fa-arrow-circle-right"></i>
+                                                </a>
+                                            </div>
+                                        </div><!-- ./col -->
+                                        <div class="col-lg-2 col-xs-6">
+                                            <!-- small box -->
+                                            <div class="small-box bg-fuchsia">
+                                                <div class="inner">
+                                                    <h3>
+                                                        <%= countPengurusNull %>
+                                                    </h3>
+                                                    <p>
+                                                            Pengurus/Pemilik
+                                                    </p>
+                                                </div>
+                                                <div class="icon">
+                                                    <i class="ion ion-ios7-pricetag-outline"></i>
+                                                </div>
+                                                <a href="javascript:" class="small-box-footer showlist" data-command="<%= Command.NONE %>" data-for="showlistpenguruspemilik" data-status="null" data-target="AjaxPengurusPemilik">
+                                                    More info <i class="fa fa-arrow-circle-right"></i>
+                                                </a>
+                                            </div>
+                                        </div><!-- ./col -->
+                                    </div><!-- /.row -->
+                                    
+                                    <%--cek --%>
+                                    <div class="row">
+                                        
+                                    </div><!-- /.row -->
+                                    
+                                </div>
+                            </div>
+                        </div><!-- ./col -->
+                    </div><!-- /.row -->
+
+                </section><!-- /.content -->
+            </div><!-- /.content-wrapper -->
+            <!-- Add the sidebar's background. This div must be placed
+                 immediately after the control sidebar -->
+            <div class='control-sidebar-bg'></div>
+            
+            
+            <div id="showlistmodal" class="modal fade" tabindex="-1">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                            <h4 class="modal-title"></h4>
+                        </div>
+                        <div class="modal-body ">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="box-body" id="showlistmodal-body">
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <%@include file="template-component/footer-component.jsp" %>
+
+            <%@include file="template-component/plugins-component.jsp" %>
+            <script type="text/javascript">
+                $(document).ready(function () {
+                    //SET ACTIVE MENU
+                    var approot = "<%= approot %>";
+                    var activeMenu = function (parentId, childId) {
+                        $(parentId).addClass("active").find(".treeview-menu").slideDown();
+                        $(childId).addClass("active");
+                    }
+                    
+                    //MODAL SETTING
+                    var modalSetting = function(elementId, backdrop, keyboard, show){
+                        $(elementId).modal({
+                            backdrop	: backdrop,
+                            keyboard	: keyboard,
+                            show	: show
+                        });
+                    };
+                    
+                    function showForm(selector, modal){
+                        $(selector).click(function(){
+                            $(modal).modal("show");
+                            var datafor = $(this).data("for");
+                            var oid = $("#oid").val();
+                            var command = $(this).data("command");
+                            var target = $(this).data("target");
+                            var modaltitle = "";
+                            var status = $(this).data("status");
+                            var datasend = {
+                                "FRM_FIELD_OID" : oid,
+                                "FRM_FIELD_DATA_FOR" : datafor,
+                                "command" : command
+                            };
+                            var onDone = function(data){
+                                dataTablesOptions("#showListElement", "tableShowListElement", target, datafor, null, status);
+                                vieweditdata("#showListElement", ".edit");
+                            };
+                            var onSuccess = function(data){
+                            };
+                            
+                            switch(datafor){
+                                case "showlistindividu" :
+                                    modaltitle = "Debitur Individu";
+                                break;
+                                
+                                case "showlistbadanusaha" :
+                                    modaltitle = "Debitur Badan Usaha";
+                                break;
+                                
+                                case "showlistagunan" :
+                                    modaltitle = "Agunan";
+                                break;
+                                
+                                case "showlistpenjamin" :
+                                    modaltitle = "Penjamin";
+                                break;
+                                
+                                case "showlistkredit" :
+                                    modaltitle = "Kredit";
+                                break;
+                                
+                                case "showlistkreditjoin" :
+                                    modaltitle = "Kredit Join";
+                                break;
+                                
+                                case "showlistsuratberharga" :
+                                    modaltitle = "Surat Berharga";
+                                break;
+                                
+                                case "showlistirrevocable" :
+                                    modaltitle = "Irrevocable LC";
+                                break;
+                                
+                                case "showlistbankgaransi" :
+                                    modaltitle = "Bank Garansi";
+                                break;
+                                
+                                case "showlistfasilitaslain" :
+                                    modaltitle = "Fasilitas Lainnya";
+                                break;
+                                
+                                case "showlistlaporankeuangandebitur" :
+                                    modaltitle = "Laporan Keuangan Debitur";
+                                break;
+                                
+                                case "showlistpenguruspemilik" :
+                                    modaltitle = "Pengurus/Pemilik";
+                                break;
+                            }
+                            
+                            if(status == 0){
+                                modaltitle = "Daftar Perubahan Data "+modaltitle;
+                            }else{
+                                modaltitle = "Daftar Data Nasabah "+modaltitle+" Yang Tidak Lengkap"
+                            }
+                            $(modal).find(".modal-title").html(modaltitle);
+                            getDataFunction(onDone, onSuccess, approot, command, datasend, target, "#showlistmodal-body", false);
+
+                        });
+                    };
+                    
+                    var getDataFunction = function(onDone, onSuccess, approot, command, dataSend, servletName, dataAppendTo, notification){
+                        /*
+                         * getDataFor	: # FOR PROCCESS FILTER
+                         * onDone	: # ON DONE FUNCTION,
+                         * onSuccess	: # ON ON SUCCESS FUNCTION,
+                         * approot	: # APPLICATION ROOT,
+                         * dataSend	: # DATA TO SEND TO THE SERVLET,
+                         * servletName  : # SERVLET'S NAME
+                         */
+                        $(this).getData({
+                           onDone	: function(data){
+                               onDone(data);
+                           },
+                           onSuccess	: function(data){
+                                onSuccess(data);
+                           },
+                           approot	: approot,
+                           dataSend	: dataSend,
+                           servletName	: servletName,
+                           dataAppendTo	: dataAppendTo,
+                           notification : notification
+                        });
+                    };
+                    
+                    function dataTablesOptions(elementIdParent, elementId, servletName, dataFor, callBackDataTables, status){
+                        $(elementIdParent).find('table').addClass('table-bordered table-striped table-hover').attr({'id':elementId});
+                        $("#"+elementId).dataTable({"bDestroy": true,
+                            "iDisplayLength": 10,
+                            "bProcessing" : true,
+                            "oLanguage" : {
+                                "sProcessing" : "<div class='progress progress-striped active'><div class='progress-bar progress-bar-primary' style='width: 100%'><b>Please Wait...</b></div></div>"
+                            },
+                            "bServerSide" : true,
+                            "sAjaxSource" : "<%= approot %>/"+servletName+"?command=<%= Command.LIST%>&FRM_FIELD_DATA_FOR="+dataFor+"&FRM_FIELD_STATUS_DATA="+status,
+                            aoColumnDefs: [
+                                {
+                                   bSortable: false,
+                                   aTargets: [ -1 ]
+                                }
+                              ],
+                            "initComplete": function(settings, json) {
+                                if(callBackDataTables != null){
+                                    callBackDataTables();
+                                }
+                            },
+                            "fnDrawCallback": function( oSettings ) {
+                                if(callBackDataTables != null){
+                                    callBackDataTables();
+                                }
+                            },
+                            "fnPageChange" : function(oSettings){
+
+                            }
+                        });
+
+                        $(elementIdParent).find("#"+elementId+"_filter").find("input").addClass("form-control");
+                        $(elementIdParent).find("#"+elementId+"_length").find("select").addClass("form-control");
+                        $("#"+elementId).css("width","100%");
+                    };
+                    
+                    function vieweditdata(tableElementId, elementId){
+                        $(tableElementId).on("click", elementId, function(){
+                            var oid = $(this).data("oid");
+                            var command = $(this).data("command");
+                            var type = $(this).data("type");
+                            var cif = $(this).data("cif");
+                            window.location = "dslik/perlengkapandata/perlengkapandata.jsp?command=8&oid="+oid+"&type="+type+"&cif="+cif;
+                        });
+                    }
+                    modalSetting("#showlistmodal", "static", false, false);
+                    showForm(".showlist", "#showlistmodal")
+                    activeMenu("#home", "#home");
+                    vieweditdata("#showListElement", ".edit");
+                });
+            </script>
+            
+        </div><!-- ./wrapper -->
+    </body>
+</html>

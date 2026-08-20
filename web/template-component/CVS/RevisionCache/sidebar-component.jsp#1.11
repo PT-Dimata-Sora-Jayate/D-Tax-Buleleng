@@ -1,0 +1,201 @@
+<aside class="main-sidebar">
+    <!-- sidebar: style can be found in sidebar.less -->
+    <section class="sidebar">
+      <!-- Sidebar user panel -->
+      <div class="user-panel">
+          <%--<div class="pull-left image">
+	  <img src="dist/img/user2-160x160.jpg" class="img-circle" alt="User Image" />
+	</div>--%>
+	<div class="pull-left info">
+            <%--<p>User's Name</p>--%>
+	</div>
+      </div>
+      
+      <!-- /.search form -->
+      <!-- sidebar menu: : style can be found in sidebar.less -->
+      <ul class="sidebar-menu">
+	<li class="header">MAIN NAVIGATION</li>
+	<li class="treeview" id="home">
+	    <a href="<%= approot %>/home_slik.jsp">
+	    <i class="fa fa-home"></i> <span>Home</span>
+	  </a>
+	</li>
+        <li class="treeview" id="periode">
+	  <a href="#">
+	    <i class="fa fa-th-list"></i>
+	    <span>Periode Data</span>
+	    <i class="fa fa-angle-left pull-right"></i>
+	  </a>
+	  <ul class="treeview-menu">
+            <li id="periodedata"><a href="<%= approot %>/dslik/masterdata/periode.jsp"><i class="fa fa-circle-o"></i>Periode Data</a></li>
+	  </ul>
+	</li>
+	<li class="treeview" id="masterdata">
+	  <a href="#">
+	    <i class="fa fa-th-list"></i>
+	    <span>Proses Transfer Data</span>
+	    <i class="fa fa-angle-left pull-right"></i>
+	  </a>
+	  <ul class="treeview-menu">
+            <%--<li id="alldata"><a href="<%= approot %>/dslik/proses/transfer_data.jsp"><i class="fa fa-circle-o"></i> Transfer All Data</a></li>--%>
+            <li id="debituronly"><a href="<%= approot %>/dslik/proses/transfer_data_debitur.jsp"><i class="fa fa-circle-o"></i> Transfer Debitur Data</a></li>
+            <li id="kreditonly"><a href="<%= approot %>/dslik/proses/transfer_data_kredit.jsp"><i class="fa fa-circle-o"></i> Transfer Kredit Data</a></li>
+            <li id="bankgaransionly"><a href="<%= approot %>/dslik/proses/transfer_data_bank_garansi.jsp"><i class="fa fa-circle-o"></i> Transfer Bank Garansi Data</a></li>
+            <li id="agunanonly"><a href="<%= approot %>/dslik/proses/transfer_data_agunan.jsp"><i class="fa fa-circle-o"></i> Transfer Agunan Data</a></li>
+            <li id="pengurusonly"><a href="<%= approot %>/dslik/proses/transfer_data_pengurus.jsp"><i class="fa fa-circle-o"></i> Transfer Pengurus/Pemilik Data</a></li>
+	  </ul>
+	</li>
+        <li class="treeview" id="modperlengkapandata">
+	  <a href="#">
+	    <i class="fa fa-th-list"></i>
+	    <span>Perlengkapan Data</span>
+	    <i class="fa fa-angle-left pull-right"></i>
+	  </a>
+	  <ul class="treeview-menu">
+	    <li id="perlengkapandata"><a href="<%= approot %>/dslik/perlengkapandata/perlengkapandata.jsp?command=8&oid=0&type=1&tablePerlengkapanDataElement_length=10"><i class="fa fa-circle-o"></i> Proses Pelengkapan Data</a></li>
+	  </ul>
+	</li>
+        <li class="treeview" id="modpelaporan">
+	  <a href="#">
+	    <i class="fa fa-th-list"></i>
+	    <span>Approve Data</span>
+	    <i class="fa fa-angle-left pull-right"></i>
+	  </a>
+	  <ul class="treeview-menu">
+	    <li id="kelengkapandata"><a href="<%= approot %>/dslik/masterdata/periode_cabang.jsp"><i class="fa fa-circle-o"></i> Approve Data Cabang</a></li>
+	  </ul>
+	</li>
+        <li class="treeview" id="masterdata">
+	  <a href="#">
+	    <i class="fa fa-th-list"></i>
+	    <span>Proses Delimited Text</span>
+	    <i class="fa fa-angle-left pull-right"></i>
+	  </a>
+	  <ul class="treeview-menu">
+            <li id="chaneltype"><a href="<%= approot %>/dslik/proses/delimited_text.jsp"><i class="fa fa-circle-o"></i> Bulanan</a></li>
+            <li id="chaneltype"><a href="<%= approot %>/dslik/proses/delimited_text.jsp"><i class="fa fa-circle-o"></i> Initial</a></li>
+	  </ul>
+	</li>
+        <li class="treeview" id="masterdata">
+	  <a href="#">
+	    <i class="fa fa-th-list"></i>
+	    <span>Modul Pelaporan</span>
+	    <i class="fa fa-angle-left pull-right"></i>
+	  </a>
+	  <ul class="treeview-menu">
+            <li id="chaneltype"><a href="<%= approot %>/dslik/pelaporan/pelaporan_per_segment.jsp"><i class="fa fa-circle-o"></i> Per Segmen Summary</a></li>
+            <li id="chaneltype"><a href="<%= approot %>/dslik/pelaporan/pelaporan_per_segment_detail.jsp"><i class="fa fa-circle-o"></i> Per Segmen Detail</a></li>
+            <li id="chaneltype"><a href="<%= approot %>/dslik/pelaporan/perubahan_data_segment.jsp"><i class="fa fa-circle-o"></i> Perubahan Data Segmen</a></li>
+            <li id="chaneltype"><a href="<%= approot %>/dslik/pelaporan/nominatifagunan.jsp"><i class="fa fa-circle-o"></i> Nominatif Agunan</a></li>
+            <li id="chaneltype"><a href="<%= approot %>/dslik/pelaporan/nominatifbankgaransi.jsp"><i class="fa fa-circle-o"></i> Nominatif Bank Garansi</a></li>
+            <li id="chaneltype"><a href="<%= approot %>/dslik/pelaporan/nominatifkredithapusbuku.jsp"><i class="fa fa-circle-o"></i> Nominatif Kredit Hapus Buku</a></li>
+            <li id="chaneltype"><a href="<%= approot %>/dslik/pelaporan/nominatifkreditpersegment.jsp"><i class="fa fa-circle-o"></i> Nominatif Kredit Per Kolektibility</a></li>
+            <li id="chaneltype"><a href="<%= approot %>/dslik/pelaporan/nominatifkreditpinjamantutupperbulan.jsp"><i class="fa fa-circle-o"></i> Nominatif Pinjaman Tutup<br> Per Bulan</a></li>
+	  </ul>
+	</li>
+        <li class="treeview" id="masterdata">
+	  <a href="#">
+	    <i class="fa fa-th-list"></i>
+	    <span>Modul Pemeliharaan</span>
+	    <i class="fa fa-angle-left pull-right"></i>
+	  </a>
+	  <ul class="treeview-menu">
+            <li id="chaneltype"><a href="<%= approot %>/dslik/pelaporan/history_perubahan_data.jsp"><i class="fa fa-circle-o"></i> History Perubahan Data</a></li>
+	  </ul>
+	</li>
+        <li class="treeview" id="masterdata">
+	  <a href="#">
+	    <i class="fa fa-th-list"></i>
+	    <span>Modul Masterdata</span>
+	    <i class="fa fa-angle-left pull-right"></i>
+	  </a>
+	  <ul class="treeview-menu">
+            <li class="treeview" id="bankdata">
+                <a href="#">
+                    <i class="fa fa-th-list"></i>
+                    <span>Profile Bank</span>
+                    <i class="fa fa-angle-left pull-right"></i>
+                </a>
+                <ul class="treeview-menu">
+                    <li id="badanusaha"><a href="<%= approot %>/dslik/masterdata/bank.jsp"><i class="fa fa-circle-o"></i>Bank</a></li>       
+                    <li id="badanusaha"><a href="<%= approot %>/dslik/masterdata/cabang_bank.jsp"><i class="fa fa-circle-o"></i>Cabang Bank</a></li> 
+                </ul>
+            </li>
+            <li class="treeview" id="contectdata">
+                    <a href="#">
+                      <i class="fa fa-th-list"></i>
+                      <span>Mapping Content Data</span>
+                      <i class="fa fa-angle-left pull-right"></i>
+                    </a>
+                    <ul class="treeview-menu">          
+                        <li id="badanusaha"><a href="<%= approot %>/dslik/contentdata/bentuk_badan_usaha.jsp"><i class="fa fa-circle-o"></i>Bentuk Badan Usaha</a></li>                   
+                        <li id="chaneltype"><a href="<%= approot %>/dslik/contentdata/bidang_usaha.jsp"><i class="fa fa-circle-o"></i> Bidang Usaha</a></li>
+                        <li id="chaneltype"><a href="<%= approot %>/dslik/contentdata/cara_restrukturisasi.jsp"><i class="fa fa-circle-o"></i> Cara Restrukturisasi</a></li>
+                        <li id="chaneltype"><a href="<%= approot %>/dslik/contentdata/golongan_debitur.jsp"><i class="fa fa-circle-o"></i> Golongan Debitur</a></li>
+                        <li id="chaneltype"><a href="<%= approot %>/dslik/contentdata/hub_dgn_pelapor.jsp"><i class="fa fa-circle-o"></i> Hub dgn Pelapor</a></li>
+                        <li id="chaneltype"><a href="<%= approot %>/dslik/contentdata/jabatan.jsp"><i class="fa fa-circle-o"></i> Jabatan</a></li>
+                        <li id="chaneltype"><a href="<%= approot %>/dslik/contentdata/jenis_agunan.jsp"><i class="fa fa-circle-o"></i> Jenis Agunan</a></li>
+                        <li id="chaneltype"><a href="<%= approot %>/dslik/contentdata/jenis_fasilitas.jsp"><i class="fa fa-circle-o"></i> Jenis Fasilitas</a></li>
+                        <li id="chaneltype"><a href="<%= approot %>/dslik/contentdata/jenis_garansi.jsp"><i class="fa fa-circle-o"></i> Jenis Garansi</a></li>
+                        <li id="chaneltype"><a href="<%= approot %>/dslik/contentdata/jenis_identitas.jsp"><i class="fa fa-circle-o"></i> Jenis Identitas</a></li>
+                        <li id="chaneltype"><a href="<%= approot %>/dslik/contentdata/jenis_kredit.jsp"><i class="fa fa-circle-o"></i> Jenis Kredit</a></li>
+                        <li id="chaneltype"><a href="<%= approot %>/dslik/contentdata/jenisPemeringkat.jsp"><i class="fa fa-circle-o"></i> Jenis Pemeringkat</a></li>
+                        <li id="chaneltype"><a href="<%= approot %>/dslik/contentdata/jenisPenggunaan.jsp"><i class="fa fa-circle-o"></i> Jenis Penggunaan</a></li>
+                        <li id="chaneltype"><a href="<%= approot %>/dslik/contentdata/jenisPengikatan.jsp"><i class="fa fa-circle-o"></i> Jenis Pengikatan</a></li>
+                        <li id="chaneltype"><a href="<%= approot %>/dslik/contentdata/jenisSuratBerharga.jsp"><i class="fa fa-circle-o"></i> Jenis Surat Berharga</a></li>
+                        <li id="chaneltype"><a href="<%= approot %>/dslik/contentdata/kabupatenKota.jsp"><i class="fa fa-circle-o"></i> Kabupaten Kota</a></li>
+                        <%--<li id="chaneltype"><a href="<%= approot %>/dslik/contentdata/kantorCabang.jsp"><i class="fa fa-circle-o"></i> Kantor Cabang</a></li>--%>
+                        <li id="chaneltype"><a href="<%= approot %>/dslik/contentdata/kategoriDebitur.jsp"><i class="fa fa-circle-o"></i> Kategori Debitur</a></li>
+                        <li id="chaneltype"><a href="<%= approot %>/dslik/contentdata/kodeNegaraDomisili.jsp"><i class="fa fa-circle-o"></i> Kode Negara Domisili</a></li>
+                        <li id="chaneltype"><a href="<%= approot %>/dslik/contentdata/kodePekerjaan.jsp"><i class="fa fa-circle-o"></i> Kode Pekerjaan</a></li>
+                        <li id="chaneltype"><a href="<%= approot %>/dslik/contentdata/kodeValuta.jsp"><i class="fa fa-circle-o"></i> Kode Valuta</a></li>
+                        <li id="chaneltype"><a href="<%= approot %>/dslik/contentdata/kolektibilitas.jsp"><i class="fa fa-circle-o"></i> Kolektibilitas</a></li>
+                        <li id="chaneltype"><a href="<%= approot %>/dslik/contentdata/kondisi.jsp"><i class="fa fa-circle-o"></i> Kondisi</a></li>
+                        <li id="chaneltype"><a href="<%= approot %>/dslik/contentdata/lembagaPemeringkat.jsp"><i class="fa fa-circle-o"></i> Lembaga Pemeringkat</a></li>
+                        <li id="chaneltype"><a href="<%= approot %>/dslik/contentdata/nomorIdentitas.jsp"><i class="fa fa-circle-o"></i> Nomor Identitas</a></li>
+                        <li id="chaneltype"><a href="<%= approot %>/dslik/contentdata/orientasiPenggunaan.jsp"><i class="fa fa-circle-o"></i> Orientasi Penggunaan</a></li>
+                        <li id="chaneltype"><a href="<%= approot %>/dslik/contentdata/sebabMacet.jsp"><i class="fa fa-circle-o"></i> Sebab Macet</a></li>
+                        <li id="chaneltype"><a href="<%= approot %>/dslik/contentdata/sektorEkonomi.jsp"><i class="fa fa-circle-o"></i> Sektor Ekonomi</a></li>
+                        <li id="chaneltype"><a href="<%= approot %>/dslik/contentdata/sifatKredit.jsp"><i class="fa fa-circle-o"></i> Sifat Kredit</a></li>
+                        <li id="chaneltype"><a href="<%= approot %>/dslik/contentdata/skimAkadPembiayaan.jsp"><i class="fa fa-circle-o"></i> Skim Akad Pembiayaan</a></li>
+                        <li id="chaneltype"><a href="<%= approot %>/dslik/contentdata/statusAgunan.jsp"><i class="fa fa-circle-o"></i> Status Agunan</a></li>
+                        <li id="chaneltype"><a href="<%= approot %>/dslik/contentdata/statusPendidikan.jsp"><i class="fa fa-circle-o"></i> Status Pendidikan</a></li>
+                        <li id="chaneltype"><a href="<%= approot %>/dslik/contentdata/statusPerkawinan.jsp"><i class="fa fa-circle-o"></i> Status Perkawinan Debitur</a></li>
+                        <li id="chaneltype"><a href="<%= approot %>/dslik/contentdata/sukuBunga.jsp"><i class="fa fa-circle-o"></i> Suku Bunga</a></li>
+                        <li id="chaneltype"><a href="<%= approot %>/dslik/contentdata/sumberPenghasilan.jsp"><i class="fa fa-circle-o"></i> Sumber Penghasilan</a></li>
+                        <li id="chaneltype"><a href="<%= approot %>/dslik/contentdata/takeover.jsp"><i class="fa fa-circle-o"></i> Takeover</a></li>
+                        <li id="chaneltype"><a href="<%= approot %>/dslik/contentdata/tujuanGaransi.jsp"><i class="fa fa-circle-o"></i> Tujuan Garansi</a></li>
+                        <li id="chaneltype"><a href="<%= approot %>/dslik/contentdata/tujuanLc.jsp"><i class="fa fa-circle-o"></i> Tujuan LC</a></li>
+                        <li id="chaneltype"><a href="<%= approot %>/page/masterdata/chaneltype.jsp"><i class="fa fa-circle-o"></i> Dslik Debitur</a></li>
+                        <li id="chaneltype"><a href="<%= approot %>/page/masterdata/chaneltype.jsp"><i class="fa fa-circle-o"></i> Dslik Fasilitas Lain</a></li>
+                        <li id="chaneltype"><a href="<%= approot %>/page/masterdata/chaneltype.jsp"><i class="fa fa-circle-o"></i> Dslik Irrevocable LC</a></li>
+                    </ul>
+              </li>
+	  </ul>
+	</li>
+        <li class="treeview" id="configurasi">
+	  <a href="#">
+	    <i class="fa fa-th-list"></i>
+	    <span>Configurasi</span>
+	    <i class="fa fa-angle-left pull-right"></i>
+	  </a>
+	  <ul class="treeview-menu">
+            <li id="databases"><a href="<%= approot %>/dslik/configurasi/configurasi_databases.jsp"><i class="fa fa-circle-o"></i>Configurasi Databases </a></li>
+	  </ul>
+	</li>
+        <li class="treeview" id="system">
+	  <a href="#">
+	    <i class="fa fa-th-list"></i>
+	    <span>System</span>
+	    <i class="fa fa-angle-left pull-right"></i>
+	  </a>
+	  <ul class="treeview-menu">
+            <li id="user"><a href="<%= approot %>/dslik/user/dslik_userlist.jsp"><i class="fa fa-circle-o"></i>User List</a></li>
+            <li id="grouppriv"><a href="<%= approot %>/dslik/user/configurasi_databases.jsp"><i class="fa fa-circle-o"></i>Group Privilage</a></li>
+            <li id="privilage"><a href="<%= approot %>/dslik/user/configurasi_databases.jsp"><i class="fa fa-circle-o"></i>Privilage</a></li>
+	  </ul>
+	</li>
+      </ul>
+    </section>
+    <!-- /.sidebar -->
+</aside>

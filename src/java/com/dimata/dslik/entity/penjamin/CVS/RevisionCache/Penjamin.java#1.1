@@ -1,0 +1,219 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package com.dimata.dslik.entity.penjamin;
+
+import com.dimata.common.entity.logger.I_LogHistory;
+import com.dimata.qdep.entity.Entity;
+import java.util.Date;
+
+/**
+ *
+ * @author Dewa
+ */
+public class Penjamin extends Entity implements I_LogHistory {
+
+    private String flagDetail = "";
+    private String noIdPenjamin = "";
+    private String noRekening = "";
+    private String cif = "";
+    private String jenisIdentitas = "";
+    private String namaIdentitas = "";
+    private String namaLengkap = "";
+    private String kodeGolPenjamin = "";
+    private String alamatPenjamin = "";
+    private int prosentaseDijamin = 0;
+    private String keterangan = "";
+    private String kodeKantorCabang = "";
+    private String operasiData = "";
+    private Date openDate = null;
+    private int statusData = 0;
+
+    public String getFlagDetail() {
+        return flagDetail;
+    }
+
+    public void setFlagDetail(String flagDetail) {
+        this.flagDetail = flagDetail;
+    }
+
+    public String getNoIdPenjamin() {
+        return noIdPenjamin;
+    }
+
+    public void setNoIdPenjamin(String noIdPenjamin) {
+        this.noIdPenjamin = noIdPenjamin;
+    }
+
+    public String getNoRekening() {
+        return noRekening;
+    }
+
+    public void setNoRekening(String noRekening) {
+        this.noRekening = noRekening;
+    }
+
+    public String getCif() {
+        return cif;
+    }
+
+    public void setCif(String cif) {
+        this.cif = cif;
+    }
+
+    public String getJenisIdentitas() {
+        return jenisIdentitas;
+    }
+
+    public void setJenisIdentitas(String jenisIdentitas) {
+        this.jenisIdentitas = jenisIdentitas;
+    }
+
+    public String getNamaIdentitas() {
+        return namaIdentitas;
+    }
+
+    public void setNamaIdentitas(String namaIdentitas) {
+        this.namaIdentitas = namaIdentitas;
+    }
+
+    public String getNamaLengkap() {
+        return namaLengkap;
+    }
+
+    public void setNamaLengkap(String namaLengkap) {
+        this.namaLengkap = namaLengkap;
+    }
+
+    public String getKodeGolPenjamin() {
+        return kodeGolPenjamin;
+    }
+
+    public void setKodeGolPenjamin(String kodeGolPenjamin) {
+        this.kodeGolPenjamin = kodeGolPenjamin;
+    }
+
+    public String getAlamatPenjamin() {
+        return alamatPenjamin;
+    }
+
+    public void setAlamatPenjamin(String alamatPenjamin) {
+        this.alamatPenjamin = alamatPenjamin;
+    }
+
+    public int getProsentaseDijamin() {
+        return prosentaseDijamin;
+    }
+
+    public void setProsentaseDijamin(int prosentaseDijamin) {
+        this.prosentaseDijamin = prosentaseDijamin;
+    }
+
+    public String getKeterangan() {
+        return keterangan;
+    }
+
+    public void setKeterangan(String keterangan) {
+        this.keterangan = keterangan;
+    }
+
+    public String getKodeKantorCabang() {
+        return kodeKantorCabang;
+    }
+
+    public void setKodeKantorCabang(String kodeKantorCabang) {
+        this.kodeKantorCabang = kodeKantorCabang;
+    }
+
+    public String getOperasiData() {
+        return operasiData;
+    }
+
+    public void setOperasiData(String operasiData) {
+        this.operasiData = operasiData;
+    }
+
+    /**
+     * @return the openDate
+     */
+    public Date getOpenDate() {
+        return openDate;
+    }
+
+    /**
+     * @param openDate the openDate to set
+     */
+    public void setOpenDate(Date openDate) {
+        this.openDate = openDate;
+    }
+
+    /**
+     * @return the statusData
+     */
+    public int getStatusData() {
+        return statusData;
+    }
+
+    /**
+     * @param statusData the statusData to set
+     */
+    public void setStatusData(int statusData) {
+        this.statusData = statusData;
+    }
+    
+     @Override
+    public String getLogDetail(Entity prevDoc) {
+        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        String history="";
+        Penjamin prevMat = (Penjamin)prevDoc;
+        if(!prevMat.getNoIdPenjamin().equals(this.getNoIdPenjamin())){
+            history=history+" No Identitas Penjamin diubah dari "+prevMat.getNoIdPenjamin()+" menjadi "+this.getNoIdPenjamin()+"/n";
+        }
+        if(!prevMat.getNoRekening().equals(this.getNoRekening())){
+            history=history+" Nomor Rekening diubah dari "+prevMat.getNoRekening()+" menjadi "+this.getNoRekening()+"/n";
+        }        
+        if(!prevMat.getCif().equals(this.getCif())){
+             history=history+" Cif diubah dari "+prevMat.cif+" menjadi "+this.getCif()+"/n";
+        }
+        if(!prevMat.getJenisIdentitas().equals(this.getJenisIdentitas())){
+             history=history+" Jenis Identitas duibah dari dari "+prevMat.getJenisIdentitas()+" menjadi "+this.getJenisIdentitas()+"/n";
+        }
+        if(!prevMat.getNamaIdentitas().equals(this.getNamaIdentitas())){
+             history=history+" Nama Sesuai Identitas diubah dari "+prevMat.getNamaIdentitas()+" menjadi "+this.getNamaIdentitas()+"/n";
+        }
+        if(!prevMat.getKodeGolPenjamin().equals(this.getKodeGolPenjamin())){
+             history=history+" Kode Golongan Penjamin diubah dari "+prevMat.getKodeGolPenjamin()+" menjadi "+this.getKodeGolPenjamin()+"/n";
+        }
+        if(!prevMat.getAlamatPenjamin().equals(this.getAlamatPenjamin())){
+             history=history+" Alamat Penjamin diubah dari "+prevMat.getAlamatPenjamin()+" menjadi "+this.getAlamatPenjamin()+"/n";
+        }
+        if(prevMat.getProsentaseDijamin() != this.getProsentaseDijamin()){
+             history=history+" Prosentase Dijamin diubah dari "+prevMat.getProsentaseDijamin()+" menjadi "+this.getProsentaseDijamin()+"/n";
+        }
+        if(!prevMat.getKeterangan().equals(this.getKeterangan())){
+             history=history+" Keterangan diubah dari "+prevMat.getKeterangan()+" menjadi "+this.getKeterangan()+"/n";
+        }
+        if(!prevMat.getKodeKantorCabang().equals(this.getKodeKantorCabang())){
+            history=history+" Kode Kantor Cabang diubah dari "+prevMat.getKodeKantorCabang()+" menjadi "+this.getKodeKantorCabang()+"/n";
+        }    
+        if(!prevMat.getKodeKantorCabang().equals(this.getKodeKantorCabang())){
+            history=history+" Kantor Cabang diubah dari "+prevMat.getKodeKantorCabang()+" menjadi "+this.getKodeKantorCabang()+"/n";
+        }
+        if(!prevMat.getOperasiData().equals(this.getOperasiData())){
+            history=history+" Operasi Data diubah dari "+prevMat.getOperasiData()+" menjadi "+this.getOperasiData()+"/n";
+        }
+        if(!prevMat.getOpenDate().equals(this.getOpenDate())){
+            history=history+" Open Date diubah dari "+prevMat.getOpenDate()+" menjadi "+this.getOpenDate()+"/n";
+        }
+        if(prevMat.getStatusData() != this.getStatusData()){
+            history=history+" Status Data diubah dari "+prevMat.getStatusData()+" menjadi "+this.getStatusData()+"/n";
+        }
+        
+        //lanjutkan
+        
+        return history;
+    }
+
+}

@@ -1,0 +1,207 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package com.dimata.dslik.form.agunan;
+
+import com.dimata.dslik.entity.agunan.Agunan;
+import com.dimata.qdep.form.FRMHandler;
+import com.dimata.qdep.form.I_FRMInterface;
+import com.dimata.qdep.form.I_FRMType;
+import com.dimata.util.Formater;
+import javax.servlet.http.HttpServletRequest;
+
+/**
+ *
+ * @author Dewa
+ */
+public class FrmAgunan extends FRMHandler implements I_FRMInterface, I_FRMType {
+
+    private Agunan entAgunan;
+    public static final String FRM_NAME_AGUNAN = "FRM_NAME_AGUNAN";
+    public static final int FRM_FIELD_AGUNAN_OID = 0;
+    public static final int FRM_FIELD_FLAG_DETAIL = 1;
+    public static final int FRM_FIELD_KODE_REGISTER_AGUNAN = 2;
+    public static final int FRM_FIELD_NO_REKENING = 3;
+    public static final int FRM_FIELD_CIF = 4;
+    public static final int FRM_FIELD_KODE_STATUS_AGUNAN = 5;
+    public static final int FRM_FIELD_KODE_JENIS_AGUNAN = 6;
+    public static final int FRM_FIELD_PERINGKAT_AGUNAN = 7;
+    public static final int FRM_FIELD_KODE_LEMBAGA_PEMERINGKAT = 8;
+    public static final int FRM_FIELD_KODE_JENIS_PENGIKATAN = 9;
+    public static final int FRM_FIELD_TGL_PENGIKATAN = 10;
+    public static final int FRM_FIELD_NAMA_PEMILIK_AGUNAN = 11;
+    public static final int FRM_FIELD_BUKTI_KEPEMILIKAN = 12;
+    public static final int FRM_FIELD_ALAMAT_AGUNAN = 13;
+    public static final int FRM_FIELD_KODE_KAB_LOKASI_AGUNAN = 14;
+    public static final int FRM_FIELD_NILAI_AGUNAN_NJOP = 15;
+    public static final int FRM_FIELD_NILAI_AGUNAN_LJK = 16;
+    public static final int FRM_FIELD_TGL_PENILAIAN_LJK = 17;
+    public static final int FRM_FIELD_NILAI_AGU_PENILAI_INDEP = 18;
+    public static final int FRM_FIELD_NAMA_PENILAI_INDEP = 19;
+    public static final int FRM_FIELD_TGL_PENILAIAN_PENILAI_INDEP = 20;
+    public static final int FRM_FIELD_STATUS_PARIPASU = 21;
+    public static final int FRM_FIELD_STATUS_KREDIT_JOIN = 22;
+    public static final int FRM_FIELD_DIASURANSIKAN = 23;
+    public static final int FRM_FIELD_KETERANGAN = 24;
+    public static final int FRM_FIELD_KODE_KANTOR_CABANG = 25;
+    public static final int FRM_FIELD_OPERASI_DATA = 26;
+    public static final int FRM_FIELD_OPEN_DATE = 27;
+    public static final int FRM_FIELD_STATUS_DATA = 28;
+    public static final int FRM_FIELD_PERIODE_ID = 29;
+    public static final int FRM_FIELD_PROSENTASE_PARIPASU = 30;
+    public static final int FRM_FIELD_STATUS_DATA_PERUBAHAN = 31;
+    public static final int FRM_FIELD_KODE_JENIS_SEGMENT_FASILITAS = 32;
+    
+    public static String[] fieldNames = {
+        "FRM_FIELD_AGUNAN_OID",
+        "FRM_FIELD_FLAG_DETAIL",
+        "FRM_FIELD_KODE_REGISTER_AGUNAN",
+        "FRM_FIELD_NO_REKENING",
+        "FRM_FIELD_CIF",
+        "FRM_FIELD_KODE_STATUS_AGUNAN",
+        "FRM_FIELD_KODE_JENIS_AGUNAN",
+        "FRM_FIELD_PERINGKAT_AGUNAN",
+        "FRM_FIELD_KODE_LEMBAGA_PEMERINGKAT",
+        "FRM_FIELD_KODE_JENIS_PENGIKATAN",
+        "FRM_FIELD_TGL_PENGIKATAN",
+        "FRM_FIELD_NAMA_PEMILIK_AGUNAN",
+        "FRM_FIELD_BUKTI_KEPEMILIKAN",
+        "FRM_FIELD_ALAMAT_AGUNAN",
+        "FRM_FIELD_KODE_KABLOKASI_AGUNAN",
+        "FRM_FIELD_NILAI_AGUNAN_NJOP",
+        "FRM_FIELD_NILAI_AGUNAN_LJK",
+        "FRM_FIELD_TGL_PENILAIAN_LJK",
+        "FRM_FIELD_NILAI_AGU_PENILAI_INDEP",
+        "FRM_FIELD_NAMA_PENILAI_INDEP",
+        "FRM_FIELD_TGL_PENILAIAN_PENILAI_INDEP",
+        "FRM_FIELD_STATUS_PARIPASU",
+        "FRM_FIELD_STATUS_KREDIT_JOIN",
+        "FRM_FIELD_DIASURANSIKAN",
+        "FRM_FIELD_KETERANGAN",
+        "FRM_FIELD_KODE_KANTOR_CABANG",
+        "FRM_FIELD_OPERASI_DATA",
+        "FRM_FIELD_OPEN_DATE",
+        "FRM_FIELD_STATUS_DATA",
+        "FRM_FIELD_PERIODE_ID",
+        "FRM_FIELD_PROSENTASE_PARIPASU",
+        "FRM_FIELD_STATUS_DATA_PERUBAHAN",
+        "FRM_FIELD_KODE_JENIS_SEGMENT_FASILITAS"
+    };
+
+    public static int[] fieldTypes = {
+        TYPE_LONG ,
+        TYPE_STRING,
+        TYPE_STRING,
+        TYPE_STRING,
+        TYPE_STRING,
+        TYPE_STRING,
+        TYPE_STRING,
+        TYPE_STRING,
+        TYPE_STRING,
+        TYPE_STRING,
+        TYPE_STRING,
+        TYPE_STRING,
+        TYPE_STRING,
+        TYPE_STRING,
+        TYPE_STRING,
+        TYPE_FLOAT,
+        TYPE_FLOAT,
+        TYPE_STRING,
+        TYPE_FLOAT,
+        TYPE_STRING,
+        TYPE_STRING,
+        TYPE_STRING,
+        TYPE_STRING,
+        TYPE_STRING,
+        TYPE_STRING,
+        TYPE_STRING,
+        TYPE_STRING,
+        TYPE_STRING,
+        TYPE_INT,
+        TYPE_LONG,
+        TYPE_FLOAT,
+        TYPE_INT,
+        TYPE_STRING
+    };
+
+    public FrmAgunan() {
+    }
+
+    public FrmAgunan(Agunan entAgunan) {
+        this.entAgunan = entAgunan;
+    }
+
+    public FrmAgunan(HttpServletRequest request, Agunan entAgunan) {
+        super(new FrmAgunan(entAgunan), request);
+        this.entAgunan = entAgunan;
+    }
+
+    public String getFormName() {
+        return FRM_NAME_AGUNAN;
+    }
+
+    public int[] getFieldTypes() {
+        return fieldTypes;
+    }
+
+    public String[] getFieldNames() {
+        return fieldNames;
+    }
+
+    public int getFieldSize() {
+        return fieldNames.length;
+    }
+
+    public Agunan getEntityObject() {
+        return entAgunan;
+    }
+
+    public void requestEntityObject(Agunan entAgunan) {
+        try {
+            this.requestParam();
+//            entAgunan.setAgunanOid(getLong(FRM_FIELD_AGUNANOID));
+            entAgunan.setFlagDetail(getString(FRM_FIELD_FLAG_DETAIL));
+            entAgunan.setKodeRegisterAgunan(getString(FRM_FIELD_KODE_REGISTER_AGUNAN));
+            entAgunan.setNoRekening(getString(FRM_FIELD_NO_REKENING));
+            entAgunan.setCif(getString(FRM_FIELD_CIF));
+            entAgunan.setKodeStatusAgunan(getString(FRM_FIELD_KODE_STATUS_AGUNAN));
+            entAgunan.setKodeJenisAgunan(getString(FRM_FIELD_KODE_JENIS_AGUNAN));
+            entAgunan.setPeringkatAgunan(getString(FRM_FIELD_PERINGKAT_AGUNAN));
+            entAgunan.setKodeLembagaPemeringkat(getString(FRM_FIELD_KODE_LEMBAGA_PEMERINGKAT));
+            entAgunan.setKodeJenisPengikatan(getString(FRM_FIELD_KODE_JENIS_PENGIKATAN));
+            String tglPengikatan = getString(FRM_FIELD_TGL_PENGIKATAN);
+            entAgunan.setTglPengikatan(Formater.formatDate(tglPengikatan, "yyyy-MM-dd"));
+            entAgunan.setNamaPemilikAgunan(getString(FRM_FIELD_NAMA_PEMILIK_AGUNAN));
+            entAgunan.setBuktiKepemilikan(getString(FRM_FIELD_BUKTI_KEPEMILIKAN));
+            entAgunan.setAlamatAgunan(getString(FRM_FIELD_ALAMAT_AGUNAN));
+            entAgunan.setKodeKabLokasiAgunan(getString(FRM_FIELD_KODE_KAB_LOKASI_AGUNAN));
+            entAgunan.setNilaiAgunanNjop(getFloat(FRM_FIELD_NILAI_AGUNAN_NJOP));
+            entAgunan.setNilaiAgunanLjk(getFloat(FRM_FIELD_NILAI_AGUNAN_LJK));
+            String tglPenilaianLjk = getString(FRM_FIELD_TGL_PENILAIAN_LJK);
+            entAgunan.setTglPenilaianLjk(Formater.formatDate(tglPenilaianLjk, "yyyy-MM-dd"));
+            entAgunan.setNilaiAguPenilaiIndep(getFloat(FRM_FIELD_NILAI_AGU_PENILAI_INDEP));
+            entAgunan.setNamaPenilaiIndep(getString(FRM_FIELD_TGL_PENILAIAN_PENILAI_INDEP));
+            String tglPenilaianPenilaiIndep= getString(FRM_FIELD_TGL_PENILAIAN_PENILAI_INDEP);
+            entAgunan.setTglPenilaianPenilaiIndep(Formater.formatDate(tglPenilaianPenilaiIndep, "yyyy-MM-dd"));
+            entAgunan.setStatusParipasu(getString(FRM_FIELD_STATUS_PARIPASU));
+            entAgunan.setStatusKreditJoin(getString(FRM_FIELD_STATUS_KREDIT_JOIN));
+            entAgunan.setDiasuransikan(getString(FRM_FIELD_DIASURANSIKAN));
+            entAgunan.setKeterangan(getString(FRM_FIELD_KETERANGAN));
+            entAgunan.setKodeKantorCabang(getString(FRM_FIELD_KODE_KANTOR_CABANG));
+            entAgunan.setOperasiData(getString(FRM_FIELD_OPERASI_DATA));
+            String openDate= getString(FRM_FIELD_OPEN_DATE);
+            entAgunan.setOpenDate(Formater.formatDate(openDate, "yyyy-MM-dd"));
+            entAgunan.setStatusData(getInt(FRM_FIELD_STATUS_DATA));
+            entAgunan.setPeriodeId(getLong(FRM_FIELD_PERIODE_ID));
+            entAgunan.setProsentaseParipasu(getDouble(FRM_FIELD_PROSENTASE_PARIPASU));
+            entAgunan.setStatusDataPerubahan(getInt(FRM_FIELD_STATUS_DATA_PERUBAHAN));
+            entAgunan.setKodeJenisSegementFasilitas(getString(FRM_FIELD_KODE_JENIS_SEGMENT_FASILITAS));
+            
+        } catch (Exception e) {
+            System.out.println("Error on requestEntityObject : " + e.toString());
+        }
+    }
+
+}

@@ -1,0 +1,514 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package com.dimata.dslik.entity.bpdmapping;
+
+import com.dimata.qdep.entity.Entity;
+import java.util.Date;
+
+/**
+ *
+ * @author Dewa
+ */
+public class MappingKreditBpd extends Entity {
+
+    private String flagDetail = "";
+    private String noRekening = "";
+    private String cif = "";
+    private String kodeSifat = "";
+    private String noAkadAwal = "";
+    private Date tglAkadAwal = null;
+    private String noAkadAkhir = "";
+    private Date tglAkadAkhir = null;
+    private int baruPerpanjangan = 0;
+    private Date tglAwal = null;
+    private Date tglMulai = null;
+    private Date tglTempo = null;
+    private String kodeJenisPenggunaan = "";
+    private String kodeOrientasiPenggunaan = "";
+    private String kodeSektorEkonomi = "";
+    private String kodeKab = "";
+    private double nilai = 0;
+    private String kodeValuta = "";
+    private int prosentaseBunga = 0;
+    private String jenisBunga = "";
+    private double plafonAwal = 0;
+    private double realisasi = 0;
+    private double denda = 0;
+    private double bakiDebet = 0;
+    private String kodeKolektibilitas = "";
+    private Date tglMacet = null;
+    private double tunggakanPokok = 0;
+    private String kodeKondisi = "";
+    private Date tglKondisi = null;
+    private String kodeKantorCabang = "";
+    
+    private String kodeKategoriDebitur="";
+    private String sumberDana="";
+    private double tunggakanBunga=0;
+    private double jumlahHariTunggakan=0;
+    private double frekuensiTunggakan=0;
+    private double frekuensiRestrukturisasi=0;
+    private Date tanggalRestrukturisasiAwal=new Date();
+    private Date tanggalRestrukturisasiAkhir=new Date();
+    private long periodeId=0;
+    private String applid="";
+    private String kodeKreditProgramPemerintah="";
+    private String kodeSkimAkadPembiayaan="";
+    private  double plafon=0;
+    private String kodeJenisKredit="";
+    
+    public String getFlagDetail() {
+        return flagDetail;
+    }
+
+    public void setFlagDetail(String flagDetail) {
+        this.flagDetail = flagDetail;
+    }
+
+    public String getNoRekening() {
+        return noRekening;
+    }
+
+    public void setNoRekening(String noRekening) {
+        this.noRekening = noRekening;
+    }
+
+    public String getKodeSifat() {
+        return kodeSifat;
+    }
+
+    public void setKodeSifat(String kodeSifat) {
+        this.kodeSifat = kodeSifat;
+    }
+
+    public String getNoAkadAwal() {
+        return noAkadAwal;
+    }
+
+    public void setNoAkadAwal(String noAkadAwal) {
+        this.noAkadAwal = noAkadAwal;
+    }
+
+    public Date getTglAkadAwal() {
+        return tglAkadAwal;
+    }
+
+    public void setTglAkadAwal(Date tglAkadAwal) {
+        this.tglAkadAwal = tglAkadAwal;
+    }
+
+    public String getNoAkadAkhir() {
+        return noAkadAkhir;
+    }
+
+    public void setNoAkadAkhir(String noAkadAkhir) {
+        this.noAkadAkhir = noAkadAkhir;
+    }
+
+    public Date getTglAkadAkhir() {
+        return tglAkadAkhir;
+    }
+
+    public void setTglAkadAkhir(Date tglAkadAkhir) {
+        this.tglAkadAkhir = tglAkadAkhir;
+    }
+
+    public int getBaruPerpanjangan() {
+        return baruPerpanjangan;
+    }
+
+    public void setBaruPerpanjangan(int baruPerpanjangan) {
+        this.baruPerpanjangan = baruPerpanjangan;
+    }
+
+    public Date getTglAwal() {
+        return tglAwal;
+    }
+
+    public void setTglAwal(Date tglAwal) {
+        this.tglAwal = tglAwal;
+    }
+
+    public Date getTglMulai() {
+        return tglMulai;
+    }
+
+    public void setTglMulai(Date tglMulai) {
+        this.tglMulai = tglMulai;
+    }
+
+    public Date getTglTempo() {
+        return tglTempo;
+    }
+
+    public void setTglTempo(Date tglTempo) {
+        this.tglTempo = tglTempo;
+    }
+
+    public String getKodeJenisPenggunaan() {
+        return kodeJenisPenggunaan;
+    }
+
+    public void setKodeJenisPenggunaan(String kodeJenisPenggunaan) {
+        this.kodeJenisPenggunaan = kodeJenisPenggunaan;
+    }
+
+    public String getKodeOrientasiPenggunaan() {
+        return kodeOrientasiPenggunaan;
+    }
+
+    public void setKodeOrientasiPenggunaan(String kodeOrientasiPenggunaan) {
+        this.kodeOrientasiPenggunaan = kodeOrientasiPenggunaan;
+    }
+
+
+    public String getKodeKab() {
+        return kodeKab;
+    }
+
+    public void setKodeKab(String kodeKab) {
+        this.kodeKab = kodeKab;
+    }
+
+    public double getNilai() {
+        return nilai;
+    }
+
+    public void setNilai(double nilai) {
+        this.nilai = nilai;
+    }
+
+    public String getKodeValuta() {
+        return kodeValuta;
+    }
+
+    public void setKodeValuta(String kodeValuta) {
+        this.kodeValuta = kodeValuta;
+    }
+
+    public int getProsentaseBunga() {
+        return prosentaseBunga;
+    }
+
+    public void setProsentaseBunga(int prosentaseBunga) {
+        this.prosentaseBunga = prosentaseBunga;
+    }
+
+    public String getJenisBunga() {
+        return jenisBunga;
+    }
+
+    public void setJenisBunga(String jenisBunga) {
+        this.jenisBunga = jenisBunga;
+    }
+
+    public double getPlafonAwal() {
+        return plafonAwal;
+    }
+
+    public void setPlafonAwal(double plafonAwal) {
+        this.plafonAwal = plafonAwal;
+    }
+
+
+    public double getRealisasi() {
+        return realisasi;
+    }
+
+    public void setRealisasi(double realisasi) {
+        this.realisasi = realisasi;
+    }
+
+    public double getDenda() {
+        return denda;
+    }
+
+    public void setDenda(double denda) {
+        this.denda = denda;
+    }
+
+    public double getBakiDebet() {
+        return bakiDebet;
+    }
+
+    public void setBakiDebet(double bakiDebet) {
+        this.bakiDebet = bakiDebet;
+    }
+
+    public String getKodeKolektibilitas() {
+        return kodeKolektibilitas;
+    }
+
+    public void setKodeKolektibilitas(String kodeKolektibilitas) {
+        this.kodeKolektibilitas = kodeKolektibilitas;
+    }
+
+    public Date getTglMacet() {
+        return tglMacet;
+    }
+
+    public void setTglMacet(Date tglMacet) {
+        this.tglMacet = tglMacet;
+    }
+
+    public double getTunggakanPokok() {
+        return tunggakanPokok;
+    }
+
+    public void setTunggakanPokok(double tunggakanPokok) {
+        this.tunggakanPokok = tunggakanPokok;
+    }
+
+    public String getKodeKondisi() {
+        return kodeKondisi;
+    }
+
+    public void setKodeKondisi(String kodeKondisi) {
+        this.kodeKondisi = kodeKondisi;
+    }
+
+    public Date getTglKondisi() {
+        return tglKondisi;
+    }
+
+    public void setTglKondisi(Date tglKondisi) {
+        this.tglKondisi = tglKondisi;
+    }
+
+
+    public String getKodeKantorCabang() {
+        return kodeKantorCabang;
+    }
+
+    public void setKodeKantorCabang(String kodeKantorCabang) {
+        this.kodeKantorCabang = kodeKantorCabang;
+    }
+
+    /**
+     * @return the cif
+     */
+    public String getCif() {
+        return cif;
+    }
+
+    /**
+     * @param cif the cif to set
+     */
+    public void setCif(String cif) {
+        this.cif = cif;
+    }
+
+    /**
+     * @return the kodeKategoriDebitur
+     */
+    public String getKodeKategoriDebitur() {
+        return kodeKategoriDebitur;
+    }
+
+    /**
+     * @param kodeKategoriDebitur the kodeKategoriDebitur to set
+     */
+    public void setKodeKategoriDebitur(String kodeKategoriDebitur) {
+        this.kodeKategoriDebitur = kodeKategoriDebitur;
+    }
+
+    /**
+     * @return the sumberDana
+     */
+    public String getSumberDana() {
+        return sumberDana;
+    }
+
+    /**
+     * @param sumberDana the sumberDana to set
+     */
+    public void setSumberDana(String sumberDana) {
+        this.sumberDana = sumberDana;
+    }
+
+    /**
+     * @return the tunggakanBunga
+     */
+    public double getTunggakanBunga() {
+        return tunggakanBunga;
+    }
+
+    /**
+     * @param tunggakanBunga the tunggakanBunga to set
+     */
+    public void setTunggakanBunga(double tunggakanBunga) {
+        this.tunggakanBunga = tunggakanBunga;
+    }
+
+    /**
+     * @return the jumlahHariTunggakan
+     */
+    public double getJumlahHariTunggakan() {
+        return jumlahHariTunggakan;
+    }
+
+    /**
+     * @param jumlahHariTunggakan the jumlahHariTunggakan to set
+     */
+    public void setJumlahHariTunggakan(double jumlahHariTunggakan) {
+        this.jumlahHariTunggakan = jumlahHariTunggakan;
+    }
+
+    /**
+     * @return the frekuensiTunggakan
+     */
+    public double getFrekuensiTunggakan() {
+        return frekuensiTunggakan;
+    }
+
+    /**
+     * @param frekuensiTunggakan the frekuensiTunggakan to set
+     */
+    public void setFrekuensiTunggakan(double frekuensiTunggakan) {
+        this.frekuensiTunggakan = frekuensiTunggakan;
+    }
+
+    /**
+     * @return the frekuensiRestrukturisasi
+     */
+    public double getFrekuensiRestrukturisasi() {
+        return frekuensiRestrukturisasi;
+    }
+
+    /**
+     * @param frekuensiRestrukturisasi the frekuensiRestrukturisasi to set
+     */
+    public void setFrekuensiRestrukturisasi(double frekuensiRestrukturisasi) {
+        this.frekuensiRestrukturisasi = frekuensiRestrukturisasi;
+    }
+    
+    /**
+     * @return the tanggalRestrukturisasiAwal
+     */
+    public Date getTanggalRestrukturisasiAwal() {
+        return tanggalRestrukturisasiAwal;
+    }
+
+    /**
+     * @param tanggalRestrukturisasiAwal the tanggalRestrukturisasiAwal to set
+     */
+    public void setTanggalRestrukturisasiAwal(Date tanggalRestrukturisasiAwal) {
+        this.tanggalRestrukturisasiAwal = tanggalRestrukturisasiAwal;
+    }
+
+    /**
+     * @return the tanggalRestrukturisasiAkhir
+     */
+    public Date getTanggalRestrukturisasiAkhir() {
+        return tanggalRestrukturisasiAkhir;
+    }
+
+    /**
+     * @param tanggalRestrukturisasiAkhir the tanggalRestrukturisasiAkhir to set
+     */
+    public void setTanggalRestrukturisasiAkhir(Date tanggalRestrukturisasiAkhir) {
+        this.tanggalRestrukturisasiAkhir = tanggalRestrukturisasiAkhir;
+    }
+
+    /**
+     * @return the periodeId
+     */
+    public long getPeriodeId() {
+        return periodeId;
+    }
+
+    /**
+     * @param periodeId the periodeId to set
+     */
+    public void setPeriodeId(long periodeId) {
+        this.periodeId = periodeId;
+    }
+
+    /**
+     * @return the applid
+     */
+    public String getApplid() {
+        return applid;
+    }
+
+    /**
+     * @param applid the applid to set
+     */
+    public void setApplid(String applid) {
+        this.applid = applid;
+    }
+
+    /**
+     * @return the kodeKreditProgramPemerintah
+     */
+    public String getKodeKreditProgramPemerintah() {
+        return kodeKreditProgramPemerintah;
+    }
+
+    /**
+     * @param kodeKreditProgramPemerintah the kodeKreditProgramPemerintah to set
+     */
+    public void setKodeKreditProgramPemerintah(String kodeKreditProgramPemerintah) {
+        this.kodeKreditProgramPemerintah = kodeKreditProgramPemerintah;
+    }
+
+    /**
+     * @return the kodeSkimAkadPembiayaan
+     */
+    public String getKodeSkimAkadPembiayaan() {
+        return kodeSkimAkadPembiayaan;
+    }
+
+    /**
+     * @param kodeSkimAkadPembiayaan the kodeSkimAkadPembiayaan to set
+     */
+    public void setKodeSkimAkadPembiayaan(String kodeSkimAkadPembiayaan) {
+        this.kodeSkimAkadPembiayaan = kodeSkimAkadPembiayaan;
+    }
+
+    /**
+     * @return the plafon
+     */
+    public double getPlafon() {
+        return plafon;
+    }
+
+    /**
+     * @param plafon the plafon to set
+     */
+    public void setPlafon(double plafon) {
+        this.plafon = plafon;
+    }
+
+    /**
+     * @return the kodeJenisKredit
+     */
+    public String getKodeJenisKredit() {
+        return kodeJenisKredit;
+    }
+
+    /**
+     * @param kodeJenisKredit the kodeJenisKredit to set
+     */
+    public void setKodeJenisKredit(String kodeJenisKredit) {
+        this.kodeJenisKredit = kodeJenisKredit;
+    }
+
+    /**
+     * @return the kodeSektorEkonomi
+     */
+    public String getKodeSektorEkonomi() {
+        return kodeSektorEkonomi;
+    }
+
+    /**
+     * @param kodeSektorEkonomi the kodeSektorEkonomi to set
+     */
+    public void setKodeSektorEkonomi(String kodeSektorEkonomi) {
+        this.kodeSektorEkonomi = kodeSektorEkonomi;
+    }
+
+}

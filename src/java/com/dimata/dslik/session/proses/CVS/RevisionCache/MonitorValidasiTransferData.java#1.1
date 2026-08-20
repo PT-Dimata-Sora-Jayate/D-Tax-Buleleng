@@ -1,0 +1,97 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package com.dimata.dslik.session.proses;
+
+import com.dimata.dslik.entity.debitur.Debitur;
+import com.dimata.dslik.entity.debitur.PstDebitur;
+import com.dimata.dslik.entity.masterdata.Periode;
+import com.dimata.dslik.entity.masterdata.PstPeriode;
+import com.dimata.util.Formater;
+import java.util.Date;
+import java.util.Vector;
+
+/**
+ *
+ * @author dimata005
+ */
+public class MonitorValidasiTransferData implements Runnable {
+    
+    private String Proggess="";
+    
+    public MonitorValidasiTransferData() {
+            
+    }
+    
+    public void run() {
+
+        System.out.println("start .... ");
+    
+        while (ManagerValidasiTransferData.running) {
+            
+            try {
+                
+                /*proses transfer*/
+                ManagerValidasiTransferData.setStatusProses("Proses Berjalan <br>");
+                ManagerValidasiTransferData.setStatusProses("Cek Debitur <br>");
+                
+                long periodeId=0;
+                long prevPeriodeId=0;
+                Vector vperiode = PstPeriode.list(0, 0, PstPeriode.fieldNames[PstPeriode.FLD_POSTED] + "='0'", "");
+                Periode periode = new Periode();
+                if (vperiode.size() > 0) {
+                    periode = (Periode) vperiode.get(0);
+                    periodeId = periode.getOID();
+                    
+                    //cek previouse periode
+                    try{
+                        Periode periodePrev = new Periode();
+                        Vector listPeriode = PstPeriode.list(0, 1, ""+PstPeriode.fieldNames[PstPeriode.FLD_PERIODE_ID]+"='"+periodeId+"'", "");
+                        if(listPeriode != null){
+                            periodePrev = (Periode) listPeriode.get(0);
+                            periodePrev.getTglAwal().setMonth(periodePrev.getTglAwal().getMonth()-1);
+                            Vector listPeriodex = PstPeriode.list(0, 1, ""+PstPeriode.fieldNames[PstPeriode.FLD_TGL_AWAL]+" BETWEEN '"+Formater.formatDate(periodePrev.getTglAwal(),"yyyy-MM-dd") +"' AND '"+Formater.formatDate(periodePrev.getTglAwal(),"yyyy-MM-dd")+"'", "");
+                            if(listPeriodex != null){
+                                if(listPeriodex.size()>0){
+                                    periodePrev = (Periode) listPeriodex.get(0);
+                                    prevPeriodeId = periodePrev.getOID();
+                                }
+                             }
+                        }
+                    }catch(Exception ex){
+                    }
+                }
+                
+                Vector vDebitur = SessValidasiTransferData.list(0, 0, "", "", periodeId, prevPeriodeId);
+                if(vDebitur!=null){
+                    if(vDebitur.size()>0){
+                        ManagerValidasiTransferData.setStatusProses("Proses penyesuaian penambahan data debitur <br>");
+                        for (int i = 0; i < vDebitur.size(); i++) {
+                            Debitur debitur = (Debitur) vDebitur.get(i);
+                            try{
+                                long xx = PstDebitur.insertExc(debitur);
+                            }catch(Exception ex){
+                            }
+                        }
+                    }
+                }
+                
+                
+                //pengecekan validasi email
+                
+            } catch (Exception e) {
+                System.out.println("Interrupted " + e);
+            }
+            
+            Date newDate = new Date();
+            
+            ManagerValidasiTransferData.statusEnd =" Proses Berakhir  .... datae/time : "+Formater.formatDate(newDate, "dd-MM-yyyy kk:mm");
+
+            ManagerValidasiTransferData.running=false;
+        }
+        System.out.println("stop .... ");
+    }
+    
+}

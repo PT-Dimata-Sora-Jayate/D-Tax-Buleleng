@@ -1,0 +1,753 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package com.dimata.dslik.session.proses;
+
+import com.dimata.qdep.db.DBException;
+import static com.dimata.qdep.db.DBHandler.execUpdate;
+
+/**
+ *
+ * @author dimata005
+ */
+public class MoveDataCrosPeriode {
+    public static long moveAgunan(long prevPeriode, long periodeId) throws DBException {
+        long hasil = 0;
+        try {
+            if(periodeId!=0){
+                String sql =""+
+                "INSERT INTO dslik_agunan (AGUNAN_OID, FLAG_DETAIL, KODE_REGISTER_AGUNAN, NO_REKENING, CIF, KODE_STATUS_AGUNAN, KODE_JENIS_AGUNAN, PERINGKAT_AGUNAN, KODE_LEMBAGA_PEMERINGKAT, KODE_JENIS_PENGIKATAN, TGL_PENGIKATAN, NAMA_PEMILIK_AGUNAN, BUKTI_KEPEMILIKAN, ALAMAT_AGUNAN, KODE_KAB_LOKASI_AGUNAN, NILAI_AGUNAN_NJOP, NILAI_AGUNAN_LJK, TGL_PENILAIAN_LJK, NILAI_AGU_PENILAI_INDEP, NAMA_PENILAI_INDEP, TGL_PENILAIAN_PENILAI_INDEP, STATUS_PARIPASU, PROSENTASE_PARIPASU, STATUS_KREDIT_JOIN, DIASURANSIKAN, KETERANGAN, KODE_KANTOR_CABANG, OPERASI_DATA, OPEN_DATE, STATUS_DATA, PERIODE_ID, STATUS_OPERASI_DATA)"+
+                " SELECT"+
+                  " AGUNAN_OID + 111111111111111 AS AGUNAN_OID,"+
+                  " FLAG_DETAIL,"+
+                  " KODE_REGISTER_AGUNAN,"+
+                  " NO_REKENING,"+
+                  " CIF,"+
+                  " KODE_STATUS_AGUNAN,"+
+                  " KODE_JENIS_AGUNAN,"+
+                  " PERINGKAT_AGUNAN,"+
+                  " KODE_LEMBAGA_PEMERINGKAT,"+
+                  " KODE_JENIS_PENGIKATAN,"+
+                  " TGL_PENGIKATAN,"+
+                  " NAMA_PEMILIK_AGUNAN,"+
+                  " BUKTI_KEPEMILIKAN,"+
+                  " ALAMAT_AGUNAN,"+
+                  " KODE_KAB_LOKASI_AGUNAN,"+
+                  " NILAI_AGUNAN_NJOP,"+
+                  " NILAI_AGUNAN_LJK,"+
+                  " TGL_PENILAIAN_LJK,"+
+                  " NILAI_AGU_PENILAI_INDEP,"+
+                  " NAMA_PENILAI_INDEP,"+
+                  " TGL_PENILAIAN_PENILAI_INDEP,"+
+                  " STATUS_PARIPASU,"+
+                  " PROSENTASE_PARIPASU,"+
+                  " STATUS_KREDIT_JOIN,"+
+                  " DIASURANSIKAN,"+
+                  " KETERANGAN,"+
+                  " KODE_KANTOR_CABANG,"+
+                  " OPERASI_DATA,"+
+                  " OPEN_DATE,"+
+                  " STATUS_DATA,"+
+                  "'"+periodeId+"' AS PERIODE_ID,"+
+                  " 1 AS STATUS_OPERASI_DATA"+
+                " FROM dslik_agunan "+
+                " WHERE PERIODE_ID = '"+prevPeriode+"'";
+                
+                int result = execUpdate(sql);
+                hasil = periodeId;
+            }
+        }
+        catch(Exception e) {
+            
+        }
+        return hasil;
+    }
+    
+    public static long moveBankGaransi(long prevPeriode, long periodeId) throws DBException {
+        long hasil = 0;
+        try {
+            if(periodeId!=0){
+                String sql =""+
+                "insert into dslik_bank_garansi (BANK_GARANSI_OID, FLAG_DETAIL, NO_REKENING, CIF, KODE_JENIS_GARANSI, KODE_TUJUAN_GARANSI, TGL_DITERBITKAN, TGL_JATUH_TEMPO, NO_AKAD_AWAL, TGL_AKAD_AWAL, NO_AKAD_AKHIR, TGL_AKAD_AKHIR, NAMA_YG_DIJAMIN, KODE_VALUTA, PLAFON, NOMINAL, SETORAN_JAMINAN, KODE_KOLEKTIBILITAS, TGL_WAN_PRESTASI, KODE_KONDISI, TGL_KONDISI, KETERANGAN, KODE_KANTOR_CABANG, OPERASI_DATA, OPEN_DATE, STATUS_DATA, PERIODE_ID, STATUS_OPERASI_DATA) "+
+                "SELECT 	 "+
+                      " BANK_GARANSI_OID + 111111111111111 AS BANK_GARANSI_OID, "+
+                      " FLAG_DETAIL, "+
+                      " NO_REKENING, "+
+                      " CIF, "+
+                      " KODE_JENIS_GARANSI, "+
+                      " KODE_TUJUAN_GARANSI, "+
+                      " TGL_DITERBITKAN, "+
+                      " TGL_JATUH_TEMPO, "+
+                      " NO_AKAD_AWAL, "+
+                      " TGL_AKAD_AWAL, "+
+                      " NO_AKAD_AKHIR, "+
+                      " TGL_AKAD_AKHIR, "+
+                      " NAMA_YG_DIJAMIN, "+
+                      " KODE_VALUTA, "+
+                      " PLAFON, "+
+                      " NOMINAL, "+
+                      " SETORAN_JAMINAN, "+
+                      " KODE_KOLEKTIBILITAS, "+
+                      " TGL_WAN_PRESTASI, "+
+                      " KODE_KONDISI, "+
+                      " TGL_KONDISI, "+
+                      " KETERANGAN, "+
+                      " KODE_KANTOR_CABANG, "+
+                      " OPERASI_DATA, "+
+                      " OPEN_DATE, "+
+                      " STATUS_DATA, "+
+                      "'"+periodeId+"' AS PERIODE_ID, "+
+                      " 1 AS STATUS_OPERASI_DATA "+
+                      " FROM dslik_bank_garansi "+
+                " WHERE PERIODE_ID = '"+prevPeriode+"'";
+                
+                int result = execUpdate(sql);
+                hasil = periodeId;
+            }
+        }
+        catch(Exception e) {
+            
+        }
+        return hasil;
+    }
+    
+    
+    public static long moveDebitur(long prevPeriode, long periodeId) throws DBException {
+        long hasil = 0;
+        try {
+            if(periodeId!=0){
+                String sql =""+
+                "insert into dslik_debitur (DEBITUR_OID, KODE_JENIS_NSB, FLAG_DETAIL, CIF, JENIS_IDENTITAS, NIK, NAMA_IDENTITAS, NAMA_LENGKAP, KODE_STATUS_GELAR, JEKEL, TEMPAT_LAHIR, TANGGAL_LAHIR, NPWP, ALAMAT, KELURAHAN, KECAMATAN, KODE_KAB, KODE_POS, TELEPON, NOMOR_HP, EMAIL, KODE_DOMISILI, KODE_PEKERJAAN, TEMPAT_BEKERJA, KODE_USAHA_TEMPAT_BEKERJA, ALAMAT_TEMPAT_BEKERJA, PENGHASILAN_KOTOR, KODE_PENGHASILAN, JML_TANGGUNGAN, KODE_HUB, KODE_GOL, STATUS, NIK_PASANGAN, NAMA_PASANGAN, TGL_LAHIR_PASANGAN, PERJANJIAN_PISAH_HARGA, MELANGGAR_BMPK, MELAMPAUI_BMPK, NAMA_IBU_KANDUNG, KODE_KANTOR_CABANG, NO_IDENTITAS, NAMA_BADAN_USAHA, KODE_JENIS_USAHA, TEMPAT_PENDIRIAN, NO_AKTE, TGL_AKTE_PENDIRIAN, NO_AKTE_PERUBAHAN, TGL_AKTE_PERUBAHAN, KODE_BIDANG_USAHA, KODE_HUB_LJK, GO_PUBLIC, PERINGKAT, LEMBAGA_PEMERINGKAT, TGL_PEMERINGKAT, NAMA_GROUP, OPERASI_DATA, OPEN_DATE, STATUS_DATA, PERIODE_ID, STATUS_OPERASI_DATA) "+
+                " SELECT "+ 	
+                      " DEBITUR_OID + 111111111111111 AS DEBITUR_OID, "+
+                      " KODE_JENIS_NSB, "+
+                      " FLAG_DETAIL, "+
+                      " CIF, "+
+                      " JENIS_IDENTITAS, "+
+                      " NIK, "+
+                      " NAMA_IDENTITAS, "+
+                      " NAMA_LENGKAP, "+
+                      " KODE_STATUS_GELAR, "+
+                      " JEKEL, "+
+                      " TEMPAT_LAHIR, "+
+                      " TANGGAL_LAHIR, "+
+                      " NPWP, "+
+                      " ALAMAT, "+
+                      " KELURAHAN, "+
+                      " KECAMATAN, "+
+                      " KODE_KAB, "+
+                      " KODE_POS, "+
+                      " TELEPON, "+
+                      " NOMOR_HP, "+
+                      " EMAIL, "+
+                      " KODE_DOMISILI, "+
+                      " KODE_PEKERJAAN, "+
+                      " TEMPAT_BEKERJA, "+
+                      " KODE_USAHA_TEMPAT_BEKERJA, "+
+                      " ALAMAT_TEMPAT_BEKERJA, "+
+                      " PENGHASILAN_KOTOR, "+
+                      " KODE_PENGHASILAN, "+
+                      " JML_TANGGUNGAN, "+
+                      " KODE_HUB, "+
+                      " KODE_GOL, "+
+                      " STATUS, "+
+                      " NIK_PASANGAN, "+
+                      " NAMA_PASANGAN, "+
+                      " TGL_LAHIR_PASANGAN, "+
+                      " PERJANJIAN_PISAH_HARGA, "+
+                      " MELANGGAR_BMPK, "+
+                      " MELAMPAUI_BMPK, "+
+                      " NAMA_IBU_KANDUNG, "+
+                      " KODE_KANTOR_CABANG, "+
+                      " NO_IDENTITAS, "+
+                      " NAMA_BADAN_USAHA, "+
+                      " KODE_JENIS_USAHA, "+
+                      " TEMPAT_PENDIRIAN, "+
+                      " NO_AKTE, "+
+                      " TGL_AKTE_PENDIRIAN, "+
+                      " NO_AKTE_PERUBAHAN, "+
+                      " TGL_AKTE_PERUBAHAN, "+
+                      " KODE_BIDANG_USAHA, "+
+                      " KODE_HUB_LJK, "+
+                      " GO_PUBLIC, "+
+                      " PERINGKAT, "+
+                      " LEMBAGA_PEMERINGKAT, "+
+                      " TGL_PEMERINGKAT, "+
+                      " NAMA_GROUP, "+
+                      " OPERASI_DATA, "+
+                      " OPEN_DATE, "+
+                      " STATUS_DATA, "+
+                      "'"+periodeId+"' AS PERIODE_ID, "+
+                      " 1 AS STATUS_OPERASI_DATA "+
+                " FROM dslik_debitur "+
+                " WHERE PERIODE_ID = '"+prevPeriode+"'";
+                
+                int result = execUpdate(sql);
+                hasil = periodeId;
+            }
+        }
+        catch(Exception e) {
+            
+        }
+        return hasil;
+    }
+ 
+    
+    public static long moveFasilitasLain(long prevPeriode, long periodeId) throws DBException {
+        long hasil = 0;
+        try {
+            if(periodeId!=0){
+                String sql =""+
+                " insert into dslik_fasilitas_lain ( "+
+                                " FASILITAS_LAIN_OID, "+
+                                " FLAG_DETAIL, "+
+                                " NO_REKENING, "+
+                                " CIF, "+
+                                " KODE_JENIS_FASILITAS, "+
+                                " SUMBER_DANA, "+
+                                " TGL_MULAI, "+
+                                " TGL_JATUH_TEMPO, "+
+                                " SUKU_BUNGA, "+
+                                " KODE_VALUTA, "+
+                                " NOMINAL_JML_KEWAJIBAN, "+
+                                " NILAI_MATA_UANG_ASAL, "+
+                                " KODE_KOLEKTIBILITAS, "+
+                                " TGL_MACET, "+
+                                " KODE_SEBAB_MACET, "+
+                                " TUNGGAKAN, "+
+                                " JML_HARI_TUNGGAKAN, "+
+                                " KODE_KONDISI, "+
+                                " TGL_KONDISI, "+
+                                " KETERANGAN, "+
+                                " KODE_KANTOR_CABANG, "+
+                                " OPERASI_DATA, "+
+                                " OPEN_DATE, "+
+                                " STATUS_DATA, "+
+                                " PERIODE_ID, "+
+                                " STATUS_OPERASI_DATA ) "+
+                        " SELECT  "+
+                                " FASILITAS_LAIN_OID + 9999999999 AS FASILITAS_LAIN_OID, "+
+                                " FLAG_DETAIL, "+
+                                " NO_REKENING, "+
+                                " CIF, "+
+                                " KODE_JENIS_FASILITAS, "+
+                                " SUMBER_DANA, "+
+                                " TGL_MULAI, "+
+                                " TGL_JATUH_TEMPO, "+
+                                " SUKU_BUNGA, "+
+                                " KODE_VALUTA, "+
+                                " NOMINAL_JML_KEWAJIBAN, "+
+                                " NILAI_MATA_UANG_ASAL, "+
+                                " KODE_KOLEKTIBILITAS, "+
+                                " TGL_MACET, "+
+                                " KODE_SEBAB_MACET, "+
+                                " TUNGGAKAN, "+
+                                " JML_HARI_TUNGGAKAN, "+
+                                " KODE_KONDISI, "+
+                                " TGL_KONDISI, "+
+                                " KETERANGAN, "+
+                                " KODE_KANTOR_CABANG, "+
+                                " OPERASI_DATA, "+
+                                " OPEN_DATE, "+
+                                " STATUS_DATA, "+
+                                "'"+periodeId+"' AS PERIODE_ID, "+
+                                " 1 AS STATUS_OPERASI_DATA "+
+                        " FROM dslik_fasilitas_lain "+
+                  " WHERE PERIODE_ID = '"+prevPeriode+"'";
+                
+                int result = execUpdate(sql);
+                hasil = periodeId;
+            }
+        }
+        catch(Exception e) {
+            
+        }
+        return hasil;
+    }
+    
+    
+    public static long moveKredit(long prevPeriode, long periodeId) throws DBException {
+        long hasil = 0;
+        try {
+            if(periodeId!=0){
+                String sql =""+
+                "insert into dslik_kredit (KREDIT_OID, FLAG_DETAIL, NO_REKENING, CIF, KODE_SIFAT, KODE_JENIS_KREDIT, KODE_AKAD, NO_AKAD_AWAL, TGL_AKAD_AWAL, NO_AKAD_AKHIR, TGL_AKAD_AKHIR, BARU_PERPANJANGAN, TGL_AWAL, TGL_MULAI, TGL_TEMPO, KODE_KAT_DEBITUR, KODE_JENIS_PENGGUNAAN, KODE_ORIENTASI_PENGGUNAAN, KODE_SEKTOR_EKONOMI, KODE_KAB, NILAI, KODE_VALUTA, PROSENTASE_BUNGA, JENIS_BUNGA, KREDIT_PEMERINTAH, TAKEOVER, SUMBER_DANA, PLAFON_AWAL, PLAFON, REALISASI, DENDA, BAKI_DEBET, NILAI_UANG_ASAL, KODE_KOLEKTIBILITAS, TGL_MACET, KODE_SEBAB_MACET, TUNGGAKAN_POKOK, TUNGGAKAN_BUNGA, JML_HARI_TUNGGAKAN, FREKUENSI_TUNGGAKAN, FREKUENSI_RESTRUKTURISASI, TGL_RESTRUKTURISASI_AWAL, TGL_RESTRUKTURISASI_AKHIR, KODE_CARA, KODE_KONDISI, TGL_KONDISI, KETERANGAN, KODE_KANTOR_CABANG, OPERASI_DATA, OPEN_DATE, STATUS_DATA, PERIODE_ID, APPLID, STATUS_OPERASI_DATA) "+
+                "SELECT "+ 	
+                      " KREDIT_OID + 111111111111111 AS KREDIT_OID, "+
+                      " FLAG_DETAIL, "+
+                      " NO_REKENING, "+
+                      " CIF, "+
+                      " KODE_SIFAT, "+
+                      " KODE_JENIS_KREDIT, "+
+                      " KODE_AKAD, "+
+                      " NO_AKAD_AWAL, "+
+                      " TGL_AKAD_AWAL, "+
+                      " NO_AKAD_AKHIR, "+
+                      " TGL_AKAD_AKHIR, "+
+                      " BARU_PERPANJANGAN, "+
+                      " TGL_AWAL, "+
+                      " TGL_MULAI, "+
+                      " TGL_TEMPO, "+
+                      " KODE_KAT_DEBITUR, "+
+                      " KODE_JENIS_PENGGUNAAN, "+
+                      " KODE_ORIENTASI_PENGGUNAAN, "+
+                      " KODE_SEKTOR_EKONOMI, "+
+                      " KODE_KAB, "+
+                      " NILAI, "+
+                      " KODE_VALUTA, "+
+                      " PROSENTASE_BUNGA, "+
+                      " JENIS_BUNGA, "+
+                      " KREDIT_PEMERINTAH, "+
+                      " TAKEOVER, "+
+                      " SUMBER_DANA, "+
+                      " PLAFON_AWAL, "+
+                      " PLAFON, "+
+                      " REALISASI, "+
+                      " DENDA, "+
+                      " BAKI_DEBET, "+
+                      " NILAI_UANG_ASAL, "+
+                      " KODE_KOLEKTIBILITAS, "+
+                      " TGL_MACET, "+
+                      " KODE_SEBAB_MACET, "+
+                      " TUNGGAKAN_POKOK, "+
+                      " TUNGGAKAN_BUNGA, "+
+                      " JML_HARI_TUNGGAKAN, "+
+                      " FREKUENSI_TUNGGAKAN, "+
+                      " FREKUENSI_RESTRUKTURISASI, "+
+                      " TGL_RESTRUKTURISASI_AWAL, "+
+                      " TGL_RESTRUKTURISASI_AKHIR, "+
+                      " KODE_CARA, "+
+                      " KODE_KONDISI, "+
+                      " TGL_KONDISI, "+
+                      " KETERANGAN, "+
+                      " KODE_KANTOR_CABANG, "+
+                      " OPERASI_DATA, "+
+                      " OPEN_DATE, "+
+                      " STATUS_DATA, "+
+                      "'"+periodeId+"' AS PERIODE_ID, "+
+                      " APPLID, "+
+                      " 1 AS STATUS_OPERASI_DATA  "+
+                " FROM dslik_kredit "+
+                " WHERE PERIODE_ID = '"+prevPeriode+"'";
+                
+                int result = execUpdate(sql);
+                
+                hasil = periodeId;
+            }
+        }
+        catch(Exception e) {
+            
+        }
+        return hasil;
+    }
+    
+    
+    public static long movePengurusPemilik(long prevPeriode, long periodeId) throws DBException {
+        long hasil = 0;
+        try {
+            if(periodeId!=0){
+                String sql =""+
+                "insert into dslik_pengurus_atau_pemilik (PENGURUS_OID, FLAG_DETAIL, NO_IDENTITAS, CIF, JENIS_IDENTITAS, NAMA_PENGURUS, JENIS_KELAMIN, ALAMAT, KELURAHAN, KECAMATAN, KODE_KABUPATEN, KODE_JABATAN, PANGSA_KEPEMILIKAN, STATUS_PENGURUS, KODE_KANTOR_CABANG, OPERASI_DATA, OPEN_DATE, STATUS_DATA, PERIODE_ID, STATUS_OPERASI_DATA) "+
+                " SELECT "+	
+                      " PENGURUS_OID + 111111111111111 AS PENGURUS_OID, "+
+                      " FLAG_DETAIL, "+
+                      " NO_IDENTITAS, "+
+                      " CIF, "+
+                      " JENIS_IDENTITAS, "+
+                      " NAMA_PENGURUS, "+
+                      " JENIS_KELAMIN, "+
+                      " ALAMAT, "+
+                      " KELURAHAN, "+
+                      " KECAMATAN, "+
+                      " KODE_KABUPATEN, "+
+                      " KODE_JABATAN, "+
+                      " PANGSA_KEPEMILIKAN, "+
+                      " STATUS_PENGURUS, "+
+                      " KODE_KANTOR_CABANG, "+
+                      " OPERASI_DATA, "+
+                      " OPEN_DATE, "+
+                      " STATUS_DATA, "+
+                      "'"+periodeId+"' AS PERIODE_ID, "+
+                      " 1 AS STATUS_OPERASI_DATA "+
+                " FROM dslik_pengurus_atau_pemilik "+
+                " WHERE PERIODE_ID = '"+prevPeriode+"'";
+                
+                int result = execUpdate(sql);
+                
+                hasil = periodeId;
+            }
+        }
+        catch(Exception e) {
+            
+        }
+        return hasil;
+    }
+    
+    public static long moveIrrevocable(long prevPeriode, long periodeId) throws DBException {
+        long hasil = 0;
+        try {
+            if(periodeId!=0){
+                String sql =""+
+                "insert into dslik_irrevocable_lc "+
+                "("+
+                      "IRREVOCABLE_LC, "+
+                      "FLAG_DETAIL, "+
+                      "NO_REKENING, "+
+                      "CIF, "+
+                      "KODE_JENIS, "+
+                      "KODE_TUJUAN, "+
+                      "TGL_KELUAR, "+
+                      "TGL_JATUH_TEMPO, "+
+                      "NO_AKAD_AWAL, "+
+                      "TGL_AKAD_AWAL, "+
+                      "NO_AKAD_AKHIR, "+
+                      "TGL_AKAD_AKHIR, "+
+                      "BANK_COUNTERPARTY, "+
+                      "KODE_VALUTA, "+
+                      "PLAFON, "+
+                      "NOMINAL, "+
+                      "SETORAN_JAMINAN, "+
+                      "KODE_KOLEKTIBILITAS, "+
+                      "TGL_WAN_PRESTASI, "+
+                      "KODE_KONDISI, "+
+                      "TGL_KONDISI, "+
+                      "KETERANGAN, "+
+                      "KODE_KANTOR_CABANG, "+
+                      "OPERASI_DATA, "+
+                      "OPEN_DATE, "+
+                      "STATUS_DATA, "+
+                      "PERIODE_ID,"+ 
+                      "STATUS_OPERASI_DATA) "+
+                "SELECT  "+
+                      
+                      "IRREVOCABLE_LC + 111111111111111 AS IRREVOCABLE_LC, "+  
+                      "FLAG_DETAIL, "+
+                      "NO_REKENING, "+
+                      "CIF, "+
+                      "KODE_JENIS, "+
+                      "KODE_TUJUAN, "+
+                      "TGL_KELUAR, "+
+                      "TGL_JATUH_TEMPO, "+
+                      "NO_AKAD_AWAL, "+
+                      "TGL_AKAD_AWAL, "+
+                      "NO_AKAD_AKHIR, "+
+                      "TGL_AKAD_AKHIR, "+
+                      "BANK_COUNTERPARTY, "+
+                      "KODE_VALUTA, "+
+                      "PLAFON, "+
+                      "NOMINAL, "+
+                      "SETORAN_JAMINAN, "+
+                      "KODE_KOLEKTIBILITAS, "+
+                      "TGL_WAN_PRESTASI, "+
+                      "KODE_KONDISI, "+
+                      "TGL_KONDISI, "+
+                      "KETERANGAN, "+
+                      "KODE_KANTOR_CABANG, "+
+                      "OPERASI_DATA, "+
+                      "OPEN_DATE, "+
+                      "STATUS_DATA, "+
+                      "'"+periodeId+"' AS PERIODE_ID, "+ 
+                      "1 AS STATUS_OPERASI_DATA "+ 
+                      "FROM dslik_irrevocable_lc  WHERE PERIODE_ID = '"+prevPeriode+"'";
+                
+                int result = execUpdate(sql);
+                
+                hasil = periodeId;
+            }
+        }
+        catch(Exception e) {
+            
+        }
+        return hasil;
+    }
+    
+    
+    public static long moveKreditJoin(long prevPeriode, long periodeId) throws DBException {
+        long hasil = 0;
+        try {
+            if(periodeId!=0){
+                String sql =""+
+                " insert into dslik_kredit_join_account "+
+                " ( "+
+                      " KREDIT_JOIN_ACNT_OID, "+
+                      " FLAG_DETAIL, "+
+                      " NO_REKENING, "+
+                      " CIF, "+
+                      " SEQUENCE_DEB_JOIN, "+
+                      " KODE_SIFAT, "+
+                      " KODE_JENIS, "+
+                      " KODE_AKAD, "+
+                      " NO_AKAD_AWAL, "+
+                      " TGL_AKAD_AWAL, "+
+                      " NO_AKAD_AKHIR, "+
+                      " TGL_AKAD_AKHIR, "+
+                      " BARU_PERPANJANGAN, "+
+                      " TGL_AWAL_KREDIT, "+
+                      " TGL_MULAI, "+
+                      " TGL_JATUH_TEMPO, "+
+                      " KODE_KAT_DEB, "+
+                      " KODE_JENIS_PENGGUNAAN, "+
+                      " KODE_ORIENTASI_PENGGUNAAN, "+
+                      " KODE_SEKTOR_EKONOMI, "+
+                      " KODE_KAB, "+
+                      " NILAI_PROYEK, "+
+                      " KODE_VALUTA, "+
+                      " PROSENTASE_BUNGA, "+
+                      " JENIS_BUNGA, "+
+                      " KREDIT_PROGRAM_PEMERINTAH, "+
+                      " TAKEOVER, "+
+                      " SUMBER_DANA, "+
+                      " PLAFON_AWAL, "+
+                      " PLAFON, "+
+                      " REALISASI, "+
+                      " DENDA, "+
+                      " BAKI_DEBET, "+
+                      " NILAI_UANG_ASAL, "+
+                      " KODE_KOLEKTIBILITAS, "+
+                      " TGL_MACET, "+
+                      " KODE_SEBAB_MACET, "+
+                      " TUNGGAKAN_POKOK, "+
+                      " TUNGGAKAN_BUNGA, "+
+                      " JML_HARI_TUNGGAKAN, "+
+                      " FREKUENSI_TUNGGAKAN, "+
+                      " FREKUENSI_RESTRUKTURISASI, "+
+                      " TGL_RESTRUKTURISASI_AWAL, "+
+                      " TGL_RESTRUKTURISASI_AKHIR, "+
+                      " KODE_KONDISI, "+
+                      " KODE_CARA, "+
+                      " TGL_KONDISI, "+
+                      " KETERANGAN, "+
+                      " KODE_KANTOR_CABANG, "+
+                      " OPERASI_DATA, "+
+                      " OPEN_DATE, "+
+                      " STATUS_DATA, "+
+                      " PERIODE_ID, "+
+                      " STATUS_OPERASI_DATA "+
+              " ) "+
+              " SELECT "+
+                      " KREDIT_JOIN_ACNT_OID + 111111111111111 AS KREDIT_JOIN_ACNT_OID, "+
+                      " FLAG_DETAIL, "+
+                      " NO_REKENING, "+
+                      " CIF, "+
+                      " SEQUENCE_DEB_JOIN, "+
+                      " KODE_SIFAT, "+
+                      " KODE_JENIS, "+
+                      " KODE_AKAD, "+
+                      " NO_AKAD_AWAL, "+
+                      " TGL_AKAD_AWAL, "+
+                      " NO_AKAD_AKHIR, "+
+                      " TGL_AKAD_AKHIR, "+
+                      " BARU_PERPANJANGAN, "+
+                      " TGL_AWAL_KREDIT, "+
+                      " TGL_MULAI, "+
+                      " TGL_JATUH_TEMPO, "+
+                      " KODE_KAT_DEB, "+
+                      " KODE_JENIS_PENGGUNAAN, "+
+                      " KODE_ORIENTASI_PENGGUNAAN, "+
+                      " KODE_SEKTOR_EKONOMI, "+
+                      " KODE_KAB, "+
+                      " NILAI_PROYEK, "+
+                      " KODE_VALUTA, "+
+                      " PROSENTASE_BUNGA, "+
+                      " JENIS_BUNGA, "+
+                      " KREDIT_PROGRAM_PEMERINTAH, "+
+                      " TAKEOVER, "+
+                      " SUMBER_DANA, "+
+                      " PLAFON_AWAL, "+
+                      " PLAFON, "+
+                      " REALISASI, "+
+                      " DENDA, "+
+                      " BAKI_DEBET, "+
+                      " NILAI_UANG_ASAL, "+
+                      " KODE_KOLEKTIBILITAS, "+
+                      " TGL_MACET, "+
+                      " KODE_SEBAB_MACET, "+
+                      " TUNGGAKAN_POKOK, "+
+                      " TUNGGAKAN_BUNGA, "+
+                      " JML_HARI_TUNGGAKAN, "+
+                      " FREKUENSI_TUNGGAKAN, "+
+                      " FREKUENSI_RESTRUKTURISASI, "+
+                      " TGL_RESTRUKTURISASI_AWAL, "+
+                      " TGL_RESTRUKTURISASI_AKHIR, "+
+                      " KODE_KONDISI, "+
+                      " KODE_CARA, "+
+                      " TGL_KONDISI, "+
+                      " KETERANGAN, "+
+                      " KODE_KANTOR_CABANG, "+
+                      " OPERASI_DATA, "+
+                      " OPEN_DATE, "+
+                      " STATUS_DATA, "+
+                      "'"+periodeId+"' AS PERIODE_ID, "+
+                      " 1 AS STATUS_OPERASI_DATA  "+
+              " FROM  "+
+              " dslik_kredit_join_account WHERE PERIODE_ID='"+prevPeriode+"'";
+                
+                int result = execUpdate(sql);
+                
+                hasil = periodeId;
+            }
+        }
+        catch(Exception e) {
+            
+        }
+        return hasil;
+    }
+    
+    
+    public static long moveLapKeuangan(long prevPeriode, long periodeId) throws DBException {
+        long hasil = 0;
+        try {
+            if(periodeId!=0){
+                String sql =""+
+                "insert into dslik_laporan_keuangan_debitur "+
+                "( "+
+                        " LAP_KEU_DEB_OID, "+
+                        " FLAG_DETAIL, "+
+                        " CIF, "+
+                        " ASET, "+
+                        " ASET_LANCAR, "+
+                        " KAS_DAN_SETARA_KAS, "+
+                        " PIUTANG_USAHA_AST_LNCR, "+
+                        " INVESTASI_AST_LNCR, "+
+                        " ASET_LANCAR_LAIN, "+
+                        " ASET_TIDAK_LANCAR, "+
+                        " PIUTANG_USAHA_AST_TDK_LNCR, "+
+                        " INVESTASI_AST_TDK_LNCR, "+
+                        " ASET_TDK_LNCR_LAIN, "+
+                        " LIABILITAS, "+
+                        " LIABILITAS_JNK_PNDK, "+
+                        " PINJAMAN_JNK_PNDK, "+
+                        " UTANG_USAHA_LIA_JNK_PNDK, "+
+                        " LIABILITAS_JNK_PNDK_LAIN, "+
+                        " LIABILITAS_JNK_PNJG, "+
+                        " PINJAMAN_JNK_PNJG, "+
+                        " UTANG_USAHA_LIA_JNK_PNJG, "+
+                        " LIABILITAS_JNK_PNJG_LAIN, "+
+                        " EKUITAS, "+
+                        " PENDAPATAN_USAHA_OPR, "+
+                        " BEBAN_POKOK_PEND, "+
+                        " LABA_RUGI_BRUTO, "+
+                        " PEND_LAIN_NON_OPR, "+
+                        " BEBAN_LAIN_NON_OPR, "+
+                        " LABA_RUGI_SBLM_PAJAK, "+
+                        " LABA_RUGI_PERIODE, "+
+                        " KODE_KANTOR_CABANG, "+
+                        " OPERASI_DATA, "+
+                        " OPEN_DATE, "+
+                        " STATUS_DATA, "+
+                        " PERIODE_ID, "+
+                        " STATUS_OPERASI_DATA "+
+                " ) "+
+                " SELECT "+
+                        " LAP_KEU_DEB_OID + 111111111111111 AS LAP_KEU_DEB_OID, "+
+                        " FLAG_DETAIL, "+
+                        " CIF, "+
+                        " ASET, "+
+                        " ASET_LANCAR, "+
+                        " KAS_DAN_SETARA_KAS, "+
+                        " PIUTANG_USAHA_AST_LNCR, "+
+                        " INVESTASI_AST_LNCR, "+
+                        " ASET_LANCAR_LAIN, "+
+                        " ASET_TIDAK_LANCAR, "+
+                        " PIUTANG_USAHA_AST_TDK_LNCR, "+
+                        " INVESTASI_AST_TDK_LNCR, "+
+                        " ASET_TDK_LNCR_LAIN, "+
+                        " LIABILITAS, "+
+                        " LIABILITAS_JNK_PNDK, "+
+                        " PINJAMAN_JNK_PNDK, "+
+                        " UTANG_USAHA_LIA_JNK_PNDK, "+
+                        " LIABILITAS_JNK_PNDK_LAIN, "+
+                        " LIABILITAS_JNK_PNJG, "+
+                        " PINJAMAN_JNK_PNJG, "+
+                        " UTANG_USAHA_LIA_JNK_PNJG, "+
+                        " LIABILITAS_JNK_PNJG_LAIN, "+
+                        " EKUITAS, "+
+                        " PENDAPATAN_USAHA_OPR, "+
+                        " BEBAN_POKOK_PEND, "+
+                        " LABA_RUGI_BRUTO, "+
+                        " PEND_LAIN_NON_OPR, "+
+                        " BEBAN_LAIN_NON_OPR, "+
+                        " LABA_RUGI_SBLM_PAJAK, "+
+                        " LABA_RUGI_PERIODE, "+
+                        " KODE_KANTOR_CABANG, "+
+                        " OPERASI_DATA, "+
+                        " OPEN_DATE, "+
+                        " STATUS_DATA, "+
+                        "'"+periodeId+"' AS PERIODE_ID, "+
+                        " 1 AS STATUS_OPERASI_DATA "+
+                " FROM dslik_laporan_keuangan_debitur WHERE PERIODE_ID='"+prevPeriode+"'";
+                
+                int result = execUpdate(sql);
+                
+                hasil = periodeId;
+            }
+        }
+        catch(Exception e) {
+            
+        }
+        return hasil;
+    }
+    
+    
+    public static long movePenjamin(long prevPeriode, long periodeId) throws DBException {
+        long hasil = 0;
+        try {
+            if(periodeId!=0){
+                String sql =""+
+                "insert into dslik_penjamin "+
+                "( "+
+                        "PENJAMIN_OID, "+
+                        "FLAG_DETAIL, "+
+                        "NO_ID_PENJAMIN, "+
+                        "NO_REKENING, "+
+                        "CIF, "+
+                        "JENIS_IDENTITAS, "+
+                        "NAMA_IDENTITAS, "+
+                        "NAMA_LENGKAP, "+
+                        "KODE_GOL_PENJAMIN, "+
+                        "ALAMAT_PENJAMIN, "+
+                        "PROSENTASE_DIJAMIN, "+
+                        "KETERANGAN, "+
+                        "KODE_KANTOR_CABANG, "+
+                        "OPERASI_DATA, "+
+                        "OPEN_DATE, "+
+                        "STATUS_DATA, "+
+                        "PERIODE_ID, "+
+                        "STATUS_OPERASI_DATA "+
+                ") "+
+                "SELECT  "+
+                        "PENJAMIN_OID + 111111111111111 AS PENJAMIN_OID, "+
+                        "FLAG_DETAIL, "+
+                        "NO_ID_PENJAMIN, "+
+                        "NO_REKENING, "+
+                        "CIF, "+
+                        "JENIS_IDENTITAS, "+
+                        "NAMA_IDENTITAS, "+
+                        "NAMA_LENGKAP, "+
+                        "KODE_GOL_PENJAMIN, "+
+                        "ALAMAT_PENJAMIN, "+
+                        "PROSENTASE_DIJAMIN, "+
+                        "KETERANGAN, "+
+                        "KODE_KANTOR_CABANG, "+
+                        "OPERASI_DATA, "+
+                        "OPEN_DATE, "+
+                        "STATUS_DATA, "+
+                        "'"+periodeId+"' AS PERIODE_ID, "+
+                        "1 AS STATUS_OPERASI_DATA "+
+                "FROM dslik_penjamin WHERE PERIODE_ID='"+prevPeriode+"'";
+                
+                int result = execUpdate(sql);
+                
+                hasil = periodeId;
+            }
+        }
+        catch(Exception e) {
+            
+        }
+        return hasil;
+    }
+    
+    
+}

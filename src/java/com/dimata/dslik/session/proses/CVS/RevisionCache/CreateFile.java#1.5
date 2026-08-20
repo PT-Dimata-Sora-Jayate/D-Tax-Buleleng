@@ -1,0 +1,1532 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package com.dimata.dslik.session.proses;
+
+import com.dimata.dslik.entity.agunan.Agunan;
+import com.dimata.dslik.entity.agunan.PstAgunan;
+import com.dimata.dslik.entity.bankgaransi.PstBankGaransi;
+import com.dimata.dslik.entity.fasilitaslain.FasilitasLain;
+import com.dimata.dslik.entity.fasilitaslain.PstFasilitasLain;
+import com.dimata.dslik.entity.irrevocablelc.IrrevocableLc;
+import com.dimata.dslik.entity.irrevocablelc.PstIrrevocableLc;
+import com.dimata.dslik.entity.kredit.Kredit;
+import com.dimata.dslik.entity.kredit.PstKredit;
+import com.dimata.dslik.entity.laporankeuangandebitur.LaporanKeuanganDebitur;
+import com.dimata.dslik.entity.laporankeuangandebitur.PstLaporanKeuanganDebitur;
+import com.dimata.dslik.entity.masterdata.CabangBank;
+import com.dimata.dslik.entity.masterdata.OutletConnection;
+import com.dimata.dslik.entity.masterdata.PstCabangBank;
+import com.dimata.dslik.entity.pengurusataupemilik.PengurusAtauPemilik;
+import com.dimata.dslik.entity.pengurusataupemilik.PstPengurusAtauPemilik;
+import com.dimata.dslik.entity.suratberharga.PstSuratBerharga;
+import com.dimata.dslik.entity.suratberharga.SuratBerharga;
+import com.dimata.util.Formater;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.Date;
+import java.util.Vector;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
+
+/**
+ *
+ * @author dimata005
+ */
+public class CreateFile {
+
+    public static String sentDataToDilimited(FileSent fileSent) {
+
+        PrintWriter pw = null;
+        String patchFle = "";
+        try {
+            //buatkan lokasi dan tempat file yang akan di upload
+            ProsesTransferDataBank prosesTransferDataBank = new ProsesTransferDataBank();
+            OutletConnection outletConnection = prosesTransferDataBank.getConfigurasiConnection();
+            String namaFile = "";
+            Vector vCabang = new Vector();
+            vCabang = PstCabangBank.list(0, 0, "", PstCabangBank.fieldNames[PstCabangBank.FLD_NO_URUT] + " ASC ");
+            
+            switch (fileSent.getTypeSegment()) {
+                case Configurasi.FLD_SEGMENT_DEBITUR_PERORANGAN:
+                    if (vCabang.size() > 0) {
+                        for (int i = 0; i < vCabang.size(); i++) {
+                            CabangBank cabangBank = (CabangBank) vCabang.get(i);
+                            int noCabang = 0;
+
+                            try {
+                                noCabang = cabangBank.getNoUrut();
+                            } catch (Exception ex) {
+
+                            }//Integer.parseInt(cabangBank.getKodeCabang());
+                            //cek pengurus sesuai cabang
+                            Vector vPengurusPemilik = new Vector();
+                            String where = PstPengurusAtauPemilik.fieldNames[PstPengurusAtauPemilik.FLD_KODE_KANTOR_CABANG] + "='" + cabangBank.getKodeCabang() + "'";
+                            vPengurusPemilik = PstPengurusAtauPemilik.list(0, 0, "" + where, "");
+                            if (vPengurusPemilik.size() > 0) {
+                                namaFile = "" + outletConnection.getJenisLJK() + "." + outletConnection.getKodeLJK() + "." + fileSent.getTahun() + "." + fileSent.getBulan() + "." + Configurasi.valSegment[Configurasi.FLD_SEGMENT_DEBITUR_PERORANGAN] + "." + noCabang;
+                                patchFle = fileSent.getLocation() + System.getProperty("file.separator") + "" + namaFile + ".txt";
+                                pw = new PrintWriter(patchFle);
+                                //Buat header
+                                //H|0101|666|2016|10|M01|1|1
+                                //H (header)
+                                //0101 (jenis LJK)
+                                //666 (kode LJK)
+                                //2016 (tahun)
+                                //10 (bulan
+                                //M01 (kode segment)
+                                //1 (jumlah data
+                                pw.print("H" + "|");
+                                pw.print("" + outletConnection.getJenisLJK() + "|");
+                                pw.print("" + outletConnection.getKodeLJK() + "|");
+                                pw.print("" + fileSent.getTahun() + "|");
+                                pw.print("" + fileSent.getBulan() + "|");
+                                pw.print("" + Configurasi.valSegment[Configurasi.FLD_SEGMENT_DEBITUR_PERORANGAN] + "|");
+                                pw.print("" + vPengurusPemilik.size() + "|");
+                                pw.print("" + vPengurusPemilik.size() + "|");
+                                pw.println();
+                                for (int p = 0; p < vPengurusPemilik.size(); p++) {
+                                    try {
+
+                                        PengurusAtauPemilik pengurusPemilik = (PengurusAtauPemilik) vPengurusPemilik.get(p);
+                                        //D    |NIKPENG1 |CIFBUDUMMY1|1          |Margo Joyo    |L              |JL Sujartijo no 123 Jakarta Timur|Grogol Utara|Grogol    |0117          |01              |100                |1               |001                 |C
+                                        //flag | no iden | cif       | jenis idn | nama pemilik | jenis kelamin | alamat                          | kelurahan  |kecamatan |kode kab dati |kode jabatan    |pangsa pemilik     |status pengurus | kode kantor cabang | operasi data 
+                                        //1    | 2       | 3         | 4         | 5            | 6             | 7                               |8           | 9        | 10           | 11             | 12                |13              | 14                 | 15                                                
+                                        pw.print("" + pengurusPemilik.getFlagDetail() + "|");//1
+                                        pw.print("" + pengurusPemilik.getNoIdentitas() + "|");//2
+                                        pw.print("" + pengurusPemilik.getCif() + "|");//3
+                                        pw.print("" + pengurusPemilik.getJenisIdentitas() + "|");//4
+                                        pw.print("" + pengurusPemilik.getNamaPengurus() + "|");//5
+                                        pw.print("" + pengurusPemilik.getJenisKelamin() + "|");//6
+                                        pw.print("" + pengurusPemilik.getAlamat() + "|");//7
+                                        pw.print("" + pengurusPemilik.getKelurahan() + "|");//8
+                                        pw.print("" + pengurusPemilik.getKecamatan() + "|");//9
+                                        pw.print("" + pengurusPemilik.getKodeKabupaten() + "|");//10
+                                        pw.print("" + pengurusPemilik.getKodeJabatan() + "|");//11
+                                        pw.print("" + pengurusPemilik.getPangsaKepemilikan() + "|");//12
+                                        pw.print("" + pengurusPemilik.getStatusPengurus() + "|");//13
+                                        pw.print("" + pengurusPemilik.getKodeKantorCabang() + "|");//14
+                                        pw.print("" + fileSent.getOperasiData() + "|");
+                                        pw.println();
+                                        //isi
+                                        //buatkan file nya
+
+                                    } catch (Exception exc) {
+                                        System.out.println("ini eornya" + exc);
+                                    }
+                                }
+                                pw.flush();
+                                //proses zip data
+                                //zipFile(new File(patchFle),fileSent.getLocation(),0);
+                            } else {
+                                namaFile = "" + outletConnection.getJenisLJK() + "." + outletConnection.getKodeLJK() + "." + fileSent.getTahun() + "." + fileSent.getBulan() + "." + Configurasi.valSegment[Configurasi.FLD_SEGMENT_DEBITUR_PERORANGAN] + "." + noCabang;
+                                patchFle = fileSent.getLocation() + System.getProperty("file.separator") + "" + namaFile + ".txt";
+                                pw = new PrintWriter(patchFle);
+                                //Buat header
+                                //H|0101|666|2016|10|M01|1|1
+                                //H (header)
+                                //0101 (jenis LJK)
+                                //666 (kode LJK)
+                                //2016 (tahun)
+                                //10 (bulan
+                                //M01 (kode segment)
+                                //1 (jumlah data
+                                pw.print("H" + "|");
+                                pw.print("" + outletConnection.getJenisLJK() + "|");
+                                pw.print("" + outletConnection.getKodeLJK() + "|");
+                                pw.print("" + fileSent.getTahun() + "|");
+                                pw.print("" + fileSent.getBulan() + "|");
+                                pw.print("" + Configurasi.valSegment[Configurasi.FLD_SEGMENT_DEBITUR_PERORANGAN] + "|");
+                                pw.print("" + vPengurusPemilik.size() + "|");
+                                pw.print("" + vPengurusPemilik.size() + "|");
+                                pw.println();
+                                pw.flush();
+                            }
+                        }
+                    }
+
+                    break;
+                    
+                case Configurasi.FLD_SEGMENT_DEBITUR_BADAN_USAHA:
+                    
+                    if (vCabang.size() > 0) {
+                        for (int i = 0; i < vCabang.size(); i++) {
+                            CabangBank cabangBank = (CabangBank) vCabang.get(i);
+                            int noCabang = 0;
+
+                            try {
+                                noCabang = cabangBank.getNoUrut();
+                            } catch (Exception ex) {
+
+                            }//Integer.parseInt(cabangBank.getKodeCabang());
+                            //cek pengurus sesuai cabang
+                            Vector vPengurusPemilik = new Vector();
+                            String where = PstPengurusAtauPemilik.fieldNames[PstPengurusAtauPemilik.FLD_KODE_KANTOR_CABANG] + "='" + cabangBank.getKodeCabang() + "'";
+                            vPengurusPemilik = PstPengurusAtauPemilik.list(0, 0, "" + where, "");
+                            if (vPengurusPemilik.size() > 0) {
+                                namaFile = "" + outletConnection.getJenisLJK() + "." + outletConnection.getKodeLJK() + "." + fileSent.getTahun() + "." + fileSent.getBulan() + "." + Configurasi.valSegment[Configurasi.FLD_SEGMENT_DEBITUR_BADAN_USAHA] + "." + noCabang;
+                                patchFle = fileSent.getLocation() + System.getProperty("file.separator") + "" + namaFile + ".txt";
+                                pw = new PrintWriter(patchFle);
+                                //Buat header
+                                //H|0101|666|2016|10|M01|1|1
+                                //H (header)
+                                //0101 (jenis LJK)
+                                //666 (kode LJK)
+                                //2016 (tahun)
+                                //10 (bulan
+                                //M01 (kode segment)
+                                //1 (jumlah data
+                                pw.print("H" + "|");
+                                pw.print("" + outletConnection.getJenisLJK() + "|");
+                                pw.print("" + outletConnection.getKodeLJK() + "|");
+                                pw.print("" + fileSent.getTahun() + "|");
+                                pw.print("" + fileSent.getBulan() + "|");
+                                pw.print("" + Configurasi.valSegment[Configurasi.FLD_SEGMENT_DEBITUR_BADAN_USAHA] + "|");
+                                pw.print("" + vPengurusPemilik.size() + "|");
+                                pw.print("" + vPengurusPemilik.size() + "|");
+                                pw.println();
+                                for (int p = 0; p < vPengurusPemilik.size(); p++) {
+                                    try {
+
+                                        PengurusAtauPemilik pengurusPemilik = (PengurusAtauPemilik) vPengurusPemilik.get(p);
+                                        //D    |NIKPENG1 |CIFBUDUMMY1|1          |Margo Joyo    |L              |JL Sujartijo no 123 Jakarta Timur|Grogol Utara|Grogol    |0117          |01              |100                |1               |001                 |C
+                                        //flag | no iden | cif       | jenis idn | nama pemilik | jenis kelamin | alamat                          | kelurahan  |kecamatan |kode kab dati |kode jabatan    |pangsa pemilik     |status pengurus | kode kantor cabang | operasi data 
+                                        //1    | 2       | 3         | 4         | 5            | 6             | 7                               |8           | 9        | 10           | 11             | 12                |13              | 14                 | 15                                                
+                                        pw.print("" + pengurusPemilik.getFlagDetail() + "|");//1
+                                        pw.print("" + pengurusPemilik.getNoIdentitas() + "|");//2
+                                        pw.print("" + pengurusPemilik.getCif() + "|");//3
+                                        pw.print("" + pengurusPemilik.getJenisIdentitas() + "|");//4
+                                        pw.print("" + pengurusPemilik.getNamaPengurus() + "|");//5
+                                        pw.print("" + pengurusPemilik.getJenisKelamin() + "|");//6
+                                        pw.print("" + pengurusPemilik.getAlamat() + "|");//7
+                                        pw.print("" + pengurusPemilik.getKelurahan() + "|");//8
+                                        pw.print("" + pengurusPemilik.getKecamatan() + "|");//9
+                                        pw.print("" + pengurusPemilik.getKodeKabupaten() + "|");//10
+                                        pw.print("" + pengurusPemilik.getKodeJabatan() + "|");//11
+                                        pw.print("" + pengurusPemilik.getPangsaKepemilikan() + "|");//12
+                                        pw.print("" + pengurusPemilik.getStatusPengurus() + "|");//13
+                                        pw.print("" + pengurusPemilik.getKodeKantorCabang() + "|");//14
+                                        pw.print("" + fileSent.getOperasiData() + "|");
+                                        pw.println();
+                                        //isi
+                                        //buatkan file nya
+
+                                    } catch (Exception exc) {
+                                        System.out.println("ini eornya" + exc);
+                                    }
+                                }
+                                pw.flush();
+                                //proses zip data
+                                //zipFile(new File(patchFle),fileSent.getLocation(),0);
+                            } else {
+                                namaFile = "" + outletConnection.getJenisLJK() + "." + outletConnection.getKodeLJK() + "." + fileSent.getTahun() + "." + fileSent.getBulan() + "." + Configurasi.valSegment[Configurasi.FLD_SEGMENT_DEBITUR_BADAN_USAHA] + "." + noCabang;
+                                patchFle = fileSent.getLocation() + System.getProperty("file.separator") + "" + namaFile + ".txt";
+                                pw = new PrintWriter(patchFle);
+                                //Buat header
+                                //H|0101|666|2016|10|M01|1|1
+                                //H (header)
+                                //0101 (jenis LJK)
+                                //666 (kode LJK)
+                                //2016 (tahun)
+                                //10 (bulan
+                                //M01 (kode segment)
+                                //1 (jumlah data
+                                pw.print("H" + "|");
+                                pw.print("" + outletConnection.getJenisLJK() + "|");
+                                pw.print("" + outletConnection.getKodeLJK() + "|");
+                                pw.print("" + fileSent.getTahun() + "|");
+                                pw.print("" + fileSent.getBulan() + "|");
+                                pw.print("" + Configurasi.valSegment[Configurasi.FLD_SEGMENT_DEBITUR_BADAN_USAHA] + "|");
+                                pw.print("" + vPengurusPemilik.size() + "|");
+                                pw.print("" + vPengurusPemilik.size() + "|");
+                                pw.println();
+                                pw.flush();
+                            }
+                        }
+                    }
+                    
+                    break;
+
+                case Configurasi.FLD_SEGMENT_KREDIT:
+                    
+                    if (vCabang.size() > 0) {
+                        for (int i = 0; i < vCabang.size(); i++) {
+                            CabangBank cabangBank = (CabangBank) vCabang.get(i);
+                            int noCabang = 0;
+
+                            try {
+                                noCabang = cabangBank.getNoUrut();
+                            } catch (Exception ex) {
+
+                            }//Integer.parseInt(cabangBank.getKodeCabang());
+                            //cek pengurus sesuai cabang
+                            Vector vKredit = new Vector();
+                            String where = PstKredit.fieldNames[PstKredit.FLD_KODE_KANTOR_CABANG] + "='" + cabangBank.getKodeCabang() + "'";
+                            vKredit = PstKredit.list(0, 0, "" + where, "");
+                            if (vKredit.size() > 0) {
+                                namaFile = "" + outletConnection.getJenisLJK() + "." + outletConnection.getKodeLJK() + "." + fileSent.getTahun() + "." + fileSent.getBulan() + "." + Configurasi.valSegment[Configurasi.FLD_SEGMENT_KREDIT] + "." + noCabang;
+                                patchFle = fileSent.getLocation() + System.getProperty("file.separator") + "" + namaFile + ".txt";
+                                pw = new PrintWriter(patchFle);
+                                //Buat header
+                                //H|0101|666|2016|10|M01|1|1
+                                //H (header)
+                                //0101 (jenis LJK)
+                                //666 (kode LJK)
+                                //2016 (tahun)
+                                //10 (bulan
+                                //M01 (kode segment)
+                                //1 (jumlah data
+                                pw.print("H" + "|");
+                                pw.print("" + outletConnection.getJenisLJK() + "|");
+                                pw.print("" + outletConnection.getKodeLJK() + "|");
+                                pw.print("" + fileSent.getTahun() + "|");
+                                pw.print("" + fileSent.getBulan() + "|");
+                                pw.print("" + Configurasi.valSegment[Configurasi.FLD_SEGMENT_KREDIT] + "|");
+                                pw.print("" + vKredit.size() + "|");
+                                pw.print("" + vKredit.size() + "|");
+                                pw.println();
+                                for (int p = 0; p < vKredit.size(); p++) {
+                                    try {
+
+                                        Kredit kredit = (Kredit) vKredit.get(p);                                                                         
+                                        pw.print("" + kredit.getFlagDetail() + "|");//1
+                                        pw.print("" + kredit.getNoRekening()+ "|");//2
+                                        pw.print("" + kredit.getCif() + "|");//3
+                                        pw.print("" + kredit.getKodeSifat()+ "|");//4
+                                        pw.print("" + kredit.getKodeJenisKredit()+ "|");//5
+                                        pw.print("" + kredit.getKodeAkad()+ "|");//6
+                                        pw.print("" + kredit.getNoAkadAwal()+ "|");//7
+                                        String tglAkadAwal = "";
+                                        if (kredit.getTglAkadAwal()!=null){
+                                            tglAkadAwal = Formater.formatDate(kredit.getTglAkadAwal(),"yyyyMMdd");
+                                        }
+                                        pw.print("" +tglAkadAwal + "|");//8
+                                        pw.print("" + kredit.getNoAkadAkhir()+ "|");//9
+                                        String tglAkadAkhir ="";
+                                        if (kredit.getTglAkadAkhir()!=null){
+                                            tglAkadAkhir = Formater.formatDate(kredit.getTglAkadAkhir(),"yyyyMMdd");
+                                        }
+                                        pw.print("" + tglAkadAkhir + "|");//10
+                                        pw.print("" + kredit.getBaruPerpanjangan()+ "|");//11
+                                        String tglAwal = "";
+                                        if (kredit.getTglAwal()!=null){
+                                            tglAwal = Formater.formatDate(kredit.getTglAwal(),"yyyyMMdd");
+                                        }
+                                        pw.print("" + tglAwal + "|");//12
+                                        String tglMulai = "";
+                                        if (kredit.getTglMulai()!=null){
+                                            tglMulai = Formater.formatDate(kredit.getTglMulai(),"yyyyMMdd");
+                                        }
+                                        pw.print("" + tglMulai + "|");//13
+                                        String tglTempo = "";
+                                        if (kredit.getTglTempo()!=null){
+                                            tglTempo = Formater.formatDate(kredit.getTglTempo(),"yyyyMMdd");
+                                        }
+                                        pw.print("" + tglTempo+ "|");//14
+                                        pw.print("" + kredit.getKodeKatDbitur()+ "|");//15
+                                        pw.print("" + kredit.getKodeJenisPenggunaan()+ "|");//16
+                                        pw.print("" + kredit.getKodeOrientasiPenggunaan()+ "|");//17
+                                        pw.print("" + kredit.getKodeSektorEkonomi()+ "|");//18
+                                        pw.print("" + kredit.getKodeKab()+ "|");//19
+                                        pw.print("" + kredit.getNilai()+ "|");//20
+                                        pw.print("" + kredit.getKodeValuta()+ "|");//21
+                                        pw.print("" + kredit.getProsentaseBunga()+ "|");//22
+                                        pw.print("" + kredit.getJenisBunga()+ "|");//23
+                                        pw.print("" + kredit.getKreditPemerintah()+ "|");//24
+                                        pw.print("" + kredit.getTakeover()+ "|");//25
+                                        pw.print("" + kredit.getSumberDana()+ "|");//26
+                                        pw.print("" + kredit.getPlafonAwal()+ "|");//27
+                                        pw.print("" + kredit.getPlafon()+ "|");//28
+                                        pw.print("" + kredit.getRealisasi()+ "|");//29
+                                        pw.print("" + kredit.getDenda()+ "|");//30
+                                        pw.print("" + kredit.getBakiDebet()+ "|");//31
+                                        pw.print("" + kredit.getNilaiUangAsal()+ "|");//32
+                                        pw.print("" + kredit.getKodeKolektibilitas()+ "|");//33
+                                        String tglMacet = "";
+                                        if (kredit.getTglMacet()!=null){
+                                            tglMacet = Formater.formatDate(kredit.getTglMacet(),"yyyyMMdd");
+                                        }
+                                        pw.print("" + tglMacet + "|");//34
+                                        pw.print("" + kredit.getKodeSebabMacet()+ "|");//35
+                                        pw.print("" + kredit.getTunggakanPokok()+ "|");//36
+                                        pw.print("" + kredit.getTunggakanBunga()+ "|");//37
+                                        pw.print("" + kredit.getJmlHariTunggakan()+ "|");//38
+                                        pw.print("" + kredit.getFrekuensiTunggakan()+ "|");//39
+                                        pw.print("" + kredit.getFrekuensiRestrukturisasi()+ "|");//40
+                                        String tglRestrukturisasiAwal = "";
+                                        if (kredit.getTglRestrukturisasiAwal()!=null){
+                                            tglRestrukturisasiAwal = Formater.formatDate(kredit.getTglRestrukturisasiAwal(),"yyyyMMdd");
+                                        }
+                                        pw.print("" + tglRestrukturisasiAwal + "|");//41
+                                        pw.print("" + Formater.formatDate(kredit.getTglRestrukturisasiAkhir(),"yyyyMMdd")+ "|");//42
+                                        pw.print("" + kredit.getKodeCara()+ "|");//43
+                                        pw.print("" + kredit.getKodeKondisi()+ "|");//44
+                                        String tglKondisi = "";
+                                        if (kredit.getTglKondisi()!=null){
+                                            tglKondisi = Formater.formatDate(kredit.getTglKondisi(),"yyyyMMdd");
+                                        }
+                                        pw.print("" + tglKondisi + "|");//45
+                                        pw.print("" + kredit.getKeterangan()+ "|");//46
+                                        pw.print("" + kredit.getKodeKantorCabang()+ "|");//47
+                                        pw.print("" + fileSent.getOperasiData() + "|");
+                                        pw.println();
+                                        //isi
+                                        //buatkan file nya
+
+                                    } catch (Exception exc) {
+                                        System.out.println("ini eornya" + exc);
+                                    }
+                                }
+                                pw.flush();
+                                //proses zip data
+                                //zipFile(new File(patchFle),fileSent.getLocation(),0);
+                            } else {
+                                namaFile = "" + outletConnection.getJenisLJK() + "." + outletConnection.getKodeLJK() + "." + fileSent.getTahun() + "." + fileSent.getBulan() + "." + Configurasi.valSegment[Configurasi.FLD_SEGMENT_KREDIT] + "." + noCabang;
+                                patchFle = fileSent.getLocation() + System.getProperty("file.separator") + "" + namaFile + ".txt";
+                                pw = new PrintWriter(patchFle);
+                                //Buat header
+                                //H|0101|666|2016|10|M01|1|1
+                                //H (header)
+                                //0101 (jenis LJK)
+                                //666 (kode LJK)
+                                //2016 (tahun)
+                                //10 (bulan
+                                //M01 (kode segment)
+                                //1 (jumlah data
+                                pw.print("H" + "|");
+                                pw.print("" + outletConnection.getJenisLJK() + "|");
+                                pw.print("" + outletConnection.getKodeLJK() + "|");
+                                pw.print("" + fileSent.getTahun() + "|");
+                                pw.print("" + fileSent.getBulan() + "|");
+                                pw.print("" + Configurasi.valSegment[Configurasi.FLD_SEGMENT_KREDIT] + "|");
+                                pw.print("" + vKredit.size() + "|");
+                                pw.print("" + vKredit.size() + "|");
+                                pw.println();
+                                pw.flush();
+                            }
+                        }
+                    }
+                    
+                    break;
+
+                case Configurasi.FLD_SEGMENT_KREDIT_JOIN_ACCOUNT:
+                    
+                     if (vCabang.size() > 0) {
+                        for (int i = 0; i < vCabang.size(); i++) {
+                            CabangBank cabangBank = (CabangBank) vCabang.get(i);
+                            int noCabang = 0;
+
+                            try {
+                                noCabang = cabangBank.getNoUrut();
+                            } catch (Exception ex) {
+
+                            }//Integer.parseInt(cabangBank.getKodeCabang());
+                            //cek pengurus sesuai cabang
+                            Vector vPengurusPemilik = new Vector();
+                            String where = PstPengurusAtauPemilik.fieldNames[PstPengurusAtauPemilik.FLD_KODE_KANTOR_CABANG] + "='" + cabangBank.getKodeCabang() + "'";
+                            vPengurusPemilik = PstPengurusAtauPemilik.list(0, 0, "" + where, "");
+                            if (vPengurusPemilik.size() > 0) {
+                                namaFile = "" + outletConnection.getJenisLJK() + "." + outletConnection.getKodeLJK() + "." + fileSent.getTahun() + "." + fileSent.getBulan() + "." + Configurasi.valSegment[Configurasi.FLD_SEGMENT_KREDIT_JOIN_ACCOUNT] + "." + noCabang;
+                                patchFle = fileSent.getLocation() + System.getProperty("file.separator") + "" + namaFile + ".txt";
+                                pw = new PrintWriter(patchFle);
+                                //Buat header
+                                //H|0101|666|2016|10|M01|1|1
+                                //H (header)
+                                //0101 (jenis LJK)
+                                //666 (kode LJK)
+                                //2016 (tahun)
+                                //10 (bulan
+                                //M01 (kode segment)
+                                //1 (jumlah data
+                                pw.print("H" + "|");
+                                pw.print("" + outletConnection.getJenisLJK() + "|");
+                                pw.print("" + outletConnection.getKodeLJK() + "|");
+                                pw.print("" + fileSent.getTahun() + "|");
+                                pw.print("" + fileSent.getBulan() + "|");
+                                pw.print("" + Configurasi.valSegment[Configurasi.FLD_SEGMENT_KREDIT_JOIN_ACCOUNT] + "|");
+                                pw.print("" + vPengurusPemilik.size() + "|");
+                                pw.print("" + vPengurusPemilik.size() + "|");
+                                pw.println();
+                                for (int p = 0; p < vPengurusPemilik.size(); p++) {
+                                    try {
+
+                                        PengurusAtauPemilik pengurusPemilik = (PengurusAtauPemilik) vPengurusPemilik.get(p);
+                                        //D    |NIKPENG1 |CIFBUDUMMY1|1          |Margo Joyo    |L              |JL Sujartijo no 123 Jakarta Timur|Grogol Utara|Grogol    |0117          |01              |100                |1               |001                 |C
+                                        //flag | no iden | cif       | jenis idn | nama pemilik | jenis kelamin | alamat                          | kelurahan  |kecamatan |kode kab dati |kode jabatan    |pangsa pemilik     |status pengurus | kode kantor cabang | operasi data 
+                                        //1    | 2       | 3         | 4         | 5            | 6             | 7                               |8           | 9        | 10           | 11             | 12                |13              | 14                 | 15                                                
+                                        pw.print("" + pengurusPemilik.getFlagDetail() + "|");//1
+                                        pw.print("" + pengurusPemilik.getNoIdentitas() + "|");//2
+                                        pw.print("" + pengurusPemilik.getCif() + "|");//3
+                                        pw.print("" + pengurusPemilik.getJenisIdentitas() + "|");//4
+                                        pw.print("" + pengurusPemilik.getNamaPengurus() + "|");//5
+                                        pw.print("" + pengurusPemilik.getJenisKelamin() + "|");//6
+                                        pw.print("" + pengurusPemilik.getAlamat() + "|");//7
+                                        pw.print("" + pengurusPemilik.getKelurahan() + "|");//8
+                                        pw.print("" + pengurusPemilik.getKecamatan() + "|");//9
+                                        pw.print("" + pengurusPemilik.getKodeKabupaten() + "|");//10
+                                        pw.print("" + pengurusPemilik.getKodeJabatan() + "|");//11
+                                        pw.print("" + pengurusPemilik.getPangsaKepemilikan() + "|");//12
+                                        pw.print("" + pengurusPemilik.getStatusPengurus() + "|");//13
+                                        pw.print("" + pengurusPemilik.getKodeKantorCabang() + "|");//14
+                                        pw.print("" + fileSent.getOperasiData() + "|");
+                                        pw.println();
+                                        //isi
+                                        //buatkan file nya
+
+                                    } catch (Exception exc) {
+                                        System.out.println("ini eornya" + exc);
+                                    }
+                                }
+                                pw.flush();
+                                //proses zip data
+                                //zipFile(new File(patchFle),fileSent.getLocation(),0);
+                            } else {
+                                namaFile = "" + outletConnection.getJenisLJK() + "." + outletConnection.getKodeLJK() + "." + fileSent.getTahun() + "." + fileSent.getBulan() + "." + Configurasi.valSegment[Configurasi.FLD_SEGMENT_KREDIT_JOIN_ACCOUNT] + "." + noCabang;
+                                patchFle = fileSent.getLocation() + System.getProperty("file.separator") + "" + namaFile + ".txt";
+                                pw = new PrintWriter(patchFle);
+                                //Buat header
+                                //H|0101|666|2016|10|M01|1|1
+                                //H (header)
+                                //0101 (jenis LJK)
+                                //666 (kode LJK)
+                                //2016 (tahun)
+                                //10 (bulan
+                                //M01 (kode segment)
+                                //1 (jumlah data
+                                pw.print("H" + "|");
+                                pw.print("" + outletConnection.getJenisLJK() + "|");
+                                pw.print("" + outletConnection.getKodeLJK() + "|");
+                                pw.print("" + fileSent.getTahun() + "|");
+                                pw.print("" + fileSent.getBulan() + "|");
+                                pw.print("" + Configurasi.valSegment[Configurasi.FLD_SEGMENT_KREDIT_JOIN_ACCOUNT] + "|");
+                                pw.print("" + vPengurusPemilik.size() + "|");
+                                pw.print("" + vPengurusPemilik.size() + "|");
+                                pw.println();
+                                pw.flush();
+                            }
+                        }
+                    }
+                    break;
+
+                case Configurasi.FLD_SEGMENT_SURAT_BERHARGA:
+                    
+                    if (vCabang.size() > 0) {
+                        for (int i = 0; i < vCabang.size(); i++) {
+                            CabangBank cabangBank = (CabangBank) vCabang.get(i);
+                            int noCabang = 0;
+
+                            try {
+                                noCabang = cabangBank.getNoUrut();
+                            } catch (Exception ex) {
+
+                            }//Integer.parseInt(cabangBank.getKodeCabang());
+                            //cek pengurus sesuai cabang
+                            Vector vSuratBerharga = new Vector();
+                            String where = PstSuratBerharga.fieldNames[PstSuratBerharga.FLD_KODE_KANTOR_CABANG] + "='" + cabangBank.getKodeCabang() + "'";
+                            vSuratBerharga = PstSuratBerharga.list(0, 0, "" + where, "");
+                            if (vSuratBerharga.size() > 0) {
+                                namaFile = "" + outletConnection.getJenisLJK() + "." + outletConnection.getKodeLJK() + "." + fileSent.getTahun() + "." + fileSent.getBulan() + "." + Configurasi.valSegment[Configurasi.FLD_SEGMENT_SURAT_BERHARGA] + "." + noCabang;
+                                patchFle = fileSent.getLocation() + System.getProperty("file.separator") + "" + namaFile + ".txt";
+                                pw = new PrintWriter(patchFle);
+                                //Buat header
+                                //H|0101|666|2016|10|M01|1|1
+                                //H (header)
+                                //0101 (jenis LJK)
+                                //666 (kode LJK)
+                                //2016 (tahun)
+                                //10 (bulan
+                                //M01 (kode segment)
+                                //1 (jumlah data
+                                pw.print("H" + "|");
+                                pw.print("" + outletConnection.getJenisLJK() + "|");
+                                pw.print("" + outletConnection.getKodeLJK() + "|");
+                                pw.print("" + fileSent.getTahun() + "|");
+                                pw.print("" + fileSent.getBulan() + "|");
+                                pw.print("" + Configurasi.valSegment[Configurasi.FLD_SEGMENT_SURAT_BERHARGA] + "|");
+                                pw.print("" + vSuratBerharga.size() + "|");
+                                pw.print("" + vSuratBerharga.size() + "|");
+                                pw.println();
+                                for (int p = 0; p < vSuratBerharga.size(); p++) {
+                                    try {
+                                        SuratBerharga suratBerharga = new SuratBerharga();
+                                        suratBerharga = (SuratBerharga) vSuratBerharga.get(p);
+                                        pw.print("" + suratBerharga.getFlagDetail() + "|");//1
+                                        pw.print("" + suratBerharga.getNoRekening()+ "|");//2
+                                        pw.print("" + suratBerharga.getCif()+ "|");//3
+                                        pw.print("" + suratBerharga.getKodeJenis()+ "|");//4
+                                        pw.print("" + suratBerharga.getSovereignRate()+ "|");//5
+                                        pw.print("" + suratBerharga.getListing()+ "|");//6
+                                        pw.print("" + suratBerharga.getPeringkat()+ "|");//7
+                                        pw.print("" + suratBerharga.getKodeTujuan()+ "|");//8
+                                        String tglTerbit = "";
+                                        if (suratBerharga.getTglTerbit()!=null){
+                                            tglTerbit = Formater.formatDate(suratBerharga.getTglTerbit(),"yyyyMMdd");
+                                        }
+                                        pw.print("" + tglTerbit+ "|");//9
+                                        String tglBeli = "";
+                                        if (suratBerharga.getTglBeli()!=null){
+                                            tglBeli = Formater.formatDate(suratBerharga.getTglBeli(),"yyyyMMdd");
+                                        }
+                                        pw.print("" + tglBeli+ "|");//10
+                                        String tglJatuhTempo = "";
+                                        if (suratBerharga.getTglJatuhTempo()!=null){
+                                            tglJatuhTempo = Formater.formatDate(suratBerharga.getTglJatuhTempo(),"yyyyMMdd");
+                                        }
+                                        pw.print("" + tglJatuhTempo+ "|");//11
+                                        pw.print("" + suratBerharga.getKodeValuta()+ "|");//12
+                                        pw.print("" + suratBerharga.getNominal()+ "|");//13
+                                        pw.print("" + suratBerharga.getNilaiUangAsal()+ "|");//14
+                                        pw.print("" + suratBerharga.getNilaiPasar()+ "|");//15
+                                        pw.print("" + suratBerharga.getNilaiPerolehan()+ "|");//16
+                                        pw.print("" + suratBerharga.getSukuBunga()+ "|");//17
+                                        pw.print("" + suratBerharga.getTunggakan()+ "|");//18
+                                        pw.print("" + suratBerharga.getJmlHariTunggakan()+ "|");//19
+                                        pw.print("" + suratBerharga.getKodeKolektibilitas()+ "|");//20
+                                        String tglMacet = "";
+                                        if (suratBerharga.getTglMacet()!=null){
+                                            tglMacet = Formater.formatDate(suratBerharga.getTglMacet(),"yyyyMMdd");
+                                        }
+                                        pw.print("" + tglMacet + "|");//21
+                                        pw.print("" + suratBerharga.getKodeSebabMacet()+ "|");//22
+                                        pw.print("" + suratBerharga.getKodeKondisi()+ "|");//23
+                                        String tglKondisi = "";
+                                        if (suratBerharga.getTglKondisi()!=null){
+                                            tglKondisi = Formater.formatDate(suratBerharga.getTglKondisi(),"yyyyMMdd");
+                                        }
+                                        pw.print("" + tglKondisi + "|");//24
+                                        pw.print("" + suratBerharga.getKeterangan()+ "|");//25
+                                        pw.print("" + suratBerharga.getKodeKantorCabang()+ "|");//26
+                                        pw.print("" + suratBerharga.getOperasiData() + "|");//27
+                                        pw.println();
+                                        //isi
+                                        //buatkan file nya
+
+                                    } catch (Exception exc) {
+                                        System.out.println("ini eornya" + exc);
+                                    }
+                                }
+                                pw.flush();
+                                //proses zip data
+                                //zipFile(new File(patchFle),fileSent.getLocation(),0);
+                            } else {
+                                namaFile = "" + outletConnection.getJenisLJK() + "." + outletConnection.getKodeLJK() + "." + fileSent.getTahun() + "." + fileSent.getBulan() + "." + Configurasi.valSegment[Configurasi.FLD_SEGMENT_SURAT_BERHARGA] + "." + noCabang;
+                                patchFle = fileSent.getLocation() + System.getProperty("file.separator") + "" + namaFile + ".txt";
+                                pw = new PrintWriter(patchFle);
+                                //Buat header
+                                //H|0101|666|2016|10|M01|1|1
+                                //H (header)
+                                //0101 (jenis LJK)
+                                //666 (kode LJK)
+                                //2016 (tahun)
+                                //10 (bulan
+                                //M01 (kode segment)
+                                //1 (jumlah data
+                                pw.print("H" + "|");
+                                pw.print("" + outletConnection.getJenisLJK() + "|");
+                                pw.print("" + outletConnection.getKodeLJK() + "|");
+                                pw.print("" + fileSent.getTahun() + "|");
+                                pw.print("" + fileSent.getBulan() + "|");
+                                pw.print("" + Configurasi.valSegment[Configurasi.FLD_SEGMENT_SURAT_BERHARGA] + "|");
+                                pw.print("" + vSuratBerharga.size() + "|");
+                                pw.print("" + vSuratBerharga.size() + "|");
+                                pw.println();
+                                pw.flush();
+                            }
+                        }
+                    }
+                    
+                    break;
+                case Configurasi.FLD_SEGMENT_IRREVOCABLE_LC:
+                    
+                    if (vCabang.size() > 0) {
+                        for (int i = 0; i < vCabang.size(); i++) {
+                            CabangBank cabangBank = (CabangBank) vCabang.get(i);
+                            int noCabang = 0;
+
+                            try {
+                                noCabang = cabangBank.getNoUrut();
+                            } catch (Exception ex) {
+
+                            }//Integer.parseInt(cabangBank.getKodeCabang());
+                            //cek pengurus sesuai cabang
+                            Vector vIrrevocable = new Vector();
+                            String where = PstIrrevocableLc.fieldNames[PstIrrevocableLc.FLD_KODE_KANTOR_CABANG] + "='" + cabangBank.getKodeCabang() + "'";
+                            vIrrevocable = PstIrrevocableLc.list(0, 0, "" + where, "");
+                            if (vIrrevocable.size() > 0) {
+                                namaFile = "" + outletConnection.getJenisLJK() + "." + outletConnection.getKodeLJK() + "." + fileSent.getTahun() + "." + fileSent.getBulan() + "." + Configurasi.valSegment[Configurasi.FLD_SEGMENT_IRREVOCABLE_LC] + "." + noCabang;
+                                patchFle = fileSent.getLocation() + System.getProperty("file.separator") + "" + namaFile + ".txt";
+                                pw = new PrintWriter(patchFle);
+                                //Buat header
+                                //H|0101|666|2016|10|M01|1|1
+                                //H (header)
+                                //0101 (jenis LJK)
+                                //666 (kode LJK)
+                                //2016 (tahun)
+                                //10 (bulan
+                                //M01 (kode segment)
+                                //1 (jumlah data
+                                pw.print("H" + "|");
+                                pw.print("" + outletConnection.getJenisLJK() + "|");
+                                pw.print("" + outletConnection.getKodeLJK() + "|");
+                                pw.print("" + fileSent.getTahun() + "|");
+                                pw.print("" + fileSent.getBulan() + "|");
+                                pw.print("" + Configurasi.valSegment[Configurasi.FLD_SEGMENT_IRREVOCABLE_LC] + "|");
+                                pw.print("" + vIrrevocable.size() + "|");
+                                pw.print("" + vIrrevocable.size() + "|");
+                                pw.println();
+                                for (int p = 0; p < vIrrevocable.size(); p++) {
+                                    try {
+
+                                        IrrevocableLc irrevocableLc = (IrrevocableLc) vIrrevocable.get(p);
+                                                                                                                 
+                                        pw.print("" + irrevocableLc.getFlagDetail() + "|");//1
+                                        pw.print("" + irrevocableLc.getNoRekening()+ "|");//2
+                                        pw.print("" + irrevocableLc.getCif() + "|");//3
+                                        pw.print("" + irrevocableLc.getKodeJenis()+ "|");//4
+                                        pw.print("" + irrevocableLc.getKodeTujuan()+ "|");//5
+                                        String tglKeluar= "";
+                                        if (irrevocableLc.getTglKeluar()!=null){
+                                            tglKeluar = Formater.formatDate(irrevocableLc.getTglKeluar(),"yyyyMMdd");
+                                        }
+                                        pw.print("" + tglKeluar+ "|");//6
+                                        String tglJatuhTempo = "";
+                                        if (irrevocableLc.getTglJatuhTempo()!=null){
+                                            tglJatuhTempo = Formater.formatDate(irrevocableLc.getTglJatuhTempo(),"yyyyMMdd");
+                                        }
+                                        pw.print("" + tglJatuhTempo + "|");//7
+                                        pw.print("" + irrevocableLc.getNoAkadAwal()+ "|");//8
+                                        String tglAkadAwal = "";
+                                        if (irrevocableLc.getTglAkadAwal()!=null){
+                                            tglAkadAwal = Formater.formatDate(irrevocableLc.getTglAkadAwal(),"yyyyMMdd");
+                                        }
+                                        pw.print("" + tglAkadAwal + "|");//9
+                                        pw.print("" + irrevocableLc.getNoAkadAkhr()+ "|");//10
+                                        String tglAkadAkhir = "";
+                                        if (irrevocableLc.getTglAkadAkhir()!=null){
+                                            tglAkadAkhir = Formater.formatDate(irrevocableLc.getTglAkadAkhir(),"yyyyMMdd");
+                                        }
+                                        pw.print("" + tglAkadAkhir+ "|");//11
+                                        pw.print("" + irrevocableLc.getBankCounterparty()+ "|");//12
+                                        pw.print("" + irrevocableLc.getKodeValuta()+ "|");//13
+                                        pw.print("" + irrevocableLc.getPlafon()+ "|");//14
+                                        pw.print("" + irrevocableLc.getNominal()+ "|");//15
+                                        pw.print("" + irrevocableLc.getSetoranJaminan()+ "|");//16
+                                        pw.print("" + irrevocableLc.getKodeKolektibilitas()+ "|");//17
+                                        String tglWanPrestasi = "";
+                                        if (irrevocableLc.getTglWanPrestasi()!=null){
+                                            tglWanPrestasi = Formater.formatDate(irrevocableLc.getTglWanPrestasi(),"yyyyMMdd");
+                                        }
+                                        pw.print("" + tglWanPrestasi + "|");//18
+                                        pw.print("" + irrevocableLc.getKodeKondisi()+ "|");//19
+                                        String tglKondisi = "";
+                                        if (irrevocableLc.getTglKondisi()!=null){
+                                            tglKondisi = Formater.formatDate(irrevocableLc.getTglKondisi(),"yyyyMMdd");
+                                        }
+                                        pw.print("" + tglKondisi + "|");//20
+                                        pw.print("" + irrevocableLc.getKeterangan()+ "|");//21
+                                        pw.print("" + irrevocableLc.getKodeKantorCabang()+ "|");//22
+                                        pw.print("" + irrevocableLc.getOperasiData()+ "|");
+                                        pw.println();
+                                        //isi
+                                        //buatkan file nya
+
+                                    } catch (Exception exc) {
+                                        System.out.println("ini eornya" + exc);
+                                    }
+                                }
+                                pw.flush();
+                                //proses zip data
+                                //zipFile(new File(patchFle),fileSent.getLocation(),0);
+                            } else {
+                                namaFile = "" + outletConnection.getJenisLJK() + "." + outletConnection.getKodeLJK() + "." + fileSent.getTahun() + "." + fileSent.getBulan() + "." + Configurasi.valSegment[Configurasi.FLD_SEGMENT_IRREVOCABLE_LC] + "." + noCabang;
+                                patchFle = fileSent.getLocation() + System.getProperty("file.separator") + "" + namaFile + ".txt";
+                                pw = new PrintWriter(patchFle);
+                                //Buat header
+                                //H|0101|666|2016|10|M01|1|1
+                                //H (header)
+                                //0101 (jenis LJK)
+                                //666 (kode LJK)
+                                //2016 (tahun)
+                                //10 (bulan
+                                //M01 (kode segment)
+                                //1 (jumlah data
+                                pw.print("H" + "|");
+                                pw.print("" + outletConnection.getJenisLJK() + "|");
+                                pw.print("" + outletConnection.getKodeLJK() + "|");
+                                pw.print("" + fileSent.getTahun() + "|");
+                                pw.print("" + fileSent.getBulan() + "|");
+                                pw.print("" + Configurasi.valSegment[Configurasi.FLD_SEGMENT_IRREVOCABLE_LC] + "|");
+                                pw.print("" + vIrrevocable.size() + "|");
+                                pw.print("" + vIrrevocable.size() + "|");
+                                pw.println();
+                                pw.flush();
+                            }
+                        }
+                    }
+                    
+                    break;
+
+                case Configurasi.FLD_SEGMENT_BANK_GARANSI:
+                    
+                    if (vCabang.size() > 0) {
+                        for (int i = 0; i < vCabang.size(); i++) {
+                            CabangBank cabangBank = (CabangBank) vCabang.get(i);
+                            int noCabang = 0;
+
+                            try {
+                                noCabang = cabangBank.getNoUrut();
+                            } catch (Exception ex) {
+
+                            }//Integer.parseInt(cabangBank.getKodeCabang());
+                            //cek pengurus sesuai cabang
+                            Vector vBankGaransi = new Vector();
+                            String where = PstBankGaransi.fieldNames[PstBankGaransi.FLD_KODE_KANTOR_CABANG] + "='" + cabangBank.getKodeCabang() + "'";
+                            vBankGaransi = PstBankGaransi.list(0, 0, "" + where, "");
+                            if (vBankGaransi.size() > 0) {
+                                namaFile = "" + outletConnection.getJenisLJK() + "." + outletConnection.getKodeLJK() + "." + fileSent.getTahun() + "." + fileSent.getBulan() + "." + Configurasi.valSegment[Configurasi.FLD_SEGMENT_BANK_GARANSI] + "." + noCabang;
+                                patchFle = fileSent.getLocation() + System.getProperty("file.separator") + "" + namaFile + ".txt";
+                                pw = new PrintWriter(patchFle);
+                                //Buat header
+                                //H|0101|666|2016|10|M01|1|1
+                                //H (header)
+                                //0101 (jenis LJK)
+                                //666 (kode LJK)
+                                //2016 (tahun)
+                                //10 (bulan
+                                //M01 (kode segment)
+                                //1 (jumlah data
+                                pw.print("H" + "|");
+                                pw.print("" + outletConnection.getJenisLJK() + "|");
+                                pw.print("" + outletConnection.getKodeLJK() + "|");
+                                pw.print("" + fileSent.getTahun() + "|");
+                                pw.print("" + fileSent.getBulan() + "|");
+                                pw.print("" + Configurasi.valSegment[Configurasi.FLD_SEGMENT_BANK_GARANSI] + "|");
+                                pw.print("" + vBankGaransi.size() + "|");
+                                pw.print("" + vBankGaransi.size() + "|");
+                                pw.println();
+                                for (int p = 0; p < vBankGaransi.size(); p++) {
+                                    try {
+
+                                        PengurusAtauPemilik pengurusPemilik = (PengurusAtauPemilik) vBankGaransi.get(p);
+                                                                                  
+                                        pw.print("" + pengurusPemilik.getFlagDetail() + "|");//1
+                                        pw.print("" + pengurusPemilik.getNoIdentitas() + "|");//2
+                                        pw.print("" + pengurusPemilik.getCif() + "|");//3
+                                        pw.print("" + pengurusPemilik.getJenisIdentitas() + "|");//4
+                                        pw.print("" + pengurusPemilik.getNamaPengurus() + "|");//5
+                                        pw.print("" + pengurusPemilik.getJenisKelamin() + "|");//6
+                                        pw.print("" + pengurusPemilik.getAlamat() + "|");//7
+                                        pw.print("" + pengurusPemilik.getKelurahan() + "|");//8
+                                        pw.print("" + pengurusPemilik.getKecamatan() + "|");//9
+                                        pw.print("" + pengurusPemilik.getKodeKabupaten() + "|");//10
+                                        pw.print("" + pengurusPemilik.getKodeJabatan() + "|");//11
+                                        pw.print("" + pengurusPemilik.getPangsaKepemilikan() + "|");//12
+                                        pw.print("" + pengurusPemilik.getStatusPengurus() + "|");//13
+                                        pw.print("" + pengurusPemilik.getKodeKantorCabang() + "|");//14
+                                        pw.print("" + fileSent.getOperasiData() + "|");
+                                        pw.println();
+                                        //isi
+                                        //buatkan file nya
+
+                                    } catch (Exception exc) {
+                                        System.out.println("ini eornya" + exc);
+                                    }
+                                }
+                                pw.flush();
+                                //proses zip data
+                                //zipFile(new File(patchFle),fileSent.getLocation(),0);
+                            } else {
+                                namaFile = "" + outletConnection.getJenisLJK() + "." + outletConnection.getKodeLJK() + "." + fileSent.getTahun() + "." + fileSent.getBulan() + "." + Configurasi.valSegment[Configurasi.FLD_SEGMENT_BANK_GARANSI] + "." + noCabang;
+                                patchFle = fileSent.getLocation() + System.getProperty("file.separator") + "" + namaFile + ".txt";
+                                pw = new PrintWriter(patchFle);
+                                //Buat header
+                                //H|0101|666|2016|10|M01|1|1
+                                //H (header)
+                                //0101 (jenis LJK)
+                                //666 (kode LJK)
+                                //2016 (tahun)
+                                //10 (bulan
+                                //M01 (kode segment)
+                                //1 (jumlah data
+                                pw.print("H" + "|");
+                                pw.print("" + outletConnection.getJenisLJK() + "|");
+                                pw.print("" + outletConnection.getKodeLJK() + "|");
+                                pw.print("" + fileSent.getTahun() + "|");
+                                pw.print("" + fileSent.getBulan() + "|");
+                                pw.print("" + Configurasi.valSegment[Configurasi.FLD_SEGMENT_BANK_GARANSI] + "|");
+                                pw.print("" + vBankGaransi.size() + "|");
+                                pw.print("" + vBankGaransi.size() + "|");
+                                pw.println();
+                                pw.flush();
+                            }
+                        }
+                    }
+                    
+                    break;
+
+                case Configurasi.FLD_SEGMENT_FASILITAS_LAINNYA:
+                    
+                    if (vCabang.size() > 0) {
+                        for (int i = 0; i < vCabang.size(); i++) {
+                            CabangBank cabangBank = (CabangBank) vCabang.get(i);
+                            int noCabang = 0;
+
+                            try {
+                                noCabang = cabangBank.getNoUrut();
+                            } catch (Exception ex) {
+
+                            }//Integer.parseInt(cabangBank.getKodeCabang());
+                            //cek pengurus sesuai cabang
+                            Vector vFasilitasLainnya = new Vector();
+                            String where = PstFasilitasLain.fieldNames[PstFasilitasLain.FLD_KODE_KANTOR_CABANG] + "='" + cabangBank.getKodeCabang() + "'";
+                            vFasilitasLainnya = PstFasilitasLain.list(0, 0, "" + where, "");
+                            if (vFasilitasLainnya.size() > 0) {
+                                namaFile = "" + outletConnection.getJenisLJK() + "." + outletConnection.getKodeLJK() + "." + fileSent.getTahun() + "." + fileSent.getBulan() + "." + Configurasi.valSegment[Configurasi.FLD_SEGMENT_FASILITAS_LAINNYA] + "." + noCabang;
+                                patchFle = fileSent.getLocation() + System.getProperty("file.separator") + "" + namaFile + ".txt";
+                                pw = new PrintWriter(patchFle);
+                                //Buat header
+                                //H|0101|666|2016|10|M01|1|1
+                                //H (header)
+                                //0101 (jenis LJK)
+                                //666 (kode LJK)
+                                //2016 (tahun)
+                                //10 (bulan
+                                //M01 (kode segment)
+                                //1 (jumlah data
+                                pw.print("H" + "|");
+                                pw.print("" + outletConnection.getJenisLJK() + "|");
+                                pw.print("" + outletConnection.getKodeLJK() + "|");
+                                pw.print("" + fileSent.getTahun() + "|");
+                                pw.print("" + fileSent.getBulan() + "|");
+                                pw.print("" + Configurasi.valSegment[Configurasi.FLD_SEGMENT_FASILITAS_LAINNYA] + "|");
+                                pw.print("" + vFasilitasLainnya.size() + "|");
+                                pw.print("" + vFasilitasLainnya.size() + "|");
+                                pw.println();
+                                for (int p = 0; p < vFasilitasLainnya.size(); p++) {
+                                    try {
+
+                                        FasilitasLain fasilitasLain = (FasilitasLain) vFasilitasLainnya.get(p);
+                                                                                       
+                                        pw.print("" + fasilitasLain.getFlagDetail() + "|");//1
+                                        pw.print("" + fasilitasLain.getNoRekening()+ "|");//2
+                                        pw.print("" + fasilitasLain.getCif() + "|");//3
+                                        pw.print("" + fasilitasLain.getKodeJenisFasilitas()+ "|");//4
+                                        pw.print("" + fasilitasLain.getSumberDana()+ "|");//5
+                                        String tglMulai = "";
+                                        if (fasilitasLain.getTglMulai()!=null){
+                                            tglMulai = Formater.formatDate(fasilitasLain.getTglMulai(),"yyyyMMdd");
+                                        }
+                                        pw.print("" + tglMulai + "|");//6
+                                        String tglJatuhTempo = "";
+                                        if (fasilitasLain.getTglJatuhTempo()!=null){
+                                            tglJatuhTempo = Formater.formatDate(fasilitasLain.getTglJatuhTempo(),"yyyyMMdd");
+                                        }
+                                        pw.print("" + tglJatuhTempo + "|");//7
+                                        pw.print("" + fasilitasLain.getSukuBunga()+ "|");//8
+                                        pw.print("" + fasilitasLain.getKodeValuta()+ "|");//9
+                                        pw.print("" + fasilitasLain.getNominalJmlKewajiban()+ "|");//10
+                                        pw.print("" + fasilitasLain.getNilaiMataUangAsal()+ "|");//11
+                                        pw.print("" + fasilitasLain.getKodeKolektibilitas()+ "|");//12
+                                        String tglMacet = "";
+                                        if (fasilitasLain.getTglMacet()!=null){
+                                            tglMacet = Formater.formatDate(fasilitasLain.getTglMacet(),"yyyyMMdd");
+                                        }
+                                        pw.print("" + tglMacet + "|");//13
+                                        pw.print("" + fasilitasLain.getKodeSebabMacet()+ "|");//14
+                                        pw.print("" + fasilitasLain.getTunggakan()+ "|");//15
+                                        pw.print("" + fasilitasLain.getJmlHariTunggakan()+ "|");//16
+                                        pw.print("" + fasilitasLain.getKodeKondisi()+ "|");//17
+                                        String tglKondisi = "";
+                                        if (fasilitasLain.getTglKondisi()!=null){
+                                            tglKondisi = Formater.formatDate(fasilitasLain.getTglKondisi(),"yyyyMMdd");
+                                        }
+                                        pw.print("" + tglKondisi + "|");//18
+                                        pw.print("" + fasilitasLain.getKeterangan()+ "|");//19
+                                        pw.print("" + fasilitasLain.getKodeKantorCabang()+ "|");//20
+                                        pw.print("" + fasilitasLain.getOperasiData() + "|");//21
+                                        pw.println();
+                                        //isi
+                                        //buatkan file nya
+
+                                    } catch (Exception exc) {
+                                        System.out.println("ini eornya" + exc);
+                                    }
+                                }
+                                pw.flush();
+                                //proses zip data
+                                //zipFile(new File(patchFle),fileSent.getLocation(),0);
+                            } else {
+                                namaFile = "" + outletConnection.getJenisLJK() + "." + outletConnection.getKodeLJK() + "." + fileSent.getTahun() + "." + fileSent.getBulan() + "." + Configurasi.valSegment[Configurasi.FLD_SEGMENT_FASILITAS_LAINNYA] + "." + noCabang;
+                                patchFle = fileSent.getLocation() + System.getProperty("file.separator") + "" + namaFile + ".txt";
+                                pw = new PrintWriter(patchFle);
+                                //Buat header
+                                //H|0101|666|2016|10|M01|1|1
+                                //H (header)
+                                //0101 (jenis LJK)
+                                //666 (kode LJK)
+                                //2016 (tahun)
+                                //10 (bulan
+                                //M01 (kode segment)
+                                //1 (jumlah data
+                                pw.print("H" + "|");
+                                pw.print("" + outletConnection.getJenisLJK() + "|");
+                                pw.print("" + outletConnection.getKodeLJK() + "|");
+                                pw.print("" + fileSent.getTahun() + "|");
+                                pw.print("" + fileSent.getBulan() + "|");
+                                pw.print("" + Configurasi.valSegment[Configurasi.FLD_SEGMENT_FASILITAS_LAINNYA] + "|");
+                                pw.print("" + vFasilitasLainnya.size() + "|");
+                                pw.print("" + vFasilitasLainnya.size() + "|");
+                                pw.println();
+                                pw.flush();
+                            }
+                        }
+                    }
+                    
+                    break;
+
+                case Configurasi.FLD_SEGMENT_DATA_AGUNAN:
+                    
+                     if (vCabang.size() > 0) {
+                        for (int i = 0; i < vCabang.size(); i++) {
+                            CabangBank cabangBank = (CabangBank) vCabang.get(i);
+                            int noCabang = 0;
+
+                            try {
+                                noCabang = cabangBank.getNoUrut();
+                            } catch (Exception ex) {
+
+                            }//Integer.parseInt(cabangBank.getKodeCabang());
+                            //cek pengurus sesuai cabang
+                            Vector vDataAgunan = new Vector();
+                            String where = PstAgunan.fieldNames[PstAgunan.FLD_KODE_KANTOR_CABANG] + "='" + cabangBank.getKodeCabang() + "'";
+                            vDataAgunan = PstAgunan.list(0, 0, "" + where, "");
+                            if (vDataAgunan.size() > 0) {
+                                namaFile = "" + outletConnection.getJenisLJK() + "." + outletConnection.getKodeLJK() + "." + fileSent.getTahun() + "." + fileSent.getBulan() + "." + Configurasi.valSegment[Configurasi.FLD_SEGMENT_DATA_AGUNAN] + "." + noCabang;
+                                patchFle = fileSent.getLocation() + System.getProperty("file.separator") + "" + namaFile + ".txt";
+                                pw = new PrintWriter(patchFle);
+                                //Buat header
+                                //H|0101|666|2016|10|M01|1|1
+                                //H (header)
+                                //0101 (jenis LJK)
+                                //666 (kode LJK)
+                                //2016 (tahun)
+                                //10 (bulan
+                                //M01 (kode segment)
+                                //1 (jumlah data
+                                pw.print("H" + "|");
+                                pw.print("" + outletConnection.getJenisLJK() + "|");
+                                pw.print("" + outletConnection.getKodeLJK() + "|");
+                                pw.print("" + fileSent.getTahun() + "|");
+                                pw.print("" + fileSent.getBulan() + "|");
+                                pw.print("" + Configurasi.valSegment[Configurasi.FLD_SEGMENT_DATA_AGUNAN] + "|");
+                                pw.print("" + vDataAgunan.size() + "|");
+                                pw.print("" + vDataAgunan.size() + "|");
+                                pw.println();
+                                for (int p = 0; p < vDataAgunan.size(); p++) {
+                                    try {
+
+                                        Agunan agunan = (Agunan) vDataAgunan.get(p);
+                                                                                     
+                                        pw.print("" + agunan.getFlagDetail() + "|");//1
+                                        pw.print("" + agunan.getKodeRegisterAgunan()+ "|");//2
+                                        pw.print("" + agunan.getNoRekening()+ "|");//3
+                                        pw.print("" + agunan.getCif()+ "|");//4
+                                        pw.print("" + agunan.getKodeStatusAgunan()+ "|");//5
+                                        pw.print("" + agunan.getKodeJenisAgunan()+ "|");//6
+                                        pw.print("" + agunan.getPeringkatAgunan()+ "|");//7
+                                        pw.print("" + agunan.getKodeLembagaPemeringkat()+ "|");//8
+                                        pw.print("" + agunan.getKodeJenisPengikatan()+ "|");//9
+                                        String tglPengikatan = "";
+                                        if (agunan.getTglPengikatan()!=null){
+                                            tglPengikatan = Formater.formatDate(agunan.getTglPengikatan(),"yyyyMMdd");
+                                        }
+                                        pw.print("" + tglPengikatan + "|");//10
+                                        pw.print("" + agunan.getNamaPemilikAgunan()+ "|");//11
+                                        pw.print("" + agunan.getBuktiKepemilikan()+ "|");//12
+                                        pw.print("" + agunan.getAlamatAgunan()+ "|");//13
+                                        pw.print("" + agunan.getKodeKabLokasiAgunan()+ "|");//14
+                                        pw.print("" + agunan.getNilaiAgunanNjop()+ "|");//15
+                                        pw.print("" + agunan.getNilaiAgunanLjk()+ "|");//16
+                                        String tglPenilaian = "";
+                                        if (agunan.getTglPenilaianLjk()!=null){
+                                            tglPenilaian = Formater.formatDate(agunan.getTglPenilaianLjk(),"yyyyMMdd");
+                                        }
+                                        pw.print("" + tglPenilaian+ "|");//17
+                                        pw.print("" + agunan.getNilaiAguPenilaiIndep()+ "|");//18
+                                        pw.print("" + agunan.getNamaPenilaiIndep()+ "|");//19
+                                        String tglPenilaianPenilaiIndep = "";
+                                        if (agunan.getTglPenilaianPenilaiIndep()!=null){
+                                            tglPenilaianPenilaiIndep = Formater.formatDate(agunan.getTglPenilaianPenilaiIndep(),"yyyyMMdd");
+                                        }
+                                        pw.print("" + tglPenilaianPenilaiIndep + "|");//20
+                                        pw.print("" + agunan.getStatusParipasu()+ "|");//21
+                                        pw.print("" + agunan.getProsentaseParipasu()+ "|");//22
+                                        pw.print("" + agunan.getStatusKreditJoin()+ "|");//23
+                                        pw.print("" + agunan.getDiasuransikan()+ "|");//24
+                                        pw.print("" + agunan.getKeterangan()+ "|");//25
+                                        pw.print("" + agunan.getKodeKantorCabang() + "|");//26
+                                        pw.print("" + agunan.getOperasiData() + "|"); //27
+                                        pw.println();
+                                        //isi
+                                        //buatkan file nya
+
+                                    } catch (Exception exc) {
+                                        System.out.println("ini eornya" + exc);
+                                    }
+                                }
+                                pw.flush();
+                                //proses zip data
+                                //zipFile(new File(patchFle),fileSent.getLocation(),0);
+                            } else {
+                                namaFile = "" + outletConnection.getJenisLJK() + "." + outletConnection.getKodeLJK() + "." + fileSent.getTahun() + "." + fileSent.getBulan() + "." + Configurasi.valSegment[Configurasi.FLD_SEGMENT_DATA_AGUNAN] + "." + noCabang;
+                                patchFle = fileSent.getLocation() + System.getProperty("file.separator") + "" + namaFile + ".txt";
+                                pw = new PrintWriter(patchFle);
+                                //Buat header
+                                //H|0101|666|2016|10|M01|1|1
+                                //H (header)
+                                //0101 (jenis LJK)
+                                //666 (kode LJK)
+                                //2016 (tahun)
+                                //10 (bulan
+                                //M01 (kode segment)
+                                //1 (jumlah data
+                                pw.print("H" + "|");
+                                pw.print("" + outletConnection.getJenisLJK() + "|");
+                                pw.print("" + outletConnection.getKodeLJK() + "|");
+                                pw.print("" + fileSent.getTahun() + "|");
+                                pw.print("" + fileSent.getBulan() + "|");
+                                pw.print("" + Configurasi.valSegment[Configurasi.FLD_SEGMENT_DATA_AGUNAN] + "|");
+                                pw.print("" + vDataAgunan.size() + "|");
+                                pw.print("" + vDataAgunan.size() + "|");
+                                pw.println();
+                                pw.flush();
+                            }
+                        }
+                    }
+                    
+                    break;
+
+                case Configurasi.FLD_SEGMENT_PENJAMIN:
+                     if (vCabang.size() > 0) {
+                        for (int i = 0; i < vCabang.size(); i++) {
+                            CabangBank cabangBank = (CabangBank) vCabang.get(i);
+                            int noCabang = 0;
+
+                            try {
+                                noCabang = cabangBank.getNoUrut();
+                            } catch (Exception ex) {
+
+                            }//Integer.parseInt(cabangBank.getKodeCabang());
+                            //cek pengurus sesuai cabang
+                            Vector vPengurusPemilik = new Vector();
+                            String where = PstPengurusAtauPemilik.fieldNames[PstPengurusAtauPemilik.FLD_KODE_KANTOR_CABANG] + "='" + cabangBank.getKodeCabang() + "'";
+                            vPengurusPemilik = PstPengurusAtauPemilik.list(0, 0, "" + where, "");
+                            if (vPengurusPemilik.size() > 0) {
+                                namaFile = "" + outletConnection.getJenisLJK() + "." + outletConnection.getKodeLJK() + "." + fileSent.getTahun() + "." + fileSent.getBulan() + "." + Configurasi.valSegment[Configurasi.FLD_SEGMENT_PENJAMIN] + "." + noCabang;
+                                patchFle = fileSent.getLocation() + System.getProperty("file.separator") + "" + namaFile + ".txt";
+                                pw = new PrintWriter(patchFle);
+                                //Buat header
+                                //H|0101|666|2016|10|M01|1|1
+                                //H (header)
+                                //0101 (jenis LJK)
+                                //666 (kode LJK)
+                                //2016 (tahun)
+                                //10 (bulan
+                                //M01 (kode segment)
+                                //1 (jumlah data
+                                pw.print("H" + "|");
+                                pw.print("" + outletConnection.getJenisLJK() + "|");
+                                pw.print("" + outletConnection.getKodeLJK() + "|");
+                                pw.print("" + fileSent.getTahun() + "|");
+                                pw.print("" + fileSent.getBulan() + "|");
+                                pw.print("" + Configurasi.valSegment[Configurasi.FLD_SEGMENT_PENJAMIN] + "|");
+                                pw.print("" + vPengurusPemilik.size() + "|");
+                                pw.print("" + vPengurusPemilik.size() + "|");
+                                pw.println();
+                                for (int p = 0; p < vPengurusPemilik.size(); p++) {
+                                    try {
+
+                                        PengurusAtauPemilik pengurusPemilik = (PengurusAtauPemilik) vPengurusPemilik.get(p);
+                                        //D    |NIKPENG1 |CIFBUDUMMY1|1          |Margo Joyo    |L              |JL Sujartijo no 123 Jakarta Timur|Grogol Utara|Grogol    |0117          |01              |100                |1               |001                 |C
+                                        //flag | no iden | cif       | jenis idn | nama pemilik | jenis kelamin | alamat                          | kelurahan  |kecamatan |kode kab dati |kode jabatan    |pangsa pemilik     |status pengurus | kode kantor cabang | operasi data 
+                                        //1    | 2       | 3         | 4         | 5            | 6             | 7                               |8           | 9        | 10           | 11             | 12                |13              | 14                 | 15                                                
+                                        pw.print("" + pengurusPemilik.getFlagDetail() + "|");//1
+                                        pw.print("" + pengurusPemilik.getNoIdentitas() + "|");//2
+                                        pw.print("" + pengurusPemilik.getCif() + "|");//3
+                                        pw.print("" + pengurusPemilik.getJenisIdentitas() + "|");//4
+                                        pw.print("" + pengurusPemilik.getNamaPengurus() + "|");//5
+                                        pw.print("" + pengurusPemilik.getJenisKelamin() + "|");//6
+                                        pw.print("" + pengurusPemilik.getAlamat() + "|");//7
+                                        pw.print("" + pengurusPemilik.getKelurahan() + "|");//8
+                                        pw.print("" + pengurusPemilik.getKecamatan() + "|");//9
+                                        pw.print("" + pengurusPemilik.getKodeKabupaten() + "|");//10
+                                        pw.print("" + pengurusPemilik.getKodeJabatan() + "|");//11
+                                        pw.print("" + pengurusPemilik.getPangsaKepemilikan() + "|");//12
+                                        pw.print("" + pengurusPemilik.getStatusPengurus() + "|");//13
+                                        pw.print("" + pengurusPemilik.getKodeKantorCabang() + "|");//14
+                                        pw.print("" + fileSent.getOperasiData() + "|");
+                                        pw.println();
+                                        //isi
+                                        //buatkan file nya
+
+                                    } catch (Exception exc) {
+                                        System.out.println("ini eornya" + exc);
+                                    }
+                                }
+                                pw.flush();
+                                //proses zip data
+                                //zipFile(new File(patchFle),fileSent.getLocation(),0);
+                            } else {
+                                namaFile = "" + outletConnection.getJenisLJK() + "." + outletConnection.getKodeLJK() + "." + fileSent.getTahun() + "." + fileSent.getBulan() + "." + Configurasi.valSegment[Configurasi.FLD_SEGMENT_PENJAMIN] + "." + noCabang;
+                                patchFle = fileSent.getLocation() + System.getProperty("file.separator") + "" + namaFile + ".txt";
+                                pw = new PrintWriter(patchFle);
+                                //Buat header
+                                //H|0101|666|2016|10|M01|1|1
+                                //H (header)
+                                //0101 (jenis LJK)
+                                //666 (kode LJK)
+                                //2016 (tahun)
+                                //10 (bulan
+                                //M01 (kode segment)
+                                //1 (jumlah data
+                                pw.print("H" + "|");
+                                pw.print("" + outletConnection.getJenisLJK() + "|");
+                                pw.print("" + outletConnection.getKodeLJK() + "|");
+                                pw.print("" + fileSent.getTahun() + "|");
+                                pw.print("" + fileSent.getBulan() + "|");
+                                pw.print("" + Configurasi.valSegment[Configurasi.FLD_SEGMENT_PENJAMIN] + "|");
+                                pw.print("" + vPengurusPemilik.size() + "|");
+                                pw.print("" + vPengurusPemilik.size() + "|");
+                                pw.println();
+                                pw.flush();
+                            }
+                        }
+                    }
+                    break;
+
+                case Configurasi.FLD_SEGMENT_PENGURUS_PEMILIK:
+                    
+                    if (vCabang.size() > 0) {
+                        for (int i = 0; i < vCabang.size(); i++) {
+                            CabangBank cabangBank = (CabangBank) vCabang.get(i);
+                            int noCabang = 0;
+
+                            try {
+                                noCabang = cabangBank.getNoUrut();
+                            } catch (Exception ex) {
+
+                            }//Integer.parseInt(cabangBank.getKodeCabang());
+                            //cek pengurus sesuai cabang
+                            Vector vPengurusPemilik = new Vector();
+                            String where = PstPengurusAtauPemilik.fieldNames[PstPengurusAtauPemilik.FLD_KODE_KANTOR_CABANG] + "='" + cabangBank.getKodeCabang() + "'";
+                            vPengurusPemilik = PstPengurusAtauPemilik.list(0, 0, "" + where, "");
+                            if (vPengurusPemilik.size() > 0) {
+                                namaFile = "" + outletConnection.getJenisLJK() + "." + outletConnection.getKodeLJK() + "." + fileSent.getTahun() + "." + fileSent.getBulan() + "." + Configurasi.valSegment[Configurasi.FLD_SEGMENT_PENGURUS_PEMILIK] + "." + noCabang;
+                                patchFle = fileSent.getLocation() + System.getProperty("file.separator") + "" + namaFile + ".txt";
+                                pw = new PrintWriter(patchFle);
+                                //Buat header
+                                //H|0101|666|2016|10|M01|1|1
+                                //H (header)
+                                //0101 (jenis LJK)
+                                //666 (kode LJK)
+                                //2016 (tahun)
+                                //10 (bulan
+                                //M01 (kode segment)
+                                //1 (jumlah data
+                                pw.print("H" + "|");
+                                pw.print("" + outletConnection.getJenisLJK() + "|");
+                                pw.print("" + outletConnection.getKodeLJK() + "|");
+                                pw.print("" + fileSent.getTahun() + "|");
+                                pw.print("" + fileSent.getBulan() + "|");
+                                pw.print("" + Configurasi.valSegment[Configurasi.FLD_SEGMENT_PENGURUS_PEMILIK] + "|");
+                                pw.print("" + vPengurusPemilik.size() + "|");
+                                pw.print("" + vPengurusPemilik.size() + "|");
+                                pw.println();
+                                for (int p = 0; p < vPengurusPemilik.size(); p++) {
+                                    try {
+
+                                        PengurusAtauPemilik pengurusPemilik = (PengurusAtauPemilik) vPengurusPemilik.get(p);
+                                        //D    |NIKPENG1 |CIFBUDUMMY1|1          |Margo Joyo    |L              |JL Sujartijo no 123 Jakarta Timur|Grogol Utara|Grogol    |0117          |01              |100                |1               |001                 |C
+                                        //flag | no iden | cif       | jenis idn | nama pemilik | jenis kelamin | alamat                          | kelurahan  |kecamatan |kode kab dati |kode jabatan    |pangsa pemilik     |status pengurus | kode kantor cabang | operasi data 
+                                        //1    | 2       | 3         | 4         | 5            | 6             | 7                               |8           | 9        | 10           | 11             | 12                |13              | 14                 | 15                                                
+                                        pw.print("" + pengurusPemilik.getFlagDetail() + "|");//1
+                                        pw.print("" + pengurusPemilik.getNoIdentitas() + "|");//2
+                                        pw.print("" + pengurusPemilik.getCif() + "|");//3
+                                        pw.print("" + pengurusPemilik.getJenisIdentitas() + "|");//4
+                                        pw.print("" + pengurusPemilik.getNamaPengurus() + "|");//5
+                                        pw.print("" + pengurusPemilik.getJenisKelamin() + "|");//6
+                                        pw.print("" + pengurusPemilik.getAlamat() + "|");//7
+                                        pw.print("" + pengurusPemilik.getKelurahan() + "|");//8
+                                        pw.print("" + pengurusPemilik.getKecamatan() + "|");//9
+                                        pw.print("" + pengurusPemilik.getKodeKabupaten() + "|");//10
+                                        pw.print("" + pengurusPemilik.getKodeJabatan() + "|");//11
+                                        pw.print("" + pengurusPemilik.getPangsaKepemilikan() + "|");//12
+                                        pw.print("" + pengurusPemilik.getStatusPengurus() + "|");//13
+                                        pw.print("" + pengurusPemilik.getKodeKantorCabang() + "|");//14
+                                        pw.print("" + fileSent.getOperasiData() + "|");
+                                        pw.println();
+                                        //isi
+                                        //buatkan file nya
+
+                                    } catch (Exception exc) {
+                                        System.out.println("ini eornya" + exc);
+                                    }
+                                }
+                                pw.flush();
+                                //proses zip data
+                                //zipFile(new File(patchFle),fileSent.getLocation(),0);
+                            } else {
+                                namaFile = "" + outletConnection.getJenisLJK() + "." + outletConnection.getKodeLJK() + "." + fileSent.getTahun() + "." + fileSent.getBulan() + "." + Configurasi.valSegment[Configurasi.FLD_SEGMENT_PENGURUS_PEMILIK] + "." + noCabang;
+                                patchFle = fileSent.getLocation() + System.getProperty("file.separator") + "" + namaFile + ".txt";
+                                pw = new PrintWriter(patchFle);
+                                //Buat header
+                                //H|0101|666|2016|10|M01|1|1
+                                //H (header)
+                                //0101 (jenis LJK)
+                                //666 (kode LJK)
+                                //2016 (tahun)
+                                //10 (bulan
+                                //M01 (kode segment)
+                                //1 (jumlah data
+                                pw.print("H" + "|");
+                                pw.print("" + outletConnection.getJenisLJK() + "|");
+                                pw.print("" + outletConnection.getKodeLJK() + "|");
+                                pw.print("" + fileSent.getTahun() + "|");
+                                pw.print("" + fileSent.getBulan() + "|");
+                                pw.print("" + Configurasi.valSegment[Configurasi.FLD_SEGMENT_PENGURUS_PEMILIK] + "|");
+                                pw.print("" + vPengurusPemilik.size() + "|");
+                                pw.print("" + vPengurusPemilik.size() + "|");
+                                pw.println();
+                                pw.flush();
+                            }
+                        }
+                    }
+
+                    break;
+
+                case Configurasi.FLD_SEGMENT_LAPORAN_KEUANGAN_DEBITUR:
+                    if (vCabang.size() > 0) {
+                        for (int i = 0; i < vCabang.size(); i++) {
+                            CabangBank cabangBank = (CabangBank) vCabang.get(i);
+                            int noCabang = 0;
+
+                            try {
+                                noCabang = cabangBank.getNoUrut();
+                            } catch (Exception ex) {
+
+                            }//Integer.parseInt(cabangBank.getKodeCabang());
+                            //cek pengurus sesuai cabang
+                            Vector vLaporanKeuanganDebitur = new Vector();
+                            String where = PstLaporanKeuanganDebitur.fieldNames[PstLaporanKeuanganDebitur.FLD_KODE_KANTOR_CABANG] + "='" + cabangBank.getKodeCabang() + "'";
+                            vLaporanKeuanganDebitur = PstLaporanKeuanganDebitur.list(0, 0, "" + where, "");
+                            if (vLaporanKeuanganDebitur.size() > 0) {
+                                namaFile = "" + outletConnection.getJenisLJK() + "." + outletConnection.getKodeLJK() + "." + fileSent.getTahun() + "." + fileSent.getBulan() + "." + Configurasi.valSegment[Configurasi.FLD_SEGMENT_LAPORAN_KEUANGAN_DEBITUR] + "." + noCabang;
+                                patchFle = fileSent.getLocation() + System.getProperty("file.separator") + "" + namaFile + ".txt";
+                                pw = new PrintWriter(patchFle);
+                                //Buat header
+                                //H|0101|666|2016|10|M01|1|1
+                                //H (header)
+                                //0101 (jenis LJK)
+                                //666 (kode LJK)
+                                //2016 (tahun)
+                                //10 (bulan
+                                //M01 (kode segment)
+                                //1 (jumlah data
+                                pw.print("H" + "|");
+                                pw.print("" + outletConnection.getJenisLJK() + "|");
+                                pw.print("" + outletConnection.getKodeLJK() + "|");
+                                pw.print("" + fileSent.getTahun() + "|");
+                                pw.print("" + fileSent.getBulan() + "|");
+                                pw.print("" + Configurasi.valSegment[Configurasi.FLD_SEGMENT_PENGURUS_PEMILIK] + "|");
+                                pw.print("" + vLaporanKeuanganDebitur.size() + "|");
+                                pw.print("" + vLaporanKeuanganDebitur.size() + "|");
+                                pw.println();
+                                for (int p = 0; p < vLaporanKeuanganDebitur.size(); p++) {
+                                    try {
+
+                                        LaporanKeuanganDebitur laporanKeuanganDebitur = (LaporanKeuanganDebitur) vLaporanKeuanganDebitur.get(p);
+                                                                                   
+                                        pw.print("" + laporanKeuanganDebitur.getFlagDetail() + "|");//1
+                                        pw.print("" + laporanKeuanganDebitur.getCif()+ "|");//2
+                                        pw.print("" + laporanKeuanganDebitur.getAset()+ "|");//3
+                                        pw.print("" + laporanKeuanganDebitur.getAsetLancar()+ "|");//4
+                                        pw.print("" + laporanKeuanganDebitur.getKasDanSetaraKas()+ "|");//5
+                                        pw.print("" + laporanKeuanganDebitur.getPiutangUsahaAstLncr()+ "|");//6
+                                        pw.print("" + laporanKeuanganDebitur.getInvestasiAstLncr()+ "|");//7
+                                        pw.print("" + laporanKeuanganDebitur.getAsetLancarLain()+ "|");//8
+                                        pw.print("" + laporanKeuanganDebitur.getAsetTidakLancar()+ "|");//9
+                                        pw.print("" + laporanKeuanganDebitur.getPiutangUsahaAstTdkLncr()+ "|");//10
+                                        pw.print("" + laporanKeuanganDebitur.getInvestasiAstTdkLncr()+ "|");//11
+                                        pw.print("" + laporanKeuanganDebitur.getAsetTdkLncrLain()+ "|");//12
+                                        pw.print("" + laporanKeuanganDebitur.getLiabilitas()+ "|");//13
+                                        pw.print("" + laporanKeuanganDebitur.getLiabilitasJnkPndk()+ "|");//14
+                                        pw.print("" + laporanKeuanganDebitur.getPinjamanJnkPndk()+ "|");//15
+                                        pw.print("" + laporanKeuanganDebitur.getUtangUsahaLiaJnkPndk()+ "|");//16
+                                        pw.print("" + laporanKeuanganDebitur.getLiabilitasJnkPndkLain()+ "|");//17
+                                        pw.print("" + laporanKeuanganDebitur.getLiabilitasJnkPnjg()+ "|");//18
+                                        pw.print("" + laporanKeuanganDebitur.getPinjamanJnkPnjg()+ "|");//19
+                                        pw.print("" + laporanKeuanganDebitur.getUtangUsahaLiaJnkPnjg()+ "|");//20
+                                        pw.print("" + laporanKeuanganDebitur.getLiabilitasJnkPnjgLain()+ "|");//21
+                                        pw.print("" + laporanKeuanganDebitur.getEkuitas()+ "|");//22
+                                        pw.print("" + laporanKeuanganDebitur.getPendapatanUsahaOpr()+ "|");//23
+                                        pw.print("" + laporanKeuanganDebitur.getBebanPokokPend()+ "|");//24
+                                        pw.print("" + laporanKeuanganDebitur.getLabaRugiBruto()+ "|");//25
+                                        pw.print("" + laporanKeuanganDebitur.getPendLainNonOpr()+ "|");//26
+                                        pw.print("" + laporanKeuanganDebitur.getBebanLainNonOpr()+ "|");//27
+                                        pw.print("" + laporanKeuanganDebitur.getLabaRugiSblmPajak()+ "|");//28
+                                        pw.print("" + laporanKeuanganDebitur.getLabaRugiPeriode()+ "|");//29
+                                        pw.print("" + laporanKeuanganDebitur.getKodeKantorCabang() + "|");//30
+                                        pw.print("" + laporanKeuanganDebitur.getOperasiData() + "|"); //31
+                                        pw.println();
+                                        //isi
+                                        //buatkan file nya
+
+                                    } catch (Exception exc) {
+                                        System.out.println("ini eornya" + exc);
+                                    }
+                                }
+                                pw.flush();
+                                //proses zip data
+                                //zipFile(new File(patchFle),fileSent.getLocation(),0);
+                            } else {
+                                namaFile = "" + outletConnection.getJenisLJK() + "." + outletConnection.getKodeLJK() + "." + fileSent.getTahun() + "." + fileSent.getBulan() + "." + Configurasi.valSegment[Configurasi.FLD_SEGMENT_PENGURUS_PEMILIK] + "." + noCabang;
+                                patchFle = fileSent.getLocation() + System.getProperty("file.separator") + "" + namaFile + ".txt";
+                                pw = new PrintWriter(patchFle);
+                                //Buat header
+                                //H|0101|666|2016|10|M01|1|1
+                                //H (header)
+                                //0101 (jenis LJK)
+                                //666 (kode LJK)
+                                //2016 (tahun)
+                                //10 (bulan
+                                //M01 (kode segment)
+                                //1 (jumlah data
+                                pw.print("H" + "|");
+                                pw.print("" + outletConnection.getJenisLJK() + "|");
+                                pw.print("" + outletConnection.getKodeLJK() + "|");
+                                pw.print("" + fileSent.getTahun() + "|");
+                                pw.print("" + fileSent.getBulan() + "|");
+                                pw.print("" + Configurasi.valSegment[Configurasi.FLD_SEGMENT_PENGURUS_PEMILIK] + "|");
+                                pw.print("" + vLaporanKeuanganDebitur.size() + "|");
+                                pw.print("" + vLaporanKeuanganDebitur.size() + "|");
+                                pw.println();
+                                pw.flush();
+                            }
+                        }
+                    }
+                    
+                    break;
+                    
+                case Configurasi.FLD_SEGMENT_SUMMARY_FASILITAS:
+                    //dicek apa saja parameternya
+                    break;
+                    
+                default:
+            }
+
+//            if (fileSent.getTypeSegment() == Configurasi.FLD_SEGMENT_DEBITUR_PERORANGAN) {
+//
+//            } else if (fileSent.getTypeSegment() == Configurasi.FLD_SEGMENT_DEBITUR_BADAN_USAHA) {
+//
+//            } else if (fileSent.getTypeSegment() == Configurasi.FLD_SEGMENT_KREDIT) {
+//
+//            } else if (fileSent.getTypeSegment() == Configurasi.FLD_SEGMENT_KREDIT_JOIN_ACCOUNT) {
+//
+//            } else if (fileSent.getTypeSegment() == Configurasi.FLD_SEGMENT_SURAT_BERHARGA) {
+//
+//            } else if (fileSent.getTypeSegment() == Configurasi.FLD_SEGMENT_IRREVOCABLE_LC) {
+//
+//            } else if (fileSent.getTypeSegment() == Configurasi.FLD_SEGMENT_BANK_GARANSI) {
+//
+//            } else if (fileSent.getTypeSegment() == Configurasi.FLD_SEGMENT_FASILITAS_LAINNYA) {
+//
+//            } else if (fileSent.getTypeSegment() == Configurasi.FLD_SEGMENT_DATA_AGUNAN) {
+//
+//            } else if (fileSent.getTypeSegment() == Configurasi.FLD_SEGMENT_PENJAMIN) {
+//
+//            } else if (fileSent.getTypeSegment() == Configurasi.FLD_SEGMENT_PENGURUS_PEMILIK) {
+//
+//            } else if (fileSent.getTypeSegment() == Configurasi.FLD_SEGMENT_LAPORAN_KEUANGAN_DEBITUR) {
+//
+//            }
+
+        } catch (FileNotFoundException ex) {
+        }
+
+        return patchFle;
+    }
+
+    public static String zipFile(File inputFile, String patch, int type) {
+        String patchFleZip = "";
+
+        if (type == Configurasi.FLD_SEGMENT_DEBITUR_PERORANGAN) {
+
+            patchFleZip = patch + System.getProperty("file.separator") + "PBB_GIANYAR.zip";
+
+        } else if (type == Configurasi.FLD_SEGMENT_DEBITUR_BADAN_USAHA) {
+
+        } else if (type == Configurasi.FLD_SEGMENT_KREDIT) {
+
+        } else if (type == Configurasi.FLD_SEGMENT_KREDIT_JOIN_ACCOUNT) {
+
+        } else if (type == Configurasi.FLD_SEGMENT_SURAT_BERHARGA) {
+
+        } else if (type == Configurasi.FLD_SEGMENT_IRREVOCABLE_LC) {
+
+        } else if (type == Configurasi.FLD_SEGMENT_BANK_GARANSI) {
+
+        } else if (type == Configurasi.FLD_SEGMENT_FASILITAS_LAINNYA) {
+
+        } else if (type == Configurasi.FLD_SEGMENT_DATA_AGUNAN) {
+
+        } else if (type == Configurasi.FLD_SEGMENT_PENJAMIN) {
+
+        } else if (type == Configurasi.FLD_SEGMENT_PENGURUS_PEMILIK) {
+
+        } else if (type == Configurasi.FLD_SEGMENT_LAPORAN_KEUANGAN_DEBITUR) {
+
+        }
+
+        try {
+
+            // Wrap a FileOutputStream around a ZipOutputStream
+            // to store the zip stream to a file. Note that this is
+            // not absolutely necessary
+            FileOutputStream fileOutputStream = new FileOutputStream(patchFleZip);
+            ZipOutputStream zipOutputStream = new ZipOutputStream(fileOutputStream);
+
+            // a ZipEntry represents a file entry in the zip archive
+            // We name the ZipEntry after the original file's name
+            ZipEntry zipEntry = new ZipEntry(inputFile.getName());
+            zipOutputStream.putNextEntry(zipEntry);
+
+            FileInputStream fileInputStream = new FileInputStream(inputFile);
+            byte[] buf = new byte[1024];
+            int bytesRead;
+
+            // Read the input file by chucks of 1024 bytes
+            // and write the read bytes to the zip stream
+            while ((bytesRead = fileInputStream.read(buf)) > 0) {
+                zipOutputStream.write(buf, 0, bytesRead);
+            }
+
+            // close ZipEntry to store the stream to the file
+            zipOutputStream.closeEntry();
+
+            zipOutputStream.close();
+            fileOutputStream.close();
+
+            // System.out.println("Regular file :" + inputFile.getCanonicalPath()+" is zipped to archive :"+zipFilePath);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return patchFleZip;
+    }
+
+}

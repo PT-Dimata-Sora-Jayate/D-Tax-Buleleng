@@ -1,0 +1,381 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package com.dimata.dslik.entity.agunan;
+
+import com.dimata.common.entity.logger.I_LogHistory;
+import com.dimata.qdep.entity.Entity;
+import java.util.Date;
+
+/**
+ *
+ * @author Dewa
+ */
+public class Agunan extends Entity implements I_LogHistory{
+
+    private String flagDetail = "";
+    private String kodeRegisterAgunan = "";
+    private String noRekening = "";
+    private String cif = "";
+    private String kodeStatusAgunan = "";
+    private String kodeJenisAgunan = "";
+    private String peringkatAgunan = "";
+    private String kodeLembagaPemeringkat = "";
+    private String kodeJenisPengikatan = "";
+    private Date tglPengikatan = null;
+    private String namaPemilikAgunan = "";
+    private String buktiKepemilikan = "";
+    private String alamatAgunan = "";
+    private String kodeKabLokasiAgunan = "";
+    private double nilaiAgunanNjop = 0;
+    private double nilaiAgunanLjk = 0;
+    private Date tglPenilaianLjk = null;
+    private double nilaiAguPenilaiIndep = 0;
+    private String namaPenilaiIndep = "";
+    private Date tglPenilaianPenilaiIndep = null;
+    private int statusParipasu = 0;
+    private String statusKreditJoin = "";
+    private String diasuransikan = "";
+    private String keterangan = "";
+    private String kodeKantorCabang = "";
+    private String operasiData = "";
+    private Date openDate = null;
+    private int statusData = 0;
+
+    public String getFlagDetail() {
+        return flagDetail;
+    }
+
+    public void setFlagDetail(String flagDetail) {
+        this.flagDetail = flagDetail;
+    }
+
+    public String getKodeRegisterAgunan() {
+        return kodeRegisterAgunan;
+    }
+
+    public void setKodeRegisterAgunan(String kodeRegisterAgunan) {
+        this.kodeRegisterAgunan = kodeRegisterAgunan;
+    }
+
+    public String getNoRekening() {
+        return noRekening;
+    }
+
+    public void setNoRekening(String noRekening) {
+        this.noRekening = noRekening;
+    }
+
+    public String getCif() {
+        return cif;
+    }
+
+    public void setCif(String cif) {
+        this.cif = cif;
+    }
+
+    public String getKodeStatusAgunan() {
+        return kodeStatusAgunan;
+    }
+
+    public void setKodeStatusAgunan(String kodeStatusAgunan) {
+        this.kodeStatusAgunan = kodeStatusAgunan;
+    }
+
+    public String getKodeJenisAgunan() {
+        return kodeJenisAgunan;
+    }
+
+    public void setKodeJenisAgunan(String kodeJenisAgunan) {
+        this.kodeJenisAgunan = kodeJenisAgunan;
+    }
+
+    public String getPeringkatAgunan() {
+        return peringkatAgunan;
+    }
+
+    public void setPeringkatAgunan(String peringkatAgunan) {
+        this.peringkatAgunan = peringkatAgunan;
+    }
+
+    public String getKodeLembagaPemeringkat() {
+        return kodeLembagaPemeringkat;
+    }
+
+    public void setKodeLembagaPemeringkat(String kodeLembagaPemeringkat) {
+        this.kodeLembagaPemeringkat = kodeLembagaPemeringkat;
+    }
+
+    public String getKodeJenisPengikatan() {
+        return kodeJenisPengikatan;
+    }
+
+    public void setKodeJenisPengikatan(String kodeJenisPengikatan) {
+        this.kodeJenisPengikatan = kodeJenisPengikatan;
+    }
+
+    public Date getTglPengikatan() {
+        return tglPengikatan;
+    }
+
+    public void setTglPengikatan(Date tglPengikatan) {
+        this.tglPengikatan = tglPengikatan;
+    }
+
+    public String getNamaPemilikAgunan() {
+        return namaPemilikAgunan;
+    }
+
+    public void setNamaPemilikAgunan(String namaPemilikAgunan) {
+        this.namaPemilikAgunan = namaPemilikAgunan;
+    }
+
+    public String getBuktiKepemilikan() {
+        return buktiKepemilikan;
+    }
+
+    public void setBuktiKepemilikan(String buktiKepemilikan) {
+        this.buktiKepemilikan = buktiKepemilikan;
+    }
+
+    public String getAlamatAgunan() {
+        return alamatAgunan;
+    }
+
+    public void setAlamatAgunan(String alamatAgunan) {
+        this.alamatAgunan = alamatAgunan;
+    }
+
+    public String getKodeKabLokasiAgunan() {
+        return kodeKabLokasiAgunan;
+    }
+
+    public void setKodeKabLokasiAgunan(String kodeKabLokasiAgunan) {
+        this.kodeKabLokasiAgunan = kodeKabLokasiAgunan;
+    }
+
+    public double getNilaiAgunanNjop() {
+        return nilaiAgunanNjop;
+    }
+
+    public void setNilaiAgunanNjop(double nilaiAgunanNjop) {
+        this.nilaiAgunanNjop = nilaiAgunanNjop;
+    }
+
+    public double getNilaiAgunanLjk() {
+        return nilaiAgunanLjk;
+    }
+
+    public void setNilaiAgunanLjk(double nilaiAgunanLjk) {
+        this.nilaiAgunanLjk = nilaiAgunanLjk;
+    }
+
+    public Date getTglPenilaianLjk() {
+        return tglPenilaianLjk;
+    }
+
+    public void setTglPenilaianLjk(Date tglPenilaianLjk) {
+        this.tglPenilaianLjk = tglPenilaianLjk;
+    }
+
+    public double getNilaiAguPenilaiIndep() {
+        return nilaiAguPenilaiIndep;
+    }
+
+    public void setNilaiAguPenilaiIndep(double nilaiAguPenilaiIndep) {
+        this.nilaiAguPenilaiIndep = nilaiAguPenilaiIndep;
+    }
+
+    public String getNamaPenilaiIndep() {
+        return namaPenilaiIndep;
+    }
+
+    public void setNamaPenilaiIndep(String namaPenilaiIndep) {
+        this.namaPenilaiIndep = namaPenilaiIndep;
+    }
+
+    public Date getTglPenilaianPenilaiIndep() {
+        return tglPenilaianPenilaiIndep;
+    }
+
+    public void setTglPenilaianPenilaiIndep(Date tglPenilaianPenilaiIndep) {
+        this.tglPenilaianPenilaiIndep = tglPenilaianPenilaiIndep;
+    }
+
+    public int getStatusParipasu() {
+        return statusParipasu;
+    }
+
+    public void setStatusParipasu(int statusParipasu) {
+        this.statusParipasu = statusParipasu;
+    }
+
+    public String getStatusKreditJoin() {
+        return statusKreditJoin;
+    }
+
+    public void setStatusKreditJoin(String statusKreditJoin) {
+        this.statusKreditJoin = statusKreditJoin;
+    }
+
+    public String getDiasuransikan() {
+        return diasuransikan;
+    }
+
+    public void setDiasuransikan(String diasuransikan) {
+        this.diasuransikan = diasuransikan;
+    }
+
+    public String getKeterangan() {
+        return keterangan;
+    }
+
+    public void setKeterangan(String keterangan) {
+        this.keterangan = keterangan;
+    }
+
+    public String getKodeKantorCabang() {
+        return kodeKantorCabang;
+    }
+
+    public void setKodeKantorCabang(String kodeKantorCabang) {
+        this.kodeKantorCabang = kodeKantorCabang;
+    }
+
+    public String getOperasiData() {
+        return operasiData;
+    }
+
+    public void setOperasiData(String operasiData) {
+        this.operasiData = operasiData;
+    }
+
+    /**
+     * @return the OpenDate
+     */
+    public Date getOpenDate() {
+        return openDate;
+    }
+
+    /**
+     * @param OpenDate the OpenDate to set
+     */
+    public void setOpenDate(Date openDate) {
+        this.openDate = openDate;
+    }
+
+    /**
+     * @return the StatusData
+     */
+    public int getStatusData() {
+        return statusData;
+    }
+
+    /**
+     * @param StatusData the StatusData to set
+     */
+    public void setStatusData(int statusData) {
+        this.statusData = statusData;
+    }
+
+    @Override
+    public String getLogDetail(Entity prevDoc) {
+        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        String history="";
+        Agunan prevMat = (Agunan)prevDoc;
+        if(!prevMat.getFlagDetail().equals(this.getFlagDetail())){
+            history=history+" Flag Detail diubah dari "+prevMat.getFlagDetail()+" menjadi "+this.getFlagDetail()+"/n";
+        }
+        if(!prevMat.getKodeRegisterAgunan().equals(this.getKodeRegisterAgunan())){
+            history=history+" Kode Register Agunan diubah dari "+prevMat.getKodeRegisterAgunan()+" menjadi "+this.getKodeRegisterAgunan()+"/n";
+        }        
+        if(!prevMat.getNoRekening().equals(this.getNoRekening())){
+             history=history+" No. Rekening diubah dari "+prevMat.getNoRekening()+" menjadi "+this.getNoRekening()+"/n";
+        }
+        if(!prevMat.getCif().equals(this.getCif())){
+             history=history+" CIF duibah dari dari "+prevMat.getCif()+" menjadi "+this.getCif()+"/n";
+        }
+        if(!prevMat.getKodeStatusAgunan().equals(this.getKodeStatusAgunan())){
+             history=history+" Kode Status Agunan diubah dari "+prevMat.getKodeStatusAgunan()+" menjadi "+this.getKodeStatusAgunan()+"/n";
+        }
+        if(!prevMat.getKodeJenisAgunan().equals(this.getKodeJenisAgunan())){
+             history=history+" Kode Jenis Agunan diubah dari "+prevMat.getKodeJenisAgunan()+" menjadi "+this.getKodeJenisAgunan()+"/n";
+        }
+        if(!prevMat.getPeringkatAgunan().equals(this.getPeringkatAgunan())){
+             history=history+" Peringkat Agunan diubah dari "+prevMat.getPeringkatAgunan()+" menjadi "+this.getPeringkatAgunan()+"/n";
+        }
+        if(!prevMat.getKodeLembagaPemeringkat().equals(this.getKodeLembagaPemeringkat())){
+             history=history+" Kode Lembaga Pemeringkat diubah dari "+prevMat.getKodeLembagaPemeringkat()+" menjadi "+this.getKodeLembagaPemeringkat()+"/n";
+        }
+        if(!prevMat.getKodeJenisPengikatan().equals(this.getKodeJenisPengikatan())){
+             history=history+" Kode Jenis Pengikatan diubah dari "+prevMat.getKodeJenisPengikatan()+" menjadi "+this.getKodeJenisPengikatan()+"/n";
+        }
+        if(!prevMat.getTglPengikatan().equals(this.getTglPengikatan())){
+            history=history+" Tanggal Pengikatan diubah dari "+prevMat.getTglPengikatan()+" menjadi "+this.getTglPengikatan()+"/n";
+        }
+        if(!prevMat.getNamaPemilikAgunan().equals(this.getNamaPemilikAgunan())){
+            history=history+" Nama Pemilik Agunan diubah dari "+prevMat.getNamaPemilikAgunan()+" menjadi "+this.getTglPengikatan()+"/n";
+        }
+        if(!prevMat.getBuktiKepemilikan().equals(this.getBuktiKepemilikan())){
+            history=history+" Bukti Kepemilikan diubah dari "+prevMat.getBuktiKepemilikan()+" menjadi "+this.getBuktiKepemilikan()+"/n";
+        }
+        if(!prevMat.getAlamatAgunan().equals(this.getAlamatAgunan())){
+            history=history+" Alamat Agunan diubah dari "+prevMat.getAlamatAgunan()+" menjadi "+this.getAlamatAgunan()+"/n";
+        }
+        if(!prevMat.getKodeKabLokasiAgunan().equals(this.getKodeKabLokasiAgunan())){
+            history=history+" Kode Kab/Kota (DATI 2) Lokasi Agunan diubah dari "+prevMat.getKodeKabLokasiAgunan()+" menjadi "+this.getKodeKabLokasiAgunan()+"/n";
+        }
+        if(!prevMat.getAlamatAgunan().equals(this.getAlamatAgunan())){
+            history=history+" Alamat Agunan diubah dari "+prevMat.getAlamatAgunan()+" menjadi "+this.getAlamatAgunan()+"/n";
+        }
+        if(prevMat.getNilaiAgunanNjop() != this.getNilaiAgunanNjop()){
+            history=history+" Nilai Agunan (NJOP) diubah dari "+prevMat.getNilaiAgunanNjop()+" menjadi "+this.getNilaiAgunanNjop()+"/n";
+        }
+        if(prevMat.getNilaiAgunanLjk() != this.getNilaiAgunanLjk()){
+            history=history+" Nilai Agunan Menurut LJK diubah dari "+prevMat.getNilaiAgunanLjk()+" menjadi "+this.getNilaiAgunanLjk()+"/n";
+        }
+        if(!prevMat.getTglPenilaianLjk().equals(this.getTglPenilaianLjk())){
+            history=history+" Tanggal LJK diubah dari "+prevMat.getTglPenilaianLjk()+" menjadi "+this.getTglPenilaianLjk()+"/n";
+        }
+        if(!prevMat.getNamaPenilaiIndep().equals(this.getNamaPenilaiIndep())){
+            history=history+" Nama Penilai Independen diubah dari "+prevMat.getNamaPenilaiIndep()+" menjadi "+this.getNamaPenilaiIndep()+"/n";
+        }
+        if(prevMat.getNilaiAguPenilaiIndep() != this.getNilaiAguPenilaiIndep()){
+            history=history+" Nilai Agunan Penilai Independen diubah dari "+prevMat.getNilaiAguPenilaiIndep()+" menjadi "+this.getNilaiAguPenilaiIndep()+"/n";
+        }
+        if(!prevMat.getTglPenilaianPenilaiIndep().equals(this.getTglPenilaianPenilaiIndep())){
+            history=history+" Tanggal Penilaian Penilai Independen diubah dari "+prevMat.getTglPenilaianPenilaiIndep()+" menjadi "+this.getTglPenilaianPenilaiIndep()+"/n";
+        }
+        if(prevMat.getStatusParipasu() != this.getStatusParipasu()){
+            history=history+" Status Paripasu diubah dari "+prevMat.getStatusParipasu()+" menjadi "+this.getStatusParipasu()+"/n";
+        }
+        if(!prevMat.getStatusKreditJoin().equals(this.getStatusKreditJoin())){
+            history=history+" Status Kredit Join diubah dari "+prevMat.getStatusKreditJoin()+" menjadi "+this.getStatusKreditJoin()+"/n";
+        }
+        if(!prevMat.getDiasuransikan().equals(this.getDiasuransikan())){
+            history=history+" Diasuransikan diubah dari "+prevMat.getDiasuransikan()+" menjadi "+this.getDiasuransikan()+"/n";
+        }
+        if(!prevMat.getKeterangan().equals(this.getKeterangan())){
+            history=history+" Keterangan diubah dari "+prevMat.getKeterangan()+" menjadi "+this.getKeterangan()+"/n";
+        }
+        if(!prevMat.getKodeKantorCabang().equals(this.getKodeKantorCabang())){
+            history=history+" Kantor Cabang diubah dari "+prevMat.getKodeKantorCabang()+" menjadi "+this.getKodeKantorCabang()+"/n";
+        }
+        if(!prevMat.getOperasiData().equals(this.getOperasiData())){
+            history=history+" Operasi Data diubah dari "+prevMat.getOperasiData()+" menjadi "+this.getOperasiData()+"/n";
+        }
+        if(!prevMat.getOpenDate().equals(this.getOpenDate())){
+            history=history+" Open Date diubah dari "+prevMat.getOpenDate()+" menjadi "+this.getOpenDate()+"/n";
+        }
+        if(prevMat.getStatusData() != this.getStatusData()){
+            history=history+" Status Data diubah dari "+prevMat.getStatusData()+" menjadi "+this.getStatusData()+"/n";
+        }
+        
+        //lanjutkan
+        
+        return history;
+    }
+
+}

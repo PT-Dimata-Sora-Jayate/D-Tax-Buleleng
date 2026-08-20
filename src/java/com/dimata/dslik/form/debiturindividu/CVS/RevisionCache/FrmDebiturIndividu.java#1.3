@@ -1,0 +1,236 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package com.dimata.dslik.form.debiturindividu;
+
+/**
+ *
+ * @author m20n9
+ */
+import com.dimata.dslik.entity.debiturindividu.DebiturIndividu;
+import com.dimata.qdep.form.FRMHandler;
+import com.dimata.qdep.form.I_FRMInterface;
+import com.dimata.qdep.form.I_FRMType;
+import javax.servlet.http.HttpServletRequest;
+
+public class FrmDebiturIndividu extends FRMHandler implements I_FRMInterface, I_FRMType {
+
+    private DebiturIndividu entDebiturIndividu;
+    public static final String FRM_NAME_DEBITUR_INDIVIDU = "FRM_NAME_DEBITUR_INDIVIDU";
+    public static final int FRM_FIELD_DEBITUR_INDIVIDU_OID = 0;
+    public static final int FRM_FIELD_FLAG_DETAIL = 1;
+    public static final int FRM_FIELD_CIF = 2;
+    public static final int FRM_FIELD_JENIS_IDENTITAS = 3;
+    public static final int FRM_FIELD_NIK = 4;
+    public static final int FRM_FIELD_NAMA_IDENTITAS = 5;
+    public static final int FRM_FIELD_NAMA_LENGKAP = 6;
+    public static final int FRM_FIELD_KODE_STATUS_GELAR = 7;
+    public static final int FRM_FIELD_JEKEL = 8;
+    public static final int FRM_FIELD_TEMPAT_LAHIR = 9;
+    public static final int FRM_FIELD_TGL_LAHIR = 10;
+    public static final int FRM_FIELD_NPWP = 11;
+    public static final int FRM_FIELD_ALAMAT = 12;
+    public static final int FRM_FIELD_KELURAHAN = 13;
+    public static final int FRM_FIELD_KECAMATAN = 14;
+    public static final int FRM_FIELD_KODE_KAB = 15;
+    public static final int FRM_FIELD_KODE_POS = 16;
+    public static final int FRM_FIELD_TELEPON = 17;
+    public static final int FRM_FIELD_NOMOR_HP = 18;
+    public static final int FRM_FIELD_EMAIL = 19;
+    public static final int FRM_FIELD_KODE_DOMISILI = 20;
+    public static final int FRM_FIELD_KODE_PEKERJAAN = 21;
+    public static final int FRM_FIELD_TEMPAT_BEKERJA = 22;
+    public static final int FRM_FIELD_KODE_USAHA_TEMPAT_BEKERJA = 23;
+    public static final int FRM_FIELD_ALAMAT_TEMPAT_BEKERJA = 24;
+    public static final int FRM_FIELD_PENGHASILAN_KOTOR = 25;
+    public static final int FRM_FIELD_KODE_PENGHASILAN = 26;
+    public static final int FRM_FIELD_JML_TANGGUNGAN = 27;
+    public static final int FRM_FIELD_KODE_HUB = 28;
+    public static final int FRM_FIELD_KODE_GOL = 29;
+    public static final int FRM_FIELD_STATUS = 30;
+    public static final int FRM_FIELD_NIK_PASANGAN = 31;
+    public static final int FRM_FIELD_NAMA_PASANGAN = 32;
+    public static final int FRM_FIELD_TGLLAHIR_PASANGAN = 33;
+    public static final int FRM_FIELD_PERJANJIAN_PISAH_HARGA = 34;
+    public static final int FRM_FIELD_MELANGGAR_BMPK = 35;
+    public static final int FRM_FIELD_MELAMPAUI_BMPK = 36;
+    public static final int FRM_FIELD_NAMA_IBU_KANDUNG = 37;
+    public static final int FRM_FIELD_KODE_KANTOR_CABANG = 38;
+    public static final int FRM_FIELD_OPERASI_DATA = 39;
+    public static final int FRM_FIELD_STATUS_DATA = 40;
+    public static final int FRM_FIELD_KODE_JENIS_NSB = 41;
+
+    public static String[] fieldNames = {
+        "FRM_FIELD_DEBITUR_INDIVIDU_OID",
+        "FRM_FIELD_FLAG_DETAIL",
+        "FRM_FIELD_CIF",
+        "FRM_FIELD_JENIS_IDENTITAS",
+        "FRM_FIELD_NIK",
+        "FRM_FIELD_NAMA_IDENTITAS",
+        "FRM_FIELD_NAMA_LENGKAP",
+        "FRM_FIELD_KODE_STATUS_GELAR",
+        "FRM_FIELD_JEKEL",
+        "FRM_FIELD_TEMPAT_LAHIR",
+        "FRM_FIELD_TGL_LAHIR",
+        "FRM_FIELD_NPWP",
+        "FRM_FIELD_ALAMAT",
+        "FRM_FIELD_KELURAHAN",
+        "FRM_FIELD_KECAMATAN",
+        "FRM_FIELD_KODE_KAB",
+        "FRM_FIELD_KODE_POS",
+        "FRM_FIELD_TELEPON",
+        "FRM_FIELD_NOMOR_HP",
+        "FRM_FIELD_EMAIL",
+        "FRM_FIELD_KODE_DOMISILI",
+        "FRM_FIELD_KODE_PEKERJAAN",
+        "FRM_FIELD_TEMPAT_BEKERJA",
+        "FRM_FIELD_KODE_USAHA_TEMPAT_BEKERJA",
+        "FRM_FIELD_ALAMAT_TEMPAT_BEKERJA",
+        "FRM_FIELD_PENGHASILAN_KOTOR",
+        "FRM_FIELD_KODE_PENGHASILAN",
+        "FRM_FIELD_JML_TANGGUNGAN",
+        "FRM_FIELD_KODE_HUB",
+        "FRM_FIELD_KODE_GOL",
+        "FRM_FIELD_STATUS",
+        "FRM_FIELD_NIK_PASANGAN",
+        "FRM_FIELD_NAMA_PASANGAN",
+        "FRM_FIELD_TGLLAHIR_PASANGAN",
+        "FRM_FIELD_PERJANJIAN_PISAH_HARGA",
+        "FRM_FIELD_MELANGGAR_BMPK",
+        "FRM_FIELD_MELAMPAUI_BMPK",
+        "FRM_FIELD_NAMA_IBU_KANDUNG",
+        "FRM_FIELD_KODE_KANTOR_CABANG",
+        "FRM_FIELD_OPERASI_DATA",
+        "FRM_FIELD_STATUS_DATA",
+        "FRM_FIELD_KODE_JENIS_NSB"
+    };
+
+    public static int[] fieldTypes = {
+        TYPE_LONG,
+        TYPE_STRING,
+        TYPE_STRING,
+        TYPE_STRING,
+        TYPE_STRING,
+        TYPE_STRING,
+        TYPE_STRING,
+        TYPE_STRING,
+        TYPE_STRING,
+        TYPE_STRING,
+        TYPE_DATE,
+        TYPE_STRING,
+        TYPE_STRING,
+        TYPE_STRING,
+        TYPE_STRING,
+        TYPE_STRING,
+        TYPE_STRING,
+        TYPE_STRING,
+        TYPE_STRING,
+        TYPE_STRING,
+        TYPE_STRING,
+        TYPE_STRING,
+        TYPE_STRING,
+        TYPE_STRING,
+        TYPE_STRING,
+        TYPE_FLOAT,
+        TYPE_STRING,
+        TYPE_INT,
+        TYPE_STRING,
+        TYPE_STRING,
+        TYPE_STRING,
+        TYPE_STRING,
+        TYPE_STRING,
+        TYPE_DATE,
+        TYPE_STRING,
+        TYPE_STRING,
+        TYPE_STRING,
+        TYPE_STRING,
+        TYPE_STRING,
+        TYPE_STRING,
+        TYPE_INT,
+        TYPE_STRING
+    };
+
+    public FrmDebiturIndividu() {
+    }
+
+    public FrmDebiturIndividu(DebiturIndividu entDebiturIndividu) {
+        this.entDebiturIndividu = entDebiturIndividu;
+    }
+
+    public FrmDebiturIndividu(HttpServletRequest request, DebiturIndividu entDebiturIndividu) {
+        super(new FrmDebiturIndividu(entDebiturIndividu), request);
+        this.entDebiturIndividu = entDebiturIndividu;
+    }
+
+    public String getFormName() {
+        return FRM_NAME_DEBITUR_INDIVIDU;
+    }
+
+    public int[] getFieldTypes() {
+        return fieldTypes;
+    }
+
+    public String[] getFieldNames() {
+        return fieldNames;
+    }
+
+    public int getFieldSize() {
+        return fieldNames.length;
+    }
+
+    public DebiturIndividu getEntityObject() {
+        return entDebiturIndividu;
+    }
+
+    public void requestEntityObject(DebiturIndividu entDebiturIndividu) {
+        try {
+            this.requestParam();
+            //entDebiturIndividu.setDebitu(getLong(FRM_FIELD_DEBITUR_INDIVIDU_OID));
+            entDebiturIndividu.setFlagDetail(getString(FRM_FIELD_FLAG_DETAIL));
+            entDebiturIndividu.setCif(getString(FRM_FIELD_CIF));
+            entDebiturIndividu.setJenisIdentitas(getString(FRM_FIELD_JENIS_IDENTITAS));
+            entDebiturIndividu.setNik(getString(FRM_FIELD_NIK));
+            entDebiturIndividu.setNamaIdentitas(getString(FRM_FIELD_NAMA_IDENTITAS));
+            entDebiturIndividu.setNamaLengkap(getString(FRM_FIELD_NAMA_LENGKAP));
+            entDebiturIndividu.setKodeStatusGelar(getString(FRM_FIELD_KODE_STATUS_GELAR));
+            entDebiturIndividu.setJekel(getString(FRM_FIELD_JEKEL));
+            entDebiturIndividu.setTempatLahir(getString(FRM_FIELD_TEMPAT_LAHIR));
+            entDebiturIndividu.setTglLahir(getDate(FRM_FIELD_TGL_LAHIR));
+            entDebiturIndividu.setNpwp(getString(FRM_FIELD_NPWP));
+            entDebiturIndividu.setAlamat(getString(FRM_FIELD_ALAMAT));
+            entDebiturIndividu.setKelurahan(getString(FRM_FIELD_KELURAHAN));
+            entDebiturIndividu.setKecamatan(getString(FRM_FIELD_KECAMATAN));
+            entDebiturIndividu.setKodeKab(getString(FRM_FIELD_KODE_KAB));
+            entDebiturIndividu.setKodePos(getString(FRM_FIELD_KODE_POS));
+            entDebiturIndividu.setTelepon(getString(FRM_FIELD_TELEPON));
+            entDebiturIndividu.setNomorHp(getString(FRM_FIELD_NOMOR_HP));
+            entDebiturIndividu.setEmail(getString(FRM_FIELD_EMAIL));
+            entDebiturIndividu.setKodeDomisili(getString(FRM_FIELD_KODE_DOMISILI));
+            entDebiturIndividu.setKodePekerjaan(getString(FRM_FIELD_KODE_PEKERJAAN));
+            entDebiturIndividu.setTempatBekerja(getString(FRM_FIELD_TEMPAT_BEKERJA));
+            entDebiturIndividu.setKodeUsahaTempatBekerja(getString(FRM_FIELD_KODE_USAHA_TEMPAT_BEKERJA));
+            entDebiturIndividu.setAlamatTempatBekerja(getString(FRM_FIELD_ALAMAT_TEMPAT_BEKERJA));
+            entDebiturIndividu.setPenghasilanKotor(getFloat(FRM_FIELD_PENGHASILAN_KOTOR));
+            entDebiturIndividu.setKodePenghasilan(getString(FRM_FIELD_KODE_PENGHASILAN));
+            entDebiturIndividu.setJmlTanggungan(getInt(FRM_FIELD_JML_TANGGUNGAN));
+            entDebiturIndividu.setKodeHub(getString(FRM_FIELD_KODE_HUB));
+            entDebiturIndividu.setKodeGol(getString(FRM_FIELD_KODE_GOL));
+            entDebiturIndividu.setStatus(getString(FRM_FIELD_STATUS));
+            entDebiturIndividu.setNikPasangan(getString(FRM_FIELD_NIK_PASANGAN));
+            entDebiturIndividu.setNamaPasangan(getString(FRM_FIELD_NAMA_PASANGAN));
+            entDebiturIndividu.setTglLahirPasangan(getDate(FRM_FIELD_TGLLAHIR_PASANGAN));
+            entDebiturIndividu.setPerjanjianPisahHarga(getString(FRM_FIELD_PERJANJIAN_PISAH_HARGA));
+            entDebiturIndividu.setMelanggarBmpk(getString(FRM_FIELD_MELANGGAR_BMPK));
+            entDebiturIndividu.setMelampauiBmpk(getString(FRM_FIELD_MELAMPAUI_BMPK));
+            entDebiturIndividu.setNamaIbuKandung(getString(FRM_FIELD_NAMA_IBU_KANDUNG));
+            entDebiturIndividu.setKodeKantorCabang(getString(FRM_FIELD_KODE_KANTOR_CABANG));
+            entDebiturIndividu.setOperasiData(getString(FRM_FIELD_OPERASI_DATA));
+            entDebiturIndividu.setStatusData(getInt(FRM_FIELD_STATUS_DATA));
+            entDebiturIndividu.setKodeJenisNsb(getString(FRM_FIELD_KODE_JENIS_NSB));
+        } catch (Exception e) {
+            System.out.println("Error on requestEntityObject : " + e.toString());
+        }
+    }
+
+}

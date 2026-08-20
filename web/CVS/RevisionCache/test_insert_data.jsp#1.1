@@ -1,0 +1,96 @@
+<%-- 
+    Document   : test_insert_data
+    Created on : Feb 23, 2016, 4:42:27 PM
+    Author     : dimata005
+--%>
+
+<%-- 
+    Document   : test_koneksi
+    Created on : Feb 23, 2016, 12:53:20 AM
+    Author     : dimata005
+--%>
+<%-- 
+    Document   : test_koneksi
+    Created on : Feb 23, 2016, 12:11:50 AM
+    Author     : Administrator
+--%>
+
+<html>
+    <head><title>Enter to database</title></head>
+    <body>
+        <table>
+            <%@ page import="java.util.*" %>
+            <%@ page import="javax.sql.*;" %>
+            <%
+
+                java.sql.Connection con;
+                java.sql.Statement s;
+                java.sql.ResultSet rs;
+                java.sql.PreparedStatement pst;
+
+                con = null;
+                s = null;
+                pst = null;
+                rs = null;
+
+                // Remember to change the next line with your own environment
+                //Server Gianyar
+                //String url = "jdbc:jtds:sqlserver://SVR-BACKUP/PENDAPATAN2016;instance=simpadadbs";
+                
+                //WITAR-PC\SQLEXPRESS
+                String url = "jdbc:jtds:sqlserver://WITAR-PC/Testt;instance=SQLEXPRESS";
+                String id  = "admino";
+                String pass = "admin";
+                try {
+
+                    Class.forName("net.sourceforge.jtds.jdbc.Driver");
+                    con = java.sql.DriverManager.getConnection(url, id, pass);
+                    
+                } catch (ClassNotFoundException cnfex) {
+                    cnfex.printStackTrace();
+
+                }
+                
+                String sql = "select top 10 * from Ref_Kelas";
+                
+                try {
+                    
+                    s = con.createStatement();
+                    
+                    //fungsi insert
+                    String command = "INSERT INTO Ref_Kelas (Kd_Kelas, Nm_Kelas) VALUES (5, 'Klasifikasi E')";
+                    s.executeUpdate(command);
+                    
+                    //fungsi query
+                    rs = s.executeQuery(sql);
+            %>
+
+            <%
+                while (rs.next()) {
+            %><tr>
+                <td><%= rs.getString("Kd_Kelas")%></td>
+                <td><%= rs.getString("Nm_Kelas")%></td>
+            </tr>
+            <%
+                }
+            %>
+
+            <%
+                } catch (Exception e) {
+                    e.printStackTrace();
+                } finally {
+                    if (rs != null) {
+                        rs.close();
+                    }
+                    if (s != null) {
+                        s.close();
+                    }
+                    if (con != null) {
+                        con.close();
+                    }
+                }
+
+            %>
+
+    </body>
+</html>

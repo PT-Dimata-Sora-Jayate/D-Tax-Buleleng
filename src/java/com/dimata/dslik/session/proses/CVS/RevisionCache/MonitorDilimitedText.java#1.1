@@ -1,0 +1,39 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package com.dimata.dslik.session.proses;
+
+/**
+ *
+ * @author dimata005
+ */
+public class MonitorDilimitedText implements Runnable {
+    
+    private String Proggess="";
+    
+    public MonitorDilimitedText() {
+            
+    }
+    
+    public void run() {
+
+        System.out.println("start .... ");
+    
+        while (ManagerDilimitedText.running) {
+            
+            try {
+                
+                /*proses transfer*/
+                ProsesDilimitedText prosesDilimitedText = new ProsesDilimitedText();
+                prosesDilimitedText.actionDilimitedTextDebitur();
+            } catch (Exception e) {
+                System.out.println("Interrupted " + e);
+            }
+            
+            ManagerDilimitedText.running=false;
+        }
+        System.out.println("stop .... ");
+    }
+}

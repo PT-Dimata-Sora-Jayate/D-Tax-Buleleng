@@ -1,0 +1,64 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package com.dimata.dslik.session.proses;
+
+/**
+ *
+ * @author dimata005
+ */
+public class MonitorDilimitedText implements Runnable {
+    
+    private String Proggess="";
+    private FileSent fileSent=null;
+    
+    public MonitorDilimitedText(FileSent fileSent) {
+        try{
+            this.fileSent = fileSent;
+            
+            this.Proggess ="";
+
+        }catch(Exception e){
+            System.out.println(" ! EXC : initiate thread =  "+e.toString());
+
+        }
+
+    }
+    
+    public void run() {
+
+        System.out.println("start .... ");
+    
+        while (ManagerDilimitedText.running) {
+            
+            try {
+                
+                /*proses transfer*/
+                ProsesDilimitedText prosesDilimitedText = new ProsesDilimitedText();
+                
+                /*proses debitur perorangan*/
+                fileSent.setTypeSegment(Configurasi.FLD_SEGMENT_DEBITUR_PERORANGAN);
+                prosesDilimitedText.actionDilimitedTextDebitur(fileSent);
+                
+                /*proses debitur badan usaha*/
+                
+                /*proses kredit*/
+                
+                /*proses agunan*/
+                
+                /*proses bank garansi*/
+                
+                /*proses pengurus dan pemilik*/
+                fileSent.setTypeSegment(Configurasi.FLD_SEGMENT_PENGURUS_PEMILIK);
+                prosesDilimitedText.actionDilimitedTextPengurusPemilik(fileSent);
+            } catch (Exception e) {
+                System.out.println("Interrupted " + e);
+            }
+            
+            ManagerDilimitedText.running=false;
+        }
+        System.out.println("stop .... ");
+    }
+}

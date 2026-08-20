@@ -1,0 +1,612 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package com.dimata.dslik.session.proses;
+
+import com.dimata.dslik.entity.bpdmapping.MappingAgunanBpd;
+import com.dimata.dslik.entity.bpdmapping.MappingBankGaransiBpd;
+import com.dimata.dslik.entity.bpdmapping.MappingDebiturBpd;
+import com.dimata.dslik.entity.bpdmapping.MappingKreditBpd;
+import com.dimata.dslik.entity.bpdmapping.MappingPengurusAtauPemilikBpd;
+import com.dimata.dslik.entity.bpdmapping.PstMappingAgunanBpd;
+import com.dimata.dslik.entity.bpdmapping.PstMappingBankGaransiBpd;
+import com.dimata.dslik.entity.bpdmapping.PstMappingDebiturBpd;
+import com.dimata.dslik.entity.bpdmapping.PstMappingKreditBpd;
+import com.dimata.dslik.entity.bpdmapping.PstMappingPengurusAtauPemilikBpd;
+import com.dimata.dslik.entity.debitur.PstDebitur;
+import com.dimata.dslik.entity.masterdata.OutletConnection;
+import com.dimata.dslik.entity.masterdata.Periode;
+import com.dimata.dslik.entity.masterdata.PstConnection;
+import com.dimata.dslik.entity.masterdata.PstPeriode;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.Date;
+import java.util.Vector;
+
+/**
+ *
+ * @author dimata005
+ */
+public class ProsesTransferDataBank {
+    
+    private OutletConnection conOb=null;
+    private Connection dbConn = null;
+    
+    private void createConn()
+        throws SQLException
+    {
+        try
+        {
+            //Class.forName(this.conOb.getDbdriver()).newInstance();
+            
+            Vector outletConn = PstConnection.list(0, 0, ""+PstConnection.fieldNames[PstConnection.FLD_TYPE_CONNECTION]+"=0", "");
+            if(outletConn.size()>=1){
+                    //conOb = new OutletConnection();
+                    conOb = (OutletConnection) outletConn.get(0);
+            }
+            Class.forName(this.conOb.getDbdriver()).newInstance();
+            dbConn = DriverManager.getConnection(this.conOb.getDburl(), this.conOb.getDbuser(), this.conOb.getDbpasswd());
+        }
+        catch(Exception e) {
+        }
+    }
+    
+    public String actionTransferDataDebitur() {
+        return actionTransferDataDebitur("",0);
+    }
+    
+    public String actionTransferDataDebitur(String cif, long periodeId) {
+        String action="";
+        
+         try{
+             createConn(); 
+             String sql="SELECT  DISTINCT " +
+                        "MASTER.NASABAH.NO_NSB, " +
+                        "MASTER.NASABAH.KD_IDENTITAS, " +
+                        "MASTER.NASABAH.NO_IDENTITAS, " +
+                        "MASTER.NASABAH.NAMA_NSB, " +
+                        "MASTER.NASABAH.STS_GELAR, " +
+                        "MASTER.NASABAH.JNS_KELAMIN, " +
+                        "MASTER.NASABAH.TEMPAT_LAHIR, " +
+                        "MASTER.NASABAH.TGL_LAHIR, " +
+                        "MASTER.NASABAH.NPWP, " +
+                        "MASTER.NASABAH.ALAMAT, " +
+                        "MASTER.NASABAH.KELURAHAN, " +
+                        "MASTER.NASABAH.KD_KECAMATAN, " +
+                        "MASTER.NASABAH.KD_DATI_II, " +
+                        "MASTER.NASABAH.KD_POS, " +
+                        "MASTER.NASABAH.TELEPON, " +
+                        "MASTER.NASABAH.NO_HP, " +
+                        "MASTER.NASABAH.EMAIL, " +
+                        "MASTER.NASABAH.KD_NEGARA, " +
+                        "MASTER.NASABAH.PEKERJAAN, " +
+                        "MASTER.NASABAH.TEMPAT_KERJA, " +
+                        "MASTER.NASABAH.BIDANG_KERJA, " +
+                        "MASTER.NASABAH.ALAMAT_KERJA, " +
+                        "MASTER.NASABAH.HASIL_KOTOR, " +
+                        "MASTER.NASABAH.JML_TANGGUNGAN, " +
+                        "MASTER.NASABAH.HUB_DGN_NSB, " +
+                        "MASTER.NASABAH.STS_KAWIN, " +
+                        "MASTER.SID.LANGGAR_BMK, " +
+                        "MASTER.SID.LAMPAU_BMK, " +
+                        "MASTER.NASABAH.NAMA_IBU, " +
+                        "MASTER.NASABAH.KD_CAB, " +
+                        "MASTER.SID.NM_PERUSAHAAN, " +
+                        "MASTER.NASABAH.JENIS_USAHA, " +
+                        "MASTER.SID.TEMPAT_AKTE, " +
+                        "MASTER.SID.NO_AKTE_AWAL, " +
+                        "MASTER.SID.TGL_AKTE_AWAL, " +
+                        "MASTER.SID.NO_AKTE_AKHIR, " +
+                        "MASTER.SID.TGL_AKTE_AKHIR, " +
+                        "MASTER.SID.BIDANG_USAHA, " +
+                        "MASTER.NASABAH.HUBUNGAN_BANK, " +
+                        "MASTER.SID.GO_PUBLIC, " +
+                        "MASTER.SID.GOL_DEB, " +
+                        "MASTER.SID.RATING_USH_DEB, " +
+                        "MASTER.SID.LEMBAGA_PRINGKAT, " +
+                        "MASTER.SID.GROUP_DEB, " +
+                        "MASTER.NASABAH.KD_CAB, " +
+                        "MASTER.NASABAH.KD_JNS_NSB " +
+                        "FROM MASTER.NASABAH  " +
+                        "LEFT JOIN MASTER.SID   " +
+                        "ON MASTER.NASABAH.NO_NSB = MASTER.SID.NO_NSB ";
+             
+                if(!cif.equals("")){
+                    sql = sql + "WHERE MASTER.NASABAH.NO_NSB='"+cif+"'";
+                }
+                        //sql = sql + "FETCH FIRST 5 ROWS ONLY";
+                        
+            PreparedStatement st = this.dbConn.prepareStatement(sql);
+            ResultSet rs = st.executeQuery();
+            int no = 0;
+            while (rs.next()) {
+                    //sent=false;
+                    try{
+                        no=no+1;
+                        MappingDebiturBpd entDebitur = new MappingDebiturBpd(); 
+                        String entCif = rs.getString("no_nsb"); //entMappingKreditBpd.getCif().replaceAll("\\s","");
+                        entDebitur.setCif(entCif.replace("\\s",""));
+                        //entDebitur.setCif(rs.getString("no_nsb"));
+                        entDebitur.setJenisIdentitas (rs.getString("kd_identitas"));
+                        entDebitur.setNik (rs.getString("no_identitas"));
+                        entDebitur.setNamaIdentitas (rs.getString("nama_nsb"));
+                        entDebitur.setNamaLengkap (rs.getString("nama_nsb"));
+                        entDebitur.setKodeStatusGelar (rs.getString("sts_gelar"));
+                        entDebitur.setJekel (rs.getString("jns_kelamin"));
+                        entDebitur.setTempatLahir (rs.getString("tempat_lahir"));
+                        entDebitur.setTanggalLahir(rs.getDate("tgl_lahir"));
+                        entDebitur.setNpwp (rs.getString("npwp"));
+                        entDebitur.setAlamat (rs.getString("alamat"));
+                        entDebitur.setKelurahan (rs.getString("kelurahan"));
+                        entDebitur.setKecamatan (rs.getString("kd_kecamatan"));
+                        entDebitur.setKodeKab (SessGetContentDataOjk.getContentDataKabKota(rs.getString("kd_dati_ii")));
+                        entDebitur.setKodePos (rs.getString("kd_pos"));
+                        entDebitur.setTelepon (rs.getString("telepon"));
+                        entDebitur.setNomorHp (rs.getString("no_hp"));
+                        entDebitur.setEmail (rs.getString("email"));
+                        entDebitur.setKodeDomisili(SessGetContentDataOjk.getContentDataNegaraDomisili(rs.getString("kd_negara")));
+                        entDebitur.setKodePekerjaan (SessGetContentDataOjk.getContentDataKodePekerjaan(rs.getString("pekerjaan")));
+                        entDebitur.setTempatBekerja (rs.getString("tempat_kerja"));                      
+                        entDebitur.setKodeUsahaTempatBekerja (SessGetContentDataOjk.getContentDataBentukBdnUsh(rs.getString("bidang_kerja")));
+                        entDebitur.setAlamatTempatBekerja (rs.getString("alamat_kerja"));
+                        entDebitur.setPenghasilanKotor (rs.getFloat("hasil_kotor"));
+                        entDebitur.setJmlTanggungan (rs.getInt("jml_tanggungan"));
+                        entDebitur.setKodeHub (rs.getString("hub_dgn_nsb"));
+                        entDebitur.setKodeGol (SessGetContentDataOjk.getContentDataKodeGolDeb(rs.getString("gol_deb")));
+                        entDebitur.setStatus (rs.getString("sts_kawin"));
+                        entDebitur.setMelanggarBmpk (rs.getString("langgar_bmk"));
+                        entDebitur.setMelampuiBmpk (rs.getString("lampau_bmk"));
+                        entDebitur.setNamaIbuKandung (rs.getString("nama_ibu"));
+                        entDebitur.setKodeKantorCabang (SessGetContentDataOjk.getContentDataKodeKantorCabang(rs.getString("kd_cab")));
+                        entDebitur.setNamaBadanUsaha (rs.getString("nm_perusahaan"));
+                        entDebitur.setKodeJenisUsaha (rs.getString("jenis_usaha"));
+                        entDebitur.setTempatPendirian (rs.getString("tempat_akte"));
+                        entDebitur.setNoAkte (rs.getString("no_akte_awal"));
+                        entDebitur.setTglAktePendirian (rs.getDate("tgl_akte_awal"));
+                        entDebitur.setNoAktePerubahan (rs.getString("no_akte_akhir"));
+                        entDebitur.setTglAktePerubahan (rs.getDate("tgl_akte_akhir"));
+                        entDebitur.setKodeBidangUsaha (SessGetContentDataOjk.getContentDataKodeBidangUsaha(rs.getString("bidang_usaha")));
+                        entDebitur.setKodeHubLjk (rs.getString("hubungan_bank"));
+                        entDebitur.setGoPublic (rs.getString("go_public"));
+                        entDebitur.setPeringkat (rs.getString("rating_ush_deb"));
+                        entDebitur.setLembagaPemeringkat (SessGetContentDataOjk.getContentDataKodeLembagaPemeringkat(rs.getString("lembaga_pringkat")));
+                        entDebitur.setNamaGroup (rs.getString("group_deb"));
+                        entDebitur.setKodeJenisNsb(rs.getInt("kd_jns_nsb"));
+                        Date newDate = new Date();
+                        entDebitur.setOpenDate (newDate);
+                        entDebitur.setPeriodeId(periodeId);
+                        
+                        long insertDebitur = PstMappingDebiturBpd.insertExc(entDebitur);
+                        
+                       
+                        
+                    }catch(Exception es){
+                        System.out.print("Eror loh urutan "+no);
+                    }
+             }
+             
+             rs.close();
+             st.close();
+             this.dbConn.close();
+         }catch(Exception e){
+        }
+        
+        return action;
+    }
+    
+    public String actionTransferDataKredit() {
+        return actionTransferDataKredit("");
+    }
+    
+    public String actionTransferDataKredit(String cif) {
+        String action="";
+        
+        Vector vperiode = PstPeriode.list(0, 0, PstPeriode.fieldNames[PstPeriode.FLD_POSTED]+"='0'", "");
+        Periode periode = new Periode();
+        if(vperiode.size()>0){
+          periode = (Periode) vperiode.get(0);
+          //delete semua transaksi pada periode ini
+          if(periode.getOID()!=0){
+              long ooo = PstMappingKreditBpd.deleteSegmentKreditPerPeriode(periode.getOID());
+              long x = PstMappingAgunanBpd.deleteSegmentAnggunanPerPeriode(periode.getOID());
+              long y = PstMappingBankGaransiBpd.deleteSegmentBankGaransiPerPeriode(periode.getOID());
+              long z = PstMappingDebiturBpd.deleteSegmentDebiturPerPeriode(periode.getOID());
+              long q = PstMappingPengurusAtauPemilikBpd.deleteSegmentPengurusPemilikPerPeriode(periode.getOID());
+          }
+        }
+        
+        if(periode.getOID()!=0){
+            try{
+                createConn(); 
+                /*carikan querynya*/
+                String sql=""+ 
+                            "SELECT  " +
+                            "CONCAT(ID_KTR_CABANG,NO_REKENING) AS NO_REKENING, " +
+                            "BAR.CIFMSTID, " +
+                            "BAR.LNCCHRID, " +
+                            "BAR.CHRTBSL2, " +
+                            "BAR.CONTRCNO, " +
+                            "BAR.CONTRTDT, " +
+                            "BAR.PKAKHIR, " +
+                            "BAR.PKAKHDT, " +
+                            "BAR.ADNDMSEQ, " +
+                            "BAR.TGL_AWAL_KREDIT, " +
+                            "BAR.TGL_MULAI, " +
+                            "BAR.LNDUEDT, " +
+                            "BAR.DCATBSL2, " +
+                            "BAR.USAGEID, " +
+                            "BAR.ORIENTID, " +
+                            "BAR.SIDDT2ID, " +
+                            "BAR.PRJAMSID, " +
+                            "BAR.CCYID, " +
+                            "BAR.LNINTRST, " +
+                            "BAR.INTRTYPE, " +
+                            "BAR.SRCID, " +
+                            "BAR.PLAFOND, " +
+                            "BAR.KUMULATIF_REALISASI, " +
+                            "BAR.PENALTY, " +
+                            "BAR.ENDBAL, " +
+                            "BAR.COLID, " +
+                            "BAR.TGL_MACET, " +
+                            "BAR.TUNGGPKK, " +
+                            "BAR.TUNGGBNG, " +
+                            "BAR.BASETGDY, " +
+                            "BAR.COUNTBNG, " +
+                            "MASTER.SID_KREDIT.RESTRUK_KE,  " +
+                            "MASTER.SID_KREDIT.RESTRUK_AWAL, " +
+                            "BAR.RESTDATE, " +
+                            "BAR.KONDISI, " +
+                            "BAR.TGL_KONDISI, " +
+                            "BAR.BRANCHID " +
+                            "FROM MASTER.SID_KREDIT " +
+                            "INNER JOIN  " +
+                            "(  " +
+                            "SELECT CIFMSTID , ACCNBR, CONCAT(BRANCHID, ACCNBR) AS NO_REK, LNCCHRID, CHRTBSL2,CONTRCNO, CONTRTDT, PKAKHIR, PKAKHDT, ADNDMSEQ,  " +
+                            "TGL_AWAL_KREDIT,TGL_MULAI,LNDUEDT,DCATBSL2,USAGEID, ORIENTID, SIDDT2ID, PRJAMSID, CCYID, LNINTRST,INTRTYPE,SRCID,PLAFOND, KUMULATIF_REALISASI, " +
+                            "PENALTY,ENDBAL,COLID,TGL_MACET,TUNGGPKK, TUNGGBNG, BASETGDY, COUNTBNG, RESTDATE, KONDISI, TGL_KONDISI, BRANCHID " +
+                            "FROM (  " +
+                            "SELECT MASTER.LNACCAT.ACCNBR, MASTER.LNACCAT.CIFMSTID, MASTER.LNACCAT.LNCCHRID, MASTER.LNACCAT.CHRTBSL2,  MASTER.LNACCAT.CONTRCNO, MASTER.LNACCAT.CONTRTDT, MASTER.LNACCAT.PKAKHIR, MASTER.LNACCAT.PKAKHDT, MASTER.LNACCAT.ADNDMSEQ,  " +
+                            "(CASE WHEN MASTER.LNACCAT.CONTRTDT > MASTER.LNACCAT.ACCOPNDT THEN MASTER.LNACCAT.CONTRTDT ELSE MASTER.LNACCAT.ACCOPNDT END) AS TGL_AWAL_KREDIT, " +
+                            "(CASE WHEN MASTER.LNACCAT.CONTRTDT > MASTER.LNACCAT.LNSTRDT THEN MASTER.LNACCAT.CONTRTDT ELSE MASTER.LNACCAT.LNSTRDT END) AS TGL_MULAI, " +
+                            "MASTER.LNACCAT.LNDUEDT, MASTER.LNACCAT.DCATBSL2, MASTER.LNACCAT.USAGEID, MASTER.LNACCAT.ORIENTID,  MASTER.LNACCAT.SIDDT2ID, " +
+                            "MASTER.LNACCAT.PRJAMSID, MASTER.LNACCAT.CCYID, MASTER.LNACCAT.LNINTRST, MASTER.LNACCAT.INTRTYPE, MASTER.LNACCAT.SRCID, MASTER.LNACCAT.PLAFOND, " +
+                            "(CASE WHEN MASTER.LNACCAT.ENDBAL < MASTER.LNACCAT.BOMBAL THEN 0 ELSE MASTER.LNACCAT.ENDBAL - MASTER.LNACCAT.BOMBAL END) AS KUMULATIF_REALISASI, " +
+                            "MASTER.LNACCAT.PENALTY, MASTER.LNACCAT.ENDBAL, MASTER.LNACCAT.COLID, " +
+                            "CASE WHEN RTRIM(CHAR(MASTER.LNACCAT.COLID)) = '5' THEN MASTER.LNACCAT.COLDATE END AS TGL_MACET, " +
+                            "MASTER.LNACCAT.TUNGGPKK,  MASTER.LNACCAT.TUNGGBNG, MASTER.LNACCAT.BASETGDY, MASTER.LNACCAT.COUNTBNG, MASTER.LNACCAT.RESTDATE, " +
+                            "CASE RTRIM(CHAR(MASTER.LNACCAT.ACCSTS)) WHEN '7' THEN '03' WHEN '9' THEN '02' END AS KONDISI, " +
+                            "CASE WHEN RTRIM(CHAR(MASTER.LNACCAT.ACCSTS)) = '9' THEN MASTER.LNACCAT.PAIDDATE WHEN RTRIM(CHAR(MASTER.LNACCAT.ACCSTS)) = '7' THEN MASTER.LNACCAT.HPSBKDT END AS TGL_KONDISI, " +
+                            "MASTER.LNACCAT.BRANCHID " +
+                            "FROM MASTER.LNACCAT  " +
+                            "UNION  " +
+                            "SELECT MASTER.LNACCATT.ACCNBR, MASTER.LNACCATT.CIFMSTID, MASTER.LNACCATT.LNCCHRID, MASTER.LNACCATT.CHRTBSL2, MASTER.LNACCATT.CONTRCNO, MASTER.LNACCATT.CONTRTDT, MASTER.LNACCATT.PKAKHIR, MASTER.LNACCATT.PKAKHDT, MASTER.LNACCATT.ADNDMSEQ,  " +
+                            "(CASE WHEN MASTER.LNACCATT.CONTRTDT > MASTER.LNACCATT.ACCOPNDT THEN MASTER.LNACCATT.CONTRTDT ELSE MASTER.LNACCATT.ACCOPNDT END) AS TGL_AWAL_KREDIT, " +
+                            "(CASE WHEN MASTER.LNACCATT.CONTRTDT > MASTER.LNACCATT.LNSTRDT THEN MASTER.LNACCATT.CONTRTDT ELSE MASTER.LNACCATT.LNSTRDT END) AS TGL_MULAI, " +
+                            "MASTER.LNACCATT.LNDUEDT, MASTER.LNACCATT.DCATBSL2, MASTER.LNACCATT.USAGEID, MASTER.LNACCATT.ORIENTID,  MASTER.LNACCATT.SIDDT2ID, " +
+                            "MASTER.LNACCATT.PRJAMSID, MASTER.LNACCATT.CCYID, MASTER.LNACCATT.LNINTRST, MASTER.LNACCATT.INTRTYPE, MASTER.LNACCATT.SRCID, MASTER.LNACCATT.PLAFOND, " +
+                            "CASE WHEN MASTER.LNACCATT.ENDBAL < MASTER.LNACCATT.BOMBAL THEN 0 ELSE MASTER.LNACCATT.ENDBAL - MASTER.LNACCATT.BOMBAL END AS KUMULATIF_REALISASI, " +
+                            "MASTER.LNACCATT.PENALTY, MASTER.LNACCATT.ENDBAL, MASTER.LNACCATT.COLID, " +
+                            "CASE WHEN RTRIM(CHAR(MASTER.LNACCATT.COLID)) = '5' THEN MASTER.LNACCATT.COLDATE END AS TGL_MACET, " +
+                            "MASTER.LNACCATT.TUNGGPKK,  MASTER.LNACCATT.TUNGGBNG, MASTER.LNACCATT.BASETGDY, MASTER.LNACCATT.COUNTBNG, MASTER.LNACCATT.RESTDATE, " +
+                            "CASE RTRIM(CHAR(MASTER.LNACCATT.ACCSTS)) WHEN '7' THEN '03' WHEN '9' THEN '02' END AS KONDISI, " +
+                            "CASE WHEN RTRIM(CHAR(MASTER.LNACCATT.ACCSTS)) = '9' THEN MASTER.LNACCATT.PAIDDATE WHEN RTRIM(CHAR(MASTER.LNACCATT.ACCSTS)) = '7' THEN MASTER.LNACCATT.HPSBKDT END AS TGL_KONDISI, " +
+                            "MASTER.LNACCATT.BRANCHID " +
+                            "FROM MASTER.LNACCATT  " +
+                            "UNION  " +
+                            "SELECT MASTER.LNACCTA.ACCNBR, MASTER.LNACCTA.CIFMSTID, MASTER.LNACCTA.LNCCHRID, MASTER.LNACCTA.CHRTBSL2, MASTER.LNACCTA.CONTRCNO,MASTER.LNACCTA.CONTRTDT, MASTER.LNACCTA.PKAKHIR, MASTER.LNACCTA.PKAKHDT, MASTER.LNACCTA.ADNDMSEQ,  " +
+                            "(CASE WHEN MASTER.LNACCTA.CONTRTDT > MASTER.LNACCTA.ACCOPNDT THEN MASTER.LNACCTA.CONTRTDT ELSE MASTER.LNACCTA.ACCOPNDT END) AS TGL_AWAL_KREDIT, " +
+                            "(CASE WHEN MASTER.LNACCTA.CONTRTDT > MASTER.LNACCTA.LNSTRDT THEN MASTER.LNACCTA.CONTRTDT ELSE MASTER.LNACCTA.LNSTRDT END) AS TGL_MULAI, " +
+                            "MASTER.LNACCTA.LNDUEDT, MASTER.LNACCTA.DCATBSL2, MASTER.LNACCTA.USAGEID, MASTER.LNACCTA.ORIENTID, MASTER.LNACCTA.SIDDT2ID, " +
+                            "MASTER.LNACCTA.PRJAMSID, MASTER.LNACCTA.CCYID, MASTER.LNACCTA.LNINTRST, MASTER.LNACCTA.INTRTYPE, MASTER.LNACCTA.SRCID, MASTER.LNACCTA.PLAFOND, " +
+                            "CASE WHEN MASTER.LNACCTA.ENDBAL < MASTER.LNACCTA.BOMBAL THEN 0 ELSE MASTER.LNACCTA.ENDBAL - MASTER.LNACCTA.BOMBAL END AS KUMULATIF_REALISASI, " +
+                            "MASTER.LNACCTA.PENALTY, MASTER.LNACCTA.ENDBAL,MASTER.LNACCTA.COLID, " +
+                            "CASE WHEN RTRIM(CHAR(MASTER.LNACCTA.COLID)) = '5' THEN MASTER.LNACCTA.COLDATE END AS TGL_MACET, " +
+                            "MASTER.LNACCTA.TUNGGPKK, MASTER.LNACCTA.TUNGGBNG, MASTER.LNACCTA.BASETGDY, MASTER.LNACCTA.COUNTBNG,  MASTER.LNACCTA.RESTDATE, " +
+                            "CASE RTRIM(CHAR(MASTER.LNACCTA.ACCSTS)) WHEN '7' THEN '03' WHEN '9' THEN '02' END AS KONDISI, " +
+                            "CASE WHEN RTRIM(CHAR(MASTER.LNACCTA.ACCSTS)) = '9' THEN MASTER.LNACCTA.PAIDDATE WHEN RTRIM(CHAR(MASTER.LNACCTA.ACCSTS)) = '7' THEN MASTER.LNACCTA.HPSBKDT END AS TGL_KONDISI, " +
+                            "MASTER.LNACCTA.BRNCHID AS BRANCHID " +
+                            "FROM MASTER.LNACCTA  " +
+                            ") AS TAB ) AS BAR  " +
+                            "ON BAR.NO_REK = CONCAT(MASTER.SID_KREDIT.ID_KTR_CABANG,MASTER.SID_KREDIT.NO_REKENING) ";
+
+                        if(!cif.equals("")){
+                            sql=sql+" WHERE BAR.CIFMSTID='"+cif+"'";
+                        }
+                         //sql=sql+" FETCH FIRST 5 ROWS ONLY";
+
+                PreparedStatement st = this.dbConn.prepareStatement(sql);
+                ResultSet rs = st.executeQuery();
+                while (rs.next()) {
+                        //sent=false;
+                        try{
+                            MappingKreditBpd entMappingKreditBpd = new MappingKreditBpd();
+                            entMappingKreditBpd.setNoRekening(rs.getString("NO_REKENING"));
+
+                            String entCif = rs.getString("CIFMSTID"); //entMappingKreditBpd.getCif().replaceAll("\\s","");
+                            entMappingKreditBpd.setCif(entCif.replace("\\s",""));
+                            entMappingKreditBpd.setKodeSifat(SessGetContentDataOjk.getContentDataKodeSifatKredit(rs.getString("LNCCHRID")));  
+                            //entMappingKreditBpd.setKodeJenisK (SessGetContentDataOjk.getContentDataKodeSifatKredit(rs.getString("LNCCHRID")));  
+                            entMappingKreditBpd.setNoAkadAwal(rs.getString("CONTRCNO"));
+                            entMappingKreditBpd.setTglAkadAwal(rs.getDate("CONTRTDT"));
+
+                            entMappingKreditBpd.setNoAkadAkhir(rs.getString("PKAKHIR"));
+                            entMappingKreditBpd.setTglAkadAkhir(rs.getDate("PKAKHDT"));
+                            entMappingKreditBpd.setBaruPerpanjangan(rs.getInt("ADNDMSEQ"));
+                            entMappingKreditBpd.setTglAwal(rs.getDate("TGL_AWAL_KREDIT"));
+                            entMappingKreditBpd.setTglMulai(rs.getDate("TGL_MULAI"));
+                            entMappingKreditBpd.setTglTempo(rs.getDate("LNDUEDT"));
+
+                            entMappingKreditBpd.setKodeJenisPenggunaan(SessGetContentDataOjk.getContentDataJenisPenggunaan(rs.getString("USAGEID"))); 
+                            entMappingKreditBpd.setKodeOrientasiPenggunaan(SessGetContentDataOjk.getContentDataOrientasiPenggunaan(rs.getString("ORIENTID")));
+                            //entMappingKreditBpd.setKodeSektorEkonomi(rs.getString("SIDSEID"));
+                            entMappingKreditBpd.setKodeKab(SessGetContentDataOjk.getContentDataKabKota(rs.getString("SIDDT2ID"))); 
+                            entMappingKreditBpd.setNilai(rs.getDouble("PRJAMSID"));
+                            entMappingKreditBpd.setKodeValuta(SessGetContentDataOjk.getContentDataKodeValuta(rs.getString("CCYID"))); 
+                            entMappingKreditBpd.setProsentaseBunga(rs.getInt("LNINTRST"));
+                            entMappingKreditBpd.setJenisBunga(rs.getString("INTRTYPE"));
+                            entMappingKreditBpd.setPlafonAwal(rs.getDouble("PLAFOND"));
+                            entMappingKreditBpd.setRealisasi(rs.getDouble("KUMULATIF_REALISASI"));
+                            entMappingKreditBpd.setDenda(rs.getDouble("PENALTY"));
+                            entMappingKreditBpd.setBakiDebet(rs.getDouble("ENDBAL"));
+                            entMappingKreditBpd.setKodeKolektibilitas(SessGetContentDataOjk.getContentDataKodeKolektibilitas(rs.getString("COLID")));
+                            entMappingKreditBpd.setTglMacet(rs.getDate("TGL_MACET"));
+                            entMappingKreditBpd.setTunggakanPokok(rs.getDouble("TUNGGPKK"));
+                            entMappingKreditBpd.setKodeKondisi(SessGetContentDataOjk.getContentDataKodeKondisi(rs.getString("KONDISI")));
+                            entMappingKreditBpd.setTglKondisi(rs.getDate("TGL_KONDISI"));
+                            entMappingKreditBpd.setKodeKantorCabang(SessGetContentDataOjk.getContentDataKodeKantorCabang(rs.getString("BRANCHID")));
+
+                            entMappingKreditBpd.setKodeKategoriDebitur(SessGetContentDataOjk.getContentDataKategoriDeb(rs.getString("DCATBSL2")));
+                            entMappingKreditBpd.setSumberDana(rs.getString("SRCID"));
+                            entMappingKreditBpd.setTunggakanBunga(rs.getDouble("TUNGGBNG"));
+                            entMappingKreditBpd.setJumlahHariTunggakan(rs.getDouble("BASETGDY"));
+                            entMappingKreditBpd.setFrekuensiTunggakan(rs.getDouble("COUNTBNG"));
+                            entMappingKreditBpd.setFrekuensiRestrukturisasi(rs.getDouble("RESTRUK_KE"));
+                            entMappingKreditBpd.setTanggalRestrukturisasiAwal(rs.getDate("RESTRUK_AWAL"));
+                            entMappingKreditBpd.setTanggalRestrukturisasiAkhir(rs.getDate("RESTDATE"));
+                            entMappingKreditBpd.setPeriodeId(periode.getOID());
+                            long insertDebitur = PstMappingKreditBpd.insertExc(entMappingKreditBpd);
+
+                            if(insertDebitur!=0){
+                                String cifx = entMappingKreditBpd.getCif().replaceAll("\\s","");
+                                boolean checkDebitur = PstMappingDebiturBpd.checkDebitur(periode.getOID(),cif);
+                                if(checkDebitur){
+                                    actionTransferDataDebitur(cifx, periode.getOID());
+                                }
+                                actionTransferDataBankGaransi(cifx, periode.getOID());
+                                actionTransferDataAgunan(cifx, periode.getOID());
+                                actionTransferDataPengurusAtauPemilik(cifx,periode.getOID());
+                            }
+
+                        }catch(Exception es){
+                            System.out.print("Eror loh");
+                        }
+                 }
+
+                 rs.close();
+                 st.close();
+                 this.dbConn.close();
+
+             }catch(Exception e){
+            }
+        }
+        return action;
+    }
+    
+    public String actionTransferDataBankGaransi() {
+        return actionTransferDataBankGaransi("",0);
+    }
+    
+    public String actionTransferDataBankGaransi(String cif, long periodeId) {
+        String action="";
+        try{
+            createConn(); 
+            /*carikan querynya*/
+            String sql=" SELECT "+
+                    "CONCAT(DBLMON.BGARANSI_MASTER.KD_CAB, DBLMON.BGARANSI_MASTER.NO_REK) AS NO_REK, "+
+                    "DBLMON.BGARANSI_MASTER.NO_NSB, "+
+                    "DBLMON.BGARANSI_MASTER.KD_JENIS, "+
+                    "DBLMON.BGARANSI_MASTER.KD_TUJUAN, "+
+                    "DBLMON.BGARANSI_MASTER.TGL_BUKA_REK, "+
+                    "DBLMON.BGARANSI_MASTER.TGL_AKHIR, "+
+                    "DBLMON.BGARANSI_MASTER.NO_GARANSI, "+
+                    "DBLMON.BGARANSI_MASTER.TGL_BUKA_REK, "+
+                    "DBLMON.BGARANSI_MASTER.NO_GARANSI, "+
+                    "DBLMON.BGARANSI_MASTER.TGL_BUKA_REK, "+
+                    "DBLMON.BGARANSI_MASTER.NAMA_SINGKAT, "+
+                    "DBLMON.BGARANSI_MASTER.NILAI_GARANSI, "+
+                    "DBLMON.BGARANSI_MASTER.NILAI_GARANSI, "+
+                    "DBLMON.BGARANSI_MASTER.NILAI_KONTRA, "+
+                    "DBLMON.BGARANSI_MASTER.KOLEKTIBILITY, "+
+                    "DBLMON.BGARANSI_MASTER.KD_CAB "+
+                    "FROM DBLMON.BGARANSI_MASTER ";
+                
+                if(!cif.equals("")){
+                    sql=sql+" WHERE NO_NSB='"+cif+"'";
+                }
+                   // sql=sql+" FETCH FIRST 5 ROWS ONLY";
+                    
+            PreparedStatement st = this.dbConn.prepareStatement(sql);
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                    try{
+                        
+                        MappingBankGaransiBpd entMappingBankGaransiBpd = new MappingBankGaransiBpd();
+                        entMappingBankGaransiBpd.setNoRekening(rs.getString("NO_REK"));
+                        //entMappingBankGaransiBpd.setCif(rs.getString("NO_NSB"));
+                        String entCif = rs.getString("NO_NSB"); //entMappingKreditBpd.getCif().replaceAll("\\s","");
+                        entMappingBankGaransiBpd.setCif(entCif.replace("\\s",""));
+                        entMappingBankGaransiBpd.setKodeJenisGaransi(SessGetContentDataOjk.getContentDataKodeJenisGaransi(rs.getString("KD_JENIS")));
+                        entMappingBankGaransiBpd.setKodeTujuanGaransi(SessGetContentDataOjk.getContentDataKodeTujuanGaransi(rs.getString("KD_TUJUAN")));
+                        entMappingBankGaransiBpd.setTglDiterbitkan(rs.getDate("TGL_BUKA_REK"));
+                        entMappingBankGaransiBpd.setTglJatuhTempo(rs.getDate("TGL_AKHIR"));
+                        entMappingBankGaransiBpd.setNoAkadAwal(rs.getString("NO_GARANSI"));
+                        entMappingBankGaransiBpd.setTglAkadAwal(rs.getDate("TGL_BUKA_REK"));
+                        entMappingBankGaransiBpd.setNoAkadAkhir(rs.getString("NO_GARANSI"));
+                        entMappingBankGaransiBpd.setTglAkadAkhir(rs.getDate("TGL_BUKA_REK"));
+                        entMappingBankGaransiBpd.setNamaYgDijamin(rs.getString("NAMA_SINGKAT"));                       
+                        entMappingBankGaransiBpd.setPlafon(rs.getDouble("NILAI_GARANSI"));
+                        entMappingBankGaransiBpd.setNominal(rs.getDouble("NILAI_GARANSI"));
+                        entMappingBankGaransiBpd.setSetoranJaminan(rs.getDouble("NILAI_KONTRA"));
+                        entMappingBankGaransiBpd.setKodeKolektibilitas(SessGetContentDataOjk.getContentDataKodeKolektibilitas(rs.getString("KOLEKTIBILITY")));
+                        entMappingBankGaransiBpd.setKodeKantorCabang(SessGetContentDataOjk.getContentDataKodeKantorCabang(rs.getString("KD_CAB")));
+                        entMappingBankGaransiBpd.setPeriodeId(periodeId);
+                        
+                        long insertDebitur = PstMappingBankGaransiBpd.insertExc(entMappingBankGaransiBpd);
+                    }catch(Exception es){
+                        System.out.print("Eror loh");
+                    }
+             }
+             
+             rs.close();
+             st.close();
+             this.dbConn.close();
+         }catch(Exception e){
+        }
+        return action;
+    }
+    
+    public String actionTransferDataAgunan() {
+        return actionTransferDataAgunan("",0);
+    }
+    public String actionTransferDataAgunan(String cif, long periodeId) {
+        String action="";
+        try{
+            createConn(); 
+            String sql = ""+
+                        "SELECT MASTER.AGUNAN.AGUNANID, BAR.CIFMSTID, BAR.ACCNBR,  MASTER.AGUNAN.BRANCHID, MASTER.AGUNAN.JNSAGNID, MASTER.AGUNAN.IKATANID, "+
+                        "MASTER.AGUNAN.OWNER, MASTER.AGUNAN.CERTIFCT, MASTER.AGUNAN.OWNRADDR, MASTER.AGUNAN.LOCDT2, MASTER.AGUNAN.NJOPVAL, "+
+                        "MASTER.AGUNAN.BANKVAL, MASTER.AGUNAN.APRDATE, MASTER.AGUNAN.PARIPASU, MASTER.AGUNAN.BRANCHID "+
+                        "FROM MASTER.AGUNAN "+
+                        "INNER JOIN MASTER.DTLAGNAN on MASTER.AGUNAN.AGUNANID = MASTER.DTLAGNAN.AGUNANID "+
+                        "INNER JOIN "+
+                        "( "+
+                        "SELECT CIFMSTID , ACCNBR FROM ( "+
+                        "SELECT MASTER.LNACCAT.ACCNBR, MASTER.LNACCAT.CIFMSTID "+
+                        "FROM MASTER.LNACCAT "+
+                        "UNION "+
+                        "SELECT MASTER.LNACCATT.ACCNBR, MASTER.LNACCATT.CIFMSTID "+
+                        "FROM MASTER.LNACCATT "+
+                        "UNION "+
+                        "SELECT MASTER.LNACCTA.ACCNBR, MASTER.LNACCTA.CIFMSTID "+
+                        "FROM MASTER.LNACCTA ) AS TAB "+
+                        ") "+
+                        "AS BAR "+
+                        "ON BAR.ACCNBR=MASTER.DTLAGNAN.ACCNBR ";
+                    
+                    if(!cif.equals("")){
+                        sql = sql + " WHERE CIFMSTID='"+cif+"'";
+                    }    
+                       // sql = sql + "FETCH FIRST 5 ROWS ONLY";
+                        
+            PreparedStatement st = this.dbConn.prepareStatement(sql);
+            ResultSet rs = st.executeQuery();
+            
+            while (rs.next()) {
+                    try{
+                        MappingAgunanBpd entMappingAgunanBpd = new MappingAgunanBpd();
+                        entMappingAgunanBpd.setKodeRegisterAgunan(rs.getString("AGUNANID"));
+                        entMappingAgunanBpd.setKodeJenisAgunan(SessGetContentDataOjk.getContentDataKodeJenisAgunan(rs.getString("JNSAGNID")));
+                        entMappingAgunanBpd.setNamaPemilikAgunan(rs.getString("OWNER"));
+                        entMappingAgunanBpd.setBuktiKepemilikan(rs.getString("CERTIFCT"));
+                        entMappingAgunanBpd.setAlamatAgunan(rs.getString("OWNRADDR"));
+                        entMappingAgunanBpd.setKodeKabLokasiAgunan(SessGetContentDataOjk.getContentDataKabKota(rs.getString("LOCDT2")));
+                        entMappingAgunanBpd.setNilaiAgunanNjop(rs.getDouble("NJOPVAL"));
+                        entMappingAgunanBpd.setNilaiAgunanLjk(rs.getDouble("BANKVAL"));
+                        entMappingAgunanBpd.setNoRekening(rs.getString("ACCNBR"));
+                        //entMappingAgunanBpd.setCif(rs.getString("CIFMSTID"));
+                        String entCif = rs.getString("CIFMSTID"); //entMappingKreditBpd.getCif().replaceAll("\\s","");
+                        entMappingAgunanBpd.setCif(entCif.replace("\\s",""));
+                        entMappingAgunanBpd.setJenisIkatan(SessGetContentDataOjk.getContentDataKodeJenisPengikatan(rs.getString("IKATANID")));
+                        entMappingAgunanBpd.setTanggalPenilaian(rs.getDate("APRDATE"));
+                        entMappingAgunanBpd.setStatusParipasu(rs.getInt("PARIPASU"));
+                        entMappingAgunanBpd.setKodeKantorCabang(SessGetContentDataOjk.getContentDataKodeKantorCabang(rs.getString("BRANCHID")));
+                        entMappingAgunanBpd.setPeriodeId(periodeId);
+                        
+                        long insertDebitur = PstMappingAgunanBpd.insertExc(entMappingAgunanBpd);
+                    }catch(Exception es){
+                         System.out.print("Eror loh");
+                    }
+             }
+             
+             rs.close();
+             st.close();
+             this.dbConn.close();
+         }catch(Exception e){
+        }
+        return action;
+    }
+    
+    public String actionTransferDataPengurusAtauPemilik() {
+        return actionTransferDataPengurusAtauPemilik("",0);
+    }
+    
+    public String actionTransferDataPengurusAtauPemilik(String cif, long periodeId) {
+        String action="";
+        try{
+            createConn(); 
+            /*carikan querynya*/
+            String sql= ""+
+                    "SELECT DISTINCT "+
+                    "MASTER.NASABAH.NO_IDENTITAS, "+
+                    "MASTER.PENGURUS.NO_NSB, "+
+                    "MASTER.NASABAH.KD_IDENTITAS, "+
+                    "MASTER.NASABAH.NAMA_NSB, "+
+                    "MASTER.NASABAH.JNS_KELAMIN, "+
+                    "MASTER.NASABAH.ALAMAT, "+
+                    "MASTER.NASABAH.KELURAHAN, "+
+                    "MASTER.NASABAH.KD_KECAMATAN, "+
+                    "MASTER.NASABAH.KD_DATI_II, "+
+                    "MASTER.PENGURUS.PANGSA, "+
+                    "MASTER.NASABAH.KD_CAB "+
+                    "FROM MASTER.PENGURUS "+
+                    "INNER JOIN MASTER.NASABAH "+
+                    "ON MASTER.PENGURUS.NO_NSB = MASTER.NASABAH.NO_NSB ";
+                    
+            if(!cif.equals("")){
+                sql=sql + " WHERE NO_NSB='"+cif+"'";
+            }
+                     //sql = sql + "FETCH FIRST 5 ROWS ONLY";
+            
+            PreparedStatement st = this.dbConn.prepareStatement(sql);
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                    try{
+                        MappingPengurusAtauPemilikBpd entMappingPengurusAtauPemilikBpd = new MappingPengurusAtauPemilikBpd();
+
+                        entMappingPengurusAtauPemilikBpd.setFlagDetail("D");
+                        entMappingPengurusAtauPemilikBpd.setNomorIdentitas(rs.getString("NO_IDENTITAS"));
+                        //entMappingPengurusAtauPemilikBpd.setCif(rs.getString("NO_NSB"));
+                        String entCif = rs.getString("CIFMSTID"); //entMappingKreditBpd.getCif().replaceAll("\\s","");
+                        entMappingPengurusAtauPemilikBpd.setCif(entCif.replace("\\s",""));
+                        entMappingPengurusAtauPemilikBpd.setJenisIdentitas(SessGetContentDataOjk.getContentDataJenisIdentitas(rs.getString("KD_IDENTITAS")));
+                        entMappingPengurusAtauPemilikBpd.setNamaPengurus(rs.getString("NAMA_NSB"));
+                        entMappingPengurusAtauPemilikBpd.setJenisKelamin(rs.getString("JNS_KELAMIN"));
+                        entMappingPengurusAtauPemilikBpd.setAlamat(rs.getString("ALAMAT"));
+                        entMappingPengurusAtauPemilikBpd.setKelurahan(rs.getString("KELURAHAN"));
+                        entMappingPengurusAtauPemilikBpd.setKecamatan(rs.getString("KD_KECAMATAN"));
+                        entMappingPengurusAtauPemilikBpd.setKdKabupaten(SessGetContentDataOjk.getContentDataKabKota(rs.getString("KD_DATI_II")));
+                        entMappingPengurusAtauPemilikBpd.setPangsa(rs.getString("PANGSA"));
+                        entMappingPengurusAtauPemilikBpd.setKdCabang(SessGetContentDataOjk.getContentDataKodeKantorCabang(rs.getString("KD_CAB")));
+                        entMappingPengurusAtauPemilikBpd.setKdCabang(rs.getString("KD_CAB"));
+                        entMappingPengurusAtauPemilikBpd.setPeriodeId(periodeId);
+                        
+                        long insertDebitur = PstMappingPengurusAtauPemilikBpd.insertExc(entMappingPengurusAtauPemilikBpd);
+                    }catch(Exception es){
+                        System.out.print("Eror loh");
+                    }
+             }
+             
+             rs.close();
+             st.close();
+             this.dbConn.close();
+         }catch(Exception e){
+        }
+        return action;
+    }
+    
+}

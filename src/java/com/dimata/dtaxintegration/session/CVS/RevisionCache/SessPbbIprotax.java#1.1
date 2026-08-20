@@ -1,0 +1,133 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package com.dimata.dtaxintegration.session;
+
+import com.dimata.qdep.db.DBHandler;
+import com.dimata.qdep.db.DBResultSet;
+import java.sql.ResultSet;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+
+/**
+ *
+ * @author dimata005
+ */
+public class SessPbbIprotax {
+
+    public static double getSumPembayaran(String whereClause) {
+        DBResultSet dbrs = null;
+        try {
+            String sql = "SELECT SUM(JML_PBB_YG_DIBAYAR - JML_DENDA_SPPT) AS JML FROM VIEW_PEMBAYARAN_PBB ";
+            if (whereClause != null && whereClause.length() > 0) {
+                sql = sql + " WHERE " + whereClause;
+            }
+            dbrs = DBHandler.execQueryResult(sql);
+            ResultSet rs = dbrs.getResultSet();
+            double count = 0.0;
+            while (rs.next()) {
+                count = rs.getDouble(1);
+            }
+            rs.close();
+            return count;
+        } catch (Exception e) {
+            return 0;
+        } finally {
+            DBResultSet.close(dbrs);
+        }
+    }
+
+    public static double getSumDendaAdms(String whereClause) {
+        DBResultSet dbrs = null;
+        try {
+            String sql = "SELECT SUM(JML_POKOK_DENDA - JML_PENGURANGAN_DENDA) AS JML FROM VIEW_DENDA_ADM_SPPT ";
+            if (whereClause != null && whereClause.length() > 0) {
+                sql = sql + " WHERE " + whereClause;
+            }
+            dbrs = DBHandler.execQueryResult(sql);
+            ResultSet rs = dbrs.getResultSet();
+            double count = 0.0;
+            while (rs.next()) {
+                count = rs.getDouble(1);
+            }
+            rs.close();
+            return count;
+        } catch (Exception e) {
+            return 0;
+        } finally {
+            DBResultSet.close(dbrs);
+        }
+    }
+
+    public static int CalculateMonthsDiff(Date startDate, Date endDate) {
+
+        Calendar start = Calendar.getInstance();
+        start.setTime(startDate);
+
+        Calendar end = Calendar.getInstance();
+        end.setTime(endDate);
+
+        int monthsBetween = 0;
+        int dateDiff = end.get(Calendar.DAY_OF_MONTH) - start.get(Calendar.DAY_OF_MONTH);
+        if (dateDiff < 0) {
+            int borrrow = end.getActualMaximum(Calendar.DAY_OF_MONTH);
+            dateDiff = (end.get(Calendar.DAY_OF_MONTH) + borrrow) - start.get(Calendar.DAY_OF_MONTH);
+            monthsBetween--;
+            if (dateDiff > 0) {
+                monthsBetween++;
+            }
+        } else {
+            monthsBetween++;
+        }
+        monthsBetween += end.get(Calendar.MONTH) - start.get(Calendar.MONTH);
+        monthsBetween += (end.get(Calendar.YEAR) - start.get(Calendar.YEAR)) * 12;
+        
+        if(monthsBetween>=24){
+            return 24;
+        }
+        
+        return monthsBetween;
+    }
+    
+    
+    
+    public static double PerhitunganDenda(String nop, String tahunPajak, String tglJatuhTempo, String jmlTagihan) {
+        double ygHarusDibayar = 0.0;
+        ygHarusDibayar = PerhitunganPbbYangHarusDibayar(nop, tahunPajak, jmlTagihan);
+        
+        double denda=0;
+        double dendaAdm = getSumDendaAdms("NOP='"+nop+"' AND THN_PAJAK_SPPT='"+tahunPajak+"'");
+        if(dendaAdm!=0){
+            denda=denda+dendaAdm;
+        }else{
+            //cari jumlah bulan telat dari jatuh tempo dan hari pengiriman
+             Date tanggalPembayaran =  new Date();
+             SimpleDateFormat formatter = new SimpleDateFormat("dd-MMM-yyyy");
+             Date date = new Date();
+             try {
+                 date = formatter.parse(tglJatuhTempo);
+             } catch (ParseException e) {
+                e.printStackTrace();
+             }
+             int bulan_telat = SessPbbIprotax.CalculateMonthsDiff(date, tanggalPembayaran);
+             double bunga_denda = 2/100;
+             denda=bulan_telat*bunga_denda*ygHarusDibayar;
+        }
+        
+        return denda;
+    }
+    
+    
+    public static double PerhitunganPbbYangHarusDibayar(String nop, String tahunPajak, String jmlTagihan) {
+        double totPambayaran = SessPbbIprotax.getSumPembayaran("NOP='"+nop+"' AND THN_PAJAK_SPPT='"+tahunPajak+"'");
+        double pembayaran = Double.valueOf(jmlTagihan);
+        double ygHarusDibayar = pembayaran - totPambayaran;
+        return ygHarusDibayar;
+    }
+    
+
+}

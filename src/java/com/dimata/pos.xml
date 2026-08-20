@@ -1,0 +1,80 @@
+<?xml version="1.0"?>
+
+<!DOCTYPE pizza [
+	<!ELEMENT tms (database, logs)>
+
+	<!ELEMENT database (dbdriver, dburl, dbuser, dbpasswd, dbminconn, dbmaxconn)>
+	<!ELEMENT dbdriver (#PCDATA)>
+	<!ELEMENT dburl (#PCDATA)>
+	<!ELEMENT dbuser (#PCDATA)>
+	<!ELEMENT dbpasswd (#PCDATA)>
+	<!ELEMENT dbminconn (#PCDATA)>
+	<!ELEMENT dbmaxconn (#PCDATA)>
+
+	<!ELEMENT logs (logconn, logsize)>
+	<!ELEMENT logconn (#PCDATA)>
+	<!ELEMENT logsize (#PCDATA)>
+
+	<!ELEMENT format (fordate, fordecimal, forcurrency)>
+	<!ELEMENT fordate (#PCDATA)>
+	<!ELEMENT fordecimal (#PCDATA)>
+	<!ELEMENT forcurrency (#PCDATA)>
+
+]>
+
+<tms>
+	<!-- 
+	  database configuration 	  
+	-->	
+	<database>
+            <!--oracle
+            <dbdriver>oracle.jdbc.driver.OracleDriver</dbdriver>
+            <dburl>jdbc:oracle:thin:@192.168.16.103:1521/orcl</dburl>
+            <dbuser>DBO</dbuser>
+            <dbpasswd>DBO</dbpasswd>
+            <dbminconn>5</dbminconn>
+            <dbmaxconn>150</dbmaxconn>-->
+            <!-- sqlserver -->
+            <dbdriver>net.sourceforge.jtds.jdbc.Driver</dbdriver>
+            <dburl>jdbc:jtds:sqlserver://192.168.1.3:1434/IPROTAX</dburl>
+            <dbuser>dimataadmin</dbuser>
+            <dbpasswd>Dsj4d1m4t4!@#</dbpasswd>
+            <dbminconn>5</dbminconn>
+            <dbmaxconn>50</dbmaxconn>
+            <!--mysql SLIK
+            <dbdriver>com.mysql.jdbc.Driver</dbdriver>
+            <dburl>jdbc:mysql://localhost:3308/kresna-transport</dburl>
+            <dbuser>root</dbuser>
+            <dbpasswd>123</dbpasswd>
+            <dbminconn>1</dbminconn>
+            <dbmaxconn>10</dbmaxconn>-->
+            <!--mysql BI Demo
+            <dbdriver>com.mysql.jdbc.Driver</dbdriver>
+            <dburl>jdbc:mysql://dimatasystem.com:3306/dtaxintegration_tabanan</dburl>
+            <dbuser>admin</dbuser>
+            <dbpasswd>admindimata</dbpasswd>
+            <dbminconn>5</dbminconn>
+            <dbmaxconn>50</dbmaxconn> -->
+            <!--mysql untuk integrasi pajak -->
+<!--            <dbdriver>com.mysql.jdbc.Driver</dbdriver>
+            <dburl>jdbc:mysql://204.93.174.196:3306/dtaxintegration_tabanan</dburl>
+            <dbuser>admin</dbuser>
+            <dbpasswd>admindimata</dbpasswd>-->
+        </database>
+	<!-- 
+	  @logconn	 	- file name that contain application log/history
+	  @logsize		- maximum size of log file, in MB
+	-->
+	<logs>
+		<logconn>tmsconn.log</logconn>
+		<logapp>tmsapp.log</logapp>
+		<logsize>5</logsize>
+	</logs>
+
+	<format>
+		<fordate>MMM-dd-yyyy</fordate>
+		<fordecimal>###,###.##</fordecimal>
+		<forcurrency>###,###.00</forcurrency>
+	</format>
+
+</tms>

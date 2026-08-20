@@ -1,0 +1,61 @@
+<%-- 
+    Document   : test_insert_data
+    Created on : Feb 23, 2016, 4:42:27 PM
+    Author     : dimata005
+--%>
+
+<%@page import="java.nio.charset.CharacterCodingException"%>
+<%@page import="java.nio.CharBuffer"%>
+<%@page import="java.nio.ByteBuffer"%>
+<%@page import="java.nio.charset.CharsetEncoder"%>
+<%@page import="java.nio.charset.CharsetDecoder"%>
+<%@page import="java.nio.charset.Charset"%>
+<%@page import="com.dimata.dslik.entity.admin.AppUser"%>
+<%@page import="com.dimata.dslik.entity.admin.PstAppUser"%>
+<%-- 
+    Document   : test_koneksi
+    Created on : Feb 23, 2016, 12:53:20 AM
+    Author     : dimata005
+--%>
+<%-- 
+    Document   : test_koneksi
+    Created on : Feb 23, 2016, 12:11:50 AM
+    Author     : Administrator
+--%>
+
+<html>
+    <head><title>Enter to database</title>
+    </head>
+    <body>
+        <table>
+            <%@ page import="java.util.*" %>
+            <%@ page import="javax.sql.*;" %>
+            <%
+               AppUser entObj = new AppUser();
+               
+               PstAppUser.update(entObj);
+               
+
+                Charset charset = Charset.forName("UTF-8");
+                CharsetDecoder decoder = charset.newDecoder();
+                CharsetEncoder encoder = charset.newEncoder();
+
+                try {
+                    // Convert a string to ISO-LATIN-1 bytes in a ByteBuffer
+                    // The new ByteBuffer is ready to be read.
+                    ByteBuffer bbuf = encoder.encode(CharBuffer.wrap("dimata"));
+
+                    // Convert ISO-LATIN-1 bytes in a ByteBuffer to a character ByteBuffer and then to a string.
+                    // The new ByteBuffer is ready to be read.
+                    CharBuffer cbuf = decoder.decode(bbuf);
+                    String s = cbuf.toString();
+                    %>
+                        <%=s%>
+                    <%
+                } catch (CharacterCodingException e) {
+                }
+
+            %>
+
+    </body>
+</html>

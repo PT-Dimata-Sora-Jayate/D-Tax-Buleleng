@@ -1,0 +1,267 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package com.dimata.dslik.session.proses;
+
+import com.dimata.dslik.entity.masterdata.CabangBank;
+import com.dimata.dslik.entity.masterdata.OutletConnection;
+import com.dimata.dslik.entity.masterdata.PstCabangBank;
+import com.dimata.dslik.entity.pengurusataupemilik.PengurusAtauPemilik;
+import com.dimata.dslik.entity.pengurusataupemilik.PstPengurusAtauPemilik;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.Date;
+import java.util.Vector;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
+
+/**
+ *
+ * @author dimata005
+ */
+public class CreateFile {
+    
+     
+    
+    
+    public static String sentDataToDilimited(FileSent fileSent) {
+       
+        PrintWriter pw = null;
+        String patchFle="";
+        try {
+            //buatkan lokasi dan tempat file yang akan di upload
+            ProsesTransferDataBank prosesTransferDataBank =new ProsesTransferDataBank();
+            OutletConnection outletConnection = prosesTransferDataBank.getConfigurasiConnection();
+            String namaFile="";
+            if(fileSent.getTypeSegment()== Configurasi.FLD_SEGMENT_DEBITUR_PERORANGAN){
+                Vector vCabang = new Vector();
+                vCabang = PstCabangBank.list(0,0,"",""+PstCabangBank.fieldNames[PstCabangBank.FLD_CABANG_ID]+" ASC ");
+                if(vCabang.size()>0){
+                    for (int i=0; i>vCabang.size(); i++){
+                        CabangBank cabangBank = (CabangBank) vCabang.get(i);
+                        
+                        namaFile=""+outletConnection.getJenisLJK()+"."+outletConnection.getKodeLJK()+"."+fileSent.getTahun()+"."+fileSent.getBulan()+"."+Configurasi.valSegment[Configurasi.FLD_SEGMENT_DEBITUR_PERORANGAN];
+                        patchFle=fileSent.getLocation()+System.getProperty("file.separator")+""+namaFile+".txt";
+                        pw = new PrintWriter(patchFle);
+                        try {
+                            //judul
+                            pw.print("id"+"\t");
+                            pw.print("nama"+"\t");
+                            pw.print("jum_tagihan"+"\t");
+                            pw.print("instansi"+"\t");
+                            pw.print("NPWP"+"\t");
+                            pw.print("Alamat WP"+"\t");
+                            pw.print("Letak Objek Pajak"+"\t");
+                            pw.print("Tahun"+"\t");
+                            pw.print("Tgl Jatuh Tempo"+"\t");
+                            pw.print("Luas Bumi"+"\t");
+                            pw.print("Luas Bangunan"+"\t");
+                            pw.print("NJOP Bumi"+"\t");
+                            pw.print("NJOP Bangunan"+"\t");
+                            pw.print("NJOPTKP"+"\t");
+                            pw.print("Denda"+"\t");
+                            pw.print("Formula"+"\t");
+                            pw.print("Terbilang"+"\t");
+                            pw.println();
+                            //isi
+
+                            //buatkan file nya
+                            pw.flush();
+
+
+                            zipFile(new File(patchFle),fileSent.getLocation(),0);
+
+                        } catch (Exception exc) {
+                            System.out.println("ini eornya" + exc);
+                        }
+                    }
+                }
+            
+            }else if (fileSent.getTypeSegment()==Configurasi.FLD_SEGMENT_DEBITUR_BADAN_USAHA){
+                
+            }else if (fileSent.getTypeSegment()==Configurasi.FLD_SEGMENT_KREDIT){
+                
+            }else if (fileSent.getTypeSegment()==Configurasi.FLD_SEGMENT_KREDIT_JOIN_ACCOUNT){
+                
+            }else if (fileSent.getTypeSegment()==Configurasi.FLD_SEGMENT_SURAT_BERHARGA){
+                
+            }else if (fileSent.getTypeSegment()==Configurasi.FLD_SEGMENT_IRREVOCABLE_LC){
+                
+            }else if (fileSent.getTypeSegment()==Configurasi.FLD_SEGMENT_BANK_GARANSI){
+                
+            }else if (fileSent.getTypeSegment()==Configurasi.FLD_SEGMENT_FASILITAS_LAINNYA){
+                
+            }else if (fileSent.getTypeSegment()==Configurasi.FLD_SEGMENT_DATA_AGUNAN){
+                
+            }else if (fileSent.getTypeSegment()==Configurasi.FLD_SEGMENT_PENJAMIN){
+                
+            }else if (fileSent.getTypeSegment()==Configurasi.FLD_SEGMENT_PENGURUS_PEMILIK){
+                Vector vCabang = new Vector();
+                vCabang = PstCabangBank.listAll();
+                if(vCabang.size()>0){
+                    int nourutpembuatankode=0;
+                    for (int i=0; i < vCabang.size(); i++){
+                        CabangBank cabangBank = (CabangBank) vCabang.get(i);
+                        int noCabang = Integer.parseInt(cabangBank.getKodeCabang());
+                        nourutpembuatankode=nourutpembuatankode+1;
+                        //cek pengurus sesuai cabang
+                        Vector vPengurusPemilik =  new Vector();
+                        String where = PstPengurusAtauPemilik.fieldNames[PstPengurusAtauPemilik.FLD_KODE_KANTOR_CABANG]+"='"+cabangBank.getKodeCabang()+"'";
+                        vPengurusPemilik = PstPengurusAtauPemilik.list(0,0,""+where,"");
+                        if(vPengurusPemilik.size()>0){
+                            namaFile=""+outletConnection.getJenisLJK()+"."+outletConnection.getKodeLJK()+"."+fileSent.getTahun()+"."+fileSent.getBulan()+"."+Configurasi.valSegment[Configurasi.FLD_SEGMENT_DEBITUR_PERORANGAN]+"."+nourutpembuatankode;
+                            patchFle=fileSent.getLocation()+System.getProperty("file.separator")+""+namaFile+".txt";
+                            pw = new PrintWriter(patchFle);
+                            //Buat header
+                            //H|0101|666|2016|10|M01|1|1
+                            //H (header)
+                            //0101 (jenis LJK)
+                            //666 (kode LJK)
+                            //2016 (tahun)
+                            //10 (bulan
+                            //M01 (kode segment)
+                            //1 (jumlah data
+                            pw.print("H"+"|");
+                            pw.print(""+outletConnection.getJenisLJK()+"|");
+                            pw.print(""+outletConnection.getKodeLJK()+"|");
+                            pw.print(""+fileSent.getTahun()+"|");
+                            pw.print(""+fileSent.getBulan()+"|");
+                            pw.print(""+Configurasi.valSegment[Configurasi.FLD_SEGMENT_DEBITUR_PERORANGAN]+"|");
+                            pw.print(""+vPengurusPemilik.size()+"|");
+                            pw.println();
+                            for (int p = 0; p < vPengurusPemilik.size(); p++) {
+                                try {
+                                    
+                                    PengurusAtauPemilik pengurusPemilik = (PengurusAtauPemilik) vPengurusPemilik.get(p);
+                                    //D    |NIKPENG1 |CIFBUDUMMY1|1          |Margo Joyo    |L              |JL Sujartijo no 123 Jakarta Timur|Grogol Utara|Grogol    |0117          |01              |100                |1               |001                 |C
+                                    //flag | no iden | cif       | jenis idn | nama pemilik | jenis kelamin | alamat                          | kelurahan  |kecamatan |kode kab dati |kode jabatan    |pangsa pemilik     |status pengurus | kode kantor cabang | operasi data 
+                                    //1    | 2       | 3         | 4         | 5            | 6             | 7                               |8           | 9        | 10           | 11             | 12                |13              | 14                 | 15                                                
+                                    pw.print(""+pengurusPemilik.getFlagDetail()+"|");//1
+                                    pw.print(""+pengurusPemilik.getNoIdentitas()+"|");//2
+                                    pw.print(""+pengurusPemilik.getCif()+"|");//3
+                                    pw.print(""+pengurusPemilik.getJenisIdentitas()+"|");//4
+                                    pw.print(""+pengurusPemilik.getNamaPengurus()+"|");//5
+                                    pw.print(""+pengurusPemilik.getJenisKelamin()+"|");//6
+                                    pw.print(""+pengurusPemilik.getAlamat()+"|");//7
+                                    pw.print(""+pengurusPemilik.getKelurahan()+"|");//8
+                                    pw.print(""+pengurusPemilik.getKecamatan()+"|");//9
+                                    pw.print(""+pengurusPemilik.getKodeKabupaten()+"|");//10
+                                    pw.print(""+pengurusPemilik.getKodeJabatan()+"|");//11
+                                    pw.print(""+pengurusPemilik.getPangsaKepemilikan()+"|");//12
+                                    pw.print(""+pengurusPemilik.getStatusPengurus()+"|");//13
+                                    pw.print(""+pengurusPemilik.getKodeKantorCabang()+"|");//14
+                                    pw.print(""+fileSent.getOperasiData()+"|");
+                                    pw.println();
+                                    //isi
+                                    //buatkan file nya
+                                    
+                                } catch (Exception exc) {
+                                    System.out.println("ini eornya" + exc);
+                                }
+                            }
+                            pw.flush();
+                            //proses zip data
+                            //zipFile(new File(patchFle),fileSent.getLocation(),0);
+                        }
+                    }
+                }
+            
+            }else if (fileSent.getTypeSegment()==Configurasi.FLD_SEGMENT_LAPORAN_KEUANGAN_DEBITUR){
+                
+            }
+            
+            
+           
+        } catch (FileNotFoundException ex) {
+        }
+        
+        
+
+       
+        
+        
+        
+        
+        
+        
+        
+        return patchFle;
+    }
+    
+    
+      public static String zipFile(File inputFile, String patch, int type)  {   
+        String patchFleZip="";
+        
+        if(type== Configurasi.FLD_SEGMENT_DEBITUR_PERORANGAN){
+            
+            patchFleZip =patch+System.getProperty("file.separator")+"PBB_GIANYAR.zip";
+               
+        }else if (type==Configurasi.FLD_SEGMENT_DEBITUR_BADAN_USAHA){
+
+        }else if (type==Configurasi.FLD_SEGMENT_KREDIT){
+
+        }else if (type==Configurasi.FLD_SEGMENT_KREDIT_JOIN_ACCOUNT){
+
+        }else if (type==Configurasi.FLD_SEGMENT_SURAT_BERHARGA){
+
+        }else if (type==Configurasi.FLD_SEGMENT_IRREVOCABLE_LC){
+
+        }else if (type==Configurasi.FLD_SEGMENT_BANK_GARANSI){
+
+        }else if (type==Configurasi.FLD_SEGMENT_FASILITAS_LAINNYA){
+
+        }else if (type==Configurasi.FLD_SEGMENT_DATA_AGUNAN){
+
+        }else if (type==Configurasi.FLD_SEGMENT_PENJAMIN){
+
+        }else if (type==Configurasi.FLD_SEGMENT_PENGURUS_PEMILIK){
+
+        }else if (type==Configurasi.FLD_SEGMENT_LAPORAN_KEUANGAN_DEBITUR){
+
+        }
+        
+        
+        try {
+
+            // Wrap a FileOutputStream around a ZipOutputStream
+            // to store the zip stream to a file. Note that this is
+            // not absolutely necessary
+            FileOutputStream fileOutputStream = new FileOutputStream(patchFleZip);
+            ZipOutputStream zipOutputStream = new ZipOutputStream(fileOutputStream);
+
+            // a ZipEntry represents a file entry in the zip archive
+            // We name the ZipEntry after the original file's name
+            ZipEntry zipEntry = new ZipEntry(inputFile.getName());
+            zipOutputStream.putNextEntry(zipEntry);
+
+            FileInputStream fileInputStream = new FileInputStream(inputFile);
+            byte[] buf = new byte[1024];
+            int bytesRead;
+
+            // Read the input file by chucks of 1024 bytes
+            // and write the read bytes to the zip stream
+            while ((bytesRead = fileInputStream.read(buf)) > 0) {
+                zipOutputStream.write(buf, 0, bytesRead);
+            }
+
+            // close ZipEntry to store the stream to the file
+            zipOutputStream.closeEntry();
+
+            zipOutputStream.close();
+            fileOutputStream.close();
+
+           // System.out.println("Regular file :" + inputFile.getCanonicalPath()+" is zipped to archive :"+zipFilePath);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return patchFleZip;
+    }
+    
+}

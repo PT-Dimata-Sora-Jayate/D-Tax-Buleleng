@@ -1,0 +1,391 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package com.dimata.dslik.entity.bankgaransi;
+
+import com.dimata.common.entity.logger.I_LogHistory;
+import com.dimata.qdep.entity.Entity;
+import java.util.Date;
+
+/**
+ *
+ * @author Dewa
+ */
+public class BankGaransi extends Entity implements I_LogHistory{
+
+    private String flagDetail = "";
+    private String noRekening = "";
+    private String cif = "";
+    private String kodeJenisGaransi = "";
+    private String kodeTujuanGaransi = "";
+    private Date tglDiterbitkan = null;
+    private Date tglJatuhTempo = null;
+    private String noAkadAwal = "";
+    private Date tglAkadAwal = null;
+    private String noAkadAkhir = "";
+    private Date tglAkadAkhir = null;
+    private String namaYgDijamin = "";
+    private String kodeValuta = "";
+    private double plafon = 0;
+    private double nominal = 0;
+    private double setoranJaminan = 0;
+    private String kodeKolektibilitas = "";
+    private Date tglWanPrestasi = null;
+    private String kodeKondisi = "";
+    private Date tglKondisi = null;
+    private String keterangan = "";
+    private String kodeKantorCabang = "";
+    private String operasiData = "";
+    private Date openDate = null;
+    private int statusData = 0;
+
+    public String getFlagDetail() {
+        return flagDetail;
+    }
+
+    public void setFlagDetail(String flagDetail) {
+        this.flagDetail = flagDetail;
+    }
+
+    public String getNoRekening() {
+        return noRekening;
+    }
+
+    public void setNoRekening(String noRekening) {
+        this.noRekening = noRekening;
+    }
+
+    public String getCif() {
+        return cif;
+    }
+
+    public void setCif(String cif) {
+        this.cif = cif;
+    }
+
+    public String getKodeJenisGaransi() {
+        return kodeJenisGaransi;
+    }
+
+    public void setKodeJenisGaransi(String kodeJenisGaransi) {
+        this.kodeJenisGaransi = kodeJenisGaransi;
+    }
+
+    public String getKodeTujuanGaransi() {
+        return kodeTujuanGaransi;
+    }
+
+    public void setKodeTujuanGaransi(String kodeTujuanGaransi) {
+        this.kodeTujuanGaransi = kodeTujuanGaransi;
+    }
+
+    public Date getTglDiterbitkan() {
+        return tglDiterbitkan;
+    }
+
+    public void setTglDiterbitkan(Date tglDiterbitkan) {
+        this.tglDiterbitkan = tglDiterbitkan;
+    }
+
+    public Date getTglJatuhTempo() {
+        return tglJatuhTempo;
+    }
+
+    public void setTglJatuhTempo(Date tglJatuhTempo) {
+        this.tglJatuhTempo = tglJatuhTempo;
+    }
+
+    public String getNoAkadAwal() {
+        return noAkadAwal;
+    }
+
+    public void setNoAkadAwal(String noAkadAwal) {
+        this.noAkadAwal = noAkadAwal;
+    }
+
+    public Date getTglAkadAwal() {
+        return tglAkadAwal;
+    }
+
+    public void setTglAkadAwal(Date tglAkadAwal) {
+        this.tglAkadAwal = tglAkadAwal;
+    }
+
+    public String getNoAkadAkhir() {
+        return noAkadAkhir;
+    }
+
+    public void setNoAkadAkhir(String noAkadAkhir) {
+        this.noAkadAkhir = noAkadAkhir;
+    }
+
+    public Date getTglAkadAkhir() {
+        return tglAkadAkhir;
+    }
+
+    public void setTglAkadAkhir(Date tglAkadAkhir) {
+        this.tglAkadAkhir = tglAkadAkhir;
+    }
+
+    public String getNamaYgDijamin() {
+        return namaYgDijamin;
+    }
+
+    public void setNamaYgDijamin(String namaYgDijamin) {
+        this.namaYgDijamin = namaYgDijamin;
+    }
+
+    public String getKodeValuta() {
+        return kodeValuta;
+    }
+
+    public void setKodeValuta(String kodeValuta) {
+        this.kodeValuta = kodeValuta;
+    }
+
+    public double getPlafon() {
+        return plafon;
+    }
+
+    public void setPlafon(double plafon) {
+        this.plafon = plafon;
+    }
+
+    public double getNominal() {
+        return nominal;
+    }
+
+    public void setNominal(double nominal) {
+        this.nominal = nominal;
+    }
+
+    public double getSetoranJaminan() {
+        return setoranJaminan;
+    }
+
+    public void setSetoranJaminan(double setoranJaminan) {
+        this.setoranJaminan = setoranJaminan;
+    }
+
+    public String getKodeKolektibilitas() {
+        return kodeKolektibilitas;
+    }
+
+    public void setKodeKolektibilitas(String kodeKolektibilitas) {
+        this.kodeKolektibilitas = kodeKolektibilitas;
+    }
+
+    public Date getTglWanPrestasi() {
+        return tglWanPrestasi;
+    }
+
+    public void setTglWanPrestasi(Date tglWanPrestasi) {
+        this.tglWanPrestasi = tglWanPrestasi;
+    }
+
+    public String getKodeKondisi() {
+        return kodeKondisi;
+    }
+
+    public void setKodeKondisi(String kodeKondisi) {
+        this.kodeKondisi = kodeKondisi;
+    }
+
+    public Date getTglKondisi() {
+        return tglKondisi;
+    }
+
+    public void setTglKondisi(Date tglKondisi) {
+        this.tglKondisi = tglKondisi;
+    }
+
+    public String getKeterangan() {
+        return keterangan;
+    }
+
+    public void setKeterangan(String keterangan) {
+        this.keterangan = keterangan;
+    }
+
+    public String getKodeKantorCabang() {
+        return kodeKantorCabang;
+    }
+
+    public void setKodeKantorCabang(String kodeKantorCabang) {
+        this.kodeKantorCabang = kodeKantorCabang;
+    }
+
+    public String getOperasiData() {
+        return operasiData;
+    }
+
+    public void setOperasiData(String operasiData) {
+        this.operasiData = operasiData;
+    }
+
+    /**
+     * @return the OpenDate
+     */
+    public Date getOpenDate() {
+        return openDate;
+    }
+
+    /**
+     * @param OpenDate the OpenDate to set
+     */
+    public void setOpenDate(Date OpenDate) {
+        this.openDate = OpenDate;
+    }
+
+    /**
+     * @return the StatusData
+     */
+    public int getStatusData() {
+        return statusData;
+    }
+
+    /**
+     * @param StatusData the StatusData to set
+     */
+    public void setStatusData(int statusData) {
+        this.statusData = statusData;
+    }
+
+    @Override
+    public String getLogDetail(Entity prevDoc) {
+//        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        String history="";
+        BankGaransi prevMat = (BankGaransi)prevDoc;
+        
+        try {
+            if (!prevMat.getFlagDetail().equals(this.getFlagDetail())) {
+                history = history + " Flag detail diubah dari " + prevMat.getFlagDetail()+ " menjadi " + this.getFlagDetail()+ "/n";
+            }
+        } catch (Exception es) {}
+        try {
+            if (!prevMat.getNoRekening().equals(this.getNoRekening())) {
+                history = history + " Nomor rekening diubah dari " + prevMat.getNoRekening()+ " menjadi " + this.getNoRekening()+ "/n";
+            }
+        } catch (Exception es) {}
+        try {
+            if (!prevMat.getCif().equals(this.getCif())) {
+                history = history + " CIF diubah dari " + prevMat.getCif()+ " menjadi " + this.getCif()+ "/n";
+            }
+        } catch (Exception es) {}
+        try {
+            if (!prevMat.getKodeJenisGaransi().equals(this.getKodeJenisGaransi())) {
+                history = history + " Kode jenis garansi diubah dari " + prevMat.getKodeJenisGaransi()+ " menjadi " + this.getKodeJenisGaransi()+ "/n";
+            }
+        } catch (Exception es) {}
+        try {
+            if (!prevMat.getKodeTujuanGaransi().equals(this.getKodeTujuanGaransi())) {
+                history = history + " Kode tujuan garansi diubah dari " + prevMat.getKodeTujuanGaransi()+ " menjadi " + this.getKodeTujuanGaransi()+ "/n";
+            }
+        } catch (Exception es) {}
+        try {
+            if (!prevMat.getTglDiterbitkan().equals(this.getTglDiterbitkan())) {
+                history = history + " Tanggal diterbitkan diubah dari " + prevMat.getTglDiterbitkan()+ " menjadi " + this.getTglDiterbitkan()+ "/n";
+            }
+        } catch (Exception es) {}
+        try {
+            if (!prevMat.getTglJatuhTempo().equals(this.getTglJatuhTempo())) {
+                history = history + " Tanggal jatuh tempo diubah dari " + prevMat.getTglJatuhTempo()+ " menjadi " + this.getTglJatuhTempo()+ "/n";
+            }
+        } catch (Exception es) {}
+        try {
+            if (!prevMat.getNoAkadAwal().equals(this.getNoAkadAwal())) {
+                history = history + " Nomor akad awal diubah dari " + prevMat.getNoAkadAwal()+ " menjadi " + this.getNoAkadAwal()+ "/n";
+            }
+        } catch (Exception es) {}
+        try {
+            if (!prevMat.getTglAkadAwal().equals(this.getTglAkadAwal())) {
+                history = history + " Tanggal akad awal diubah dari " + prevMat.getTglAkadAwal()+ " menjadi " + this.getTglAkadAwal()+ "/n";
+            }
+        } catch (Exception es) {}
+        try {
+            if (!prevMat.getNoAkadAkhir().equals(this.getNoAkadAkhir())) {
+                history = history + " Nomor akad akhir diubah dari " + prevMat.getNoAkadAkhir()+ " menjadi " + this.getNoAkadAkhir()+ "/n";
+            }
+        } catch (Exception es) {}
+        try {
+            if (!prevMat.getTglAkadAkhir().equals(this.getTglAkadAkhir())) {
+                history = history + " Tanggal akad akhir diubah dari " + prevMat.getTglAkadAkhir()+ " menjadi " + this.getTglAkadAkhir()+ "/n";
+            }
+        } catch (Exception es) {}
+        try {
+            if (!prevMat.getNamaYgDijamin().equals(this.getNamaYgDijamin())) {
+                history = history + " Nama yang dijamin diubah dari " + prevMat.getNamaYgDijamin()+ " menjadi " + this.getNamaYgDijamin()+ "/n";
+            }
+        } catch (Exception es) {}
+        try {
+            if (!prevMat.getKodeValuta().equals(this.getKodeValuta())) {
+                history = history + " Kode valuta diubah dari " + prevMat.getKodeValuta()+ " menjadi " + this.getKodeValuta()+ "/n";
+            }
+        } catch (Exception es) {}
+        try {
+            if (prevMat.getPlafon()!= this.getPlafon()) {
+                history = history + " Plafon diubah dari " + prevMat.getPlafon()+ " menjadi " + this.getPlafon()+ "/n";
+            }
+        } catch (Exception es) {}
+        try {
+            if (prevMat.getNominal()!= this.getNominal()) {
+                history = history + " Nominal diubah dari " + prevMat.getNominal()+ " menjadi " + this.getNominal()+ "/n";
+            }
+        } catch (Exception es) {}
+        try {
+            if (prevMat.getSetoranJaminan()!= this.getSetoranJaminan()) {
+                history = history + " Setoran jaminan diubah dari " + prevMat.getSetoranJaminan()+ " menjadi " + this.getSetoranJaminan()+ "/n";
+            }
+        } catch (Exception es) {}
+        try {
+            if (!prevMat.getKodeKolektibilitas().equals(this.getKodeKolektibilitas())) {
+                history = history + " Kode kolektibilitas diubah dari " + prevMat.getKodeKolektibilitas()+ " menjadi " + this.getKodeKolektibilitas()+ "/n";
+            }
+        } catch (Exception es) {}
+        try {
+            if (!prevMat.getTglWanPrestasi().equals(this.getTglWanPrestasi())) {
+                history = history + " Tanggal wan prestasi diubah dari " + prevMat.getTglWanPrestasi()+ " menjadi " + this.getTglWanPrestasi()+ "/n";
+            }
+        } catch (Exception es) {}
+        try {
+            if (!prevMat.getKodeKondisi().equals(this.getKodeKondisi())) {
+                history = history + " Kode kondisi diubah dari " + prevMat.getKodeKondisi()+ " menjadi " + this.getKodeKondisi()+ "/n";
+            }
+        } catch (Exception es) {}
+        try {
+            if (!prevMat.getTglKondisi().equals(this.getTglKondisi())) {
+                history = history + " Tanggal kondisi diubah dari " + prevMat.getTglKondisi()+ " menjadi " + this.getTglKondisi()+ "/n";
+            }
+        } catch (Exception es) {}
+        try {
+            if (!prevMat.getKeterangan().equals(this.getKeterangan())) {
+                history = history + " Keterangan diubah dari " + prevMat.getKeterangan()+ " menjadi " + this.getKeterangan()+ "/n";
+            }
+        } catch (Exception es) {}
+        try {
+            if (!prevMat.getKodeKantorCabang().equals(this.getKodeKantorCabang())) {
+                history = history + " Kode kantor cabang diubah dari " + prevMat.getKodeKantorCabang()+ " menjadi " + this.getKodeKantorCabang()+ "/n";
+            }
+        } catch (Exception es) {}
+        try {
+            if (!prevMat.getOperasiData().equals(this.getOperasiData())) {
+                history = history + " Operasi data diubah dari " + prevMat.getOperasiData()+ " menjadi " + this.getOperasiData()+ "/n";
+            }
+        } catch (Exception es) {}
+        try {
+            if (!prevMat.getOpenDate().equals(this.getOpenDate())) {
+                history = history + " Open date diubah dari " + prevMat.getOpenDate()+ " menjadi " + this.getOpenDate()+ "/n";
+            }
+        } catch (Exception es) {}
+        try {
+            if (prevMat.getStatusData() != this.getStatusData()) {
+                history = history + " Status data diubah dari " + prevMat.getStatusData()+ " menjadi " + this.getStatusData()+ "/n";
+            }
+        } catch (Exception es) {}
+        
+        return history;
+    }
+
+}

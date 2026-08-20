@@ -1,0 +1,280 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package com.dimata.dslik.entity.pengurusataupemilik;
+
+import com.dimata.common.entity.logger.I_LogHistory;
+import com.dimata.qdep.entity.Entity;
+import java.util.Date;
+
+
+/**
+ *
+ * @author Dewa
+ */
+public class PengurusAtauPemilik extends Entity implements I_LogHistory{
+
+private String flagDetail = "";
+private String noIdentitas = "";
+private String cif = "";
+private String jenisIdentitas = "";
+private String namaPengurus = "";
+private String jenisKelamin = "";
+private String alamat = "";
+private String kelurahan = "";
+private String kecamatan = "";
+private String kodeKabupaten = "";
+private String kodeJabatan = "";
+private String pangsaKepemilikan = "";
+private String statusPengurus = "";
+private String kodeKantorCabang = "";
+private String operasiData = "";
+private Date openDate = null;
+private int statusData = 0;
+
+public String getFlagDetail(){
+return flagDetail;
+}
+
+public void setFlagDetail(String flagDetail){
+this.flagDetail = flagDetail;
+}
+
+public String getNoIdentitas(){
+return noIdentitas;
+}
+
+public void setNoIdentitas(String noIdentitas){
+this.noIdentitas = noIdentitas;
+}
+
+public String getCif(){
+return cif;
+}
+
+public void setCif(String cif){
+this.cif = cif;
+}
+
+public String getJenisIdentitas(){
+return jenisIdentitas;
+}
+
+public void setJenisIdentitas(String jenisIdentitas){
+this.jenisIdentitas = jenisIdentitas;
+}
+
+public String getNamaPengurus(){
+return namaPengurus;
+}
+
+public void setNamaPengurus(String namaPengurus){
+this.namaPengurus = namaPengurus;
+}
+
+public String getJenisKelamin(){
+return jenisKelamin;
+}
+
+public void setJenisKelamin(String jenisKelamin){
+this.jenisKelamin = jenisKelamin;
+}
+
+public String getAlamat(){
+return alamat;
+}
+
+public void setAlamat(String alamat){
+this.alamat = alamat;
+}
+
+public String getKelurahan(){
+return kelurahan;
+}
+
+public void setKelurahan(String kelurahan){
+this.kelurahan = kelurahan;
+}
+
+public String getKecamatan(){
+return kecamatan;
+}
+
+public void setKecamatan(String kecamatan){
+this.kecamatan = kecamatan;
+}
+
+public String getKodeKabupaten(){
+return kodeKabupaten;
+}
+
+public void setKodeKabupaten(String kodeKabupaten){
+this.kodeKabupaten = kodeKabupaten;
+}
+
+public String getKodeJabatan(){
+return kodeJabatan;
+}
+
+public void setKodeJabatan(String kodeJabatan){
+this.kodeJabatan = kodeJabatan;
+}
+
+public String getPangsaKepemilikan(){
+return pangsaKepemilikan;
+}
+
+public void setPangsaKepemilikan(String pangsaKepemilikan){
+this.pangsaKepemilikan = pangsaKepemilikan;
+}
+
+public String getStatusPengurus(){
+return statusPengurus;
+}
+
+public void setStatusPengurus(String statusPengurus){
+this.statusPengurus = statusPengurus;
+}
+
+public String getKodeKantorCabang(){
+return kodeKantorCabang;
+}
+
+public void setKodeKantorCabang(String kodeKantorCabang){
+this.kodeKantorCabang = kodeKantorCabang;
+}
+
+public String getOperasiData(){
+return operasiData;
+}
+
+public void setOperasiData(String operasiData){
+this.operasiData = operasiData;
+}
+
+    /**
+     * @return the openData
+     */
+    public Date getOpenDate() {
+        return openDate;
+    }
+
+    /**
+     * @param openData the openData to set
+     */
+    public void setOpenDate(Date openDate) {
+        this.openDate = openDate;
+    }
+
+    /**
+     * @return the statusData
+     */
+    public int getStatusData() {
+        return statusData;
+    }
+
+    /**
+     * @param statusData the statusData to set
+     */
+    public void setStatusData(int statusData) {
+        this.statusData = statusData;
+    }
+
+    @Override
+    public String getLogDetail(Entity prevDoc) {
+//        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        String history = "";
+        PengurusAtauPemilik prevMat = (PengurusAtauPemilik)prevDoc;
+        
+        try {
+            if (!prevMat.getFlagDetail().equals(this.getFlagDetail())) {
+                history = history + " Flag Detail diubah dari " + prevMat.getFlagDetail() + " menjadi " + this.getFlagDetail() + "/n";
+            }
+        } catch (Exception e) {}
+        try {
+            if (!prevMat.getNoIdentitas().equals(this.getNoIdentitas())) {
+                history = history + " Nomor Identitas diubah dari " + prevMat.getNoIdentitas() + " menjadi " + this.getNoIdentitas() + "/n";
+            }
+        } catch (Exception e) {}
+        try {
+            if (!prevMat.getCif().equals(this.getCif())) {
+                history = history + " CIF diubah dari " + prevMat.getCif() + " menjadi " + this.getCif() + "/n";
+            }
+        } catch (Exception e) {}
+        try {
+            if (!prevMat.getJenisIdentitas().equals(this.getJenisIdentitas())) {
+                history = history + " Jenis identitas diubah dari " + prevMat.getJenisIdentitas() + " menjadi " + this.getJenisIdentitas() + "/n";
+            }
+        } catch (Exception e) {}
+        try {
+            if (!prevMat.getNamaPengurus().equals(this.getNamaPengurus())) {
+                history = history + " Kode Register Agunan diubah dari " + prevMat.getNamaPengurus()+ " menjadi " + this.getNamaPengurus()+ "/n";
+            }
+        } catch (Exception e) {}
+        try {
+            if (!prevMat.getJenisKelamin().equals(this.getJenisKelamin())) {
+                history = history + " Jenis kelamin diubah dari " + prevMat.getJenisKelamin()+ " menjadi " + this.getJenisKelamin()+ "/n";
+            }
+        } catch (Exception e) {}
+        try {
+            if (!prevMat.getAlamat().equals(this.getAlamat())) {
+                history = history + " Alamat diubah dari " + prevMat.getAlamat()+ " menjadi " + this.getAlamat()+ "/n";
+            }
+        } catch (Exception e) {}
+        try {
+            if (!prevMat.getKelurahan().equals(this.getKelurahan())) {
+                history = history + " Nama kelurahan diubah dari " + prevMat.getKelurahan()+ " menjadi " + this.getKelurahan()+ "/n";
+            }
+        } catch (Exception e) {}
+        try {
+            if (!prevMat.getKecamatan().equals(this.getKecamatan())) {
+                history = history + " Nama kecamatan diubah dari " + prevMat.getKecamatan()+ " menjadi " + this.getKecamatan()+ "/n";
+            }
+        } catch (Exception e) {}
+        try {
+            if (!prevMat.getKodeKabupaten().equals(this.getKodeKabupaten())) {
+                history = history + " Kode kabupaten diubah dari " + prevMat.getKodeKabupaten()+ " menjadi " + this.getKodeKabupaten()+ "/n";
+            }
+        } catch (Exception e) {}
+        try {
+            if (!prevMat.getKodeJabatan().equals(this.getKodeJabatan())) {
+                history = history + " Kode jabatan diubah dari " + prevMat.getKodeJabatan()+ " menjadi " + this.getKodeJabatan()+ "/n";
+            }
+        } catch (Exception e) {}
+        try {
+            if (!prevMat.getPangsaKepemilikan().equals(this.getPangsaKepemilikan())) {
+                history = history + " Pangsa kepemilikan diubah dari " + prevMat.getPangsaKepemilikan()+ " menjadi " + this.getPangsaKepemilikan()+ "/n";
+            }
+        } catch (Exception e) {}
+        try {
+            if (!prevMat.getStatusPengurus().equals(this.getStatusPengurus())) {
+                history = history + " Status pengurus diubah dari " + prevMat.getStatusPengurus()+ " menjadi " + this.getStatusPengurus()+ "/n";
+            }
+        } catch (Exception e) {}
+        try {
+            if (!prevMat.getKodeKantorCabang().equals(this.getKodeKantorCabang())) {
+                history = history + " Kode kantor cabang diubah dari " + prevMat.getKodeKantorCabang()+ " menjadi " + this.getKodeKantorCabang()+ "/n";
+            }
+        } catch (Exception e) {}
+        try {
+            if (!prevMat.getOperasiData().equals(this.getOperasiData())) {
+                history = history + " Operasi data diubah dari " + prevMat.getOperasiData()+ " menjadi " + this.getOperasiData()+ "/n";
+            }
+        } catch (Exception e) {}
+        try {
+            if (!prevMat.getOpenDate().equals(this.getOpenDate())) {
+                history = history + " Open date diubah dari " + prevMat.getOpenDate()+ " menjadi " + this.getOpenDate()+ "/n";
+            }
+        } catch (Exception e) {}
+        try {
+            if (prevMat.getStatusData() != this.getStatusData()) {
+                history = history + " Status data diubah dari " + prevMat.getStatusData()+ " menjadi " + this.getStatusData()+ "/n";
+            }
+        } catch (Exception e) {}
+        
+        return history;
+    }
+
+}

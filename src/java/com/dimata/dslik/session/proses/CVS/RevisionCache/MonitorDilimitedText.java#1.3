@@ -1,0 +1,105 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package com.dimata.dslik.session.proses;
+
+/**
+ *
+ * @author dimata005
+ */
+public class MonitorDilimitedText implements Runnable {
+    
+    private String Proggess="";
+    private FileSent fileSent=null;
+    
+    public MonitorDilimitedText(FileSent fileSent) {
+        try{
+            this.fileSent = fileSent;
+            
+            this.Proggess ="";
+
+        }catch(Exception e){
+            System.out.println(" ! EXC : initiate thread =  "+e.toString());
+
+        }
+
+    }
+    
+    public void run() {
+
+        System.out.println("start .... ");
+    
+        while (ManagerDilimitedText.running) {
+            
+            try {
+                
+                /*proses transfer*/
+                ProsesDilimitedText prosesDilimitedText = new ProsesDilimitedText();
+                
+                /*proses debitur perorangan*/
+                fileSent.setTypeSegment(Configurasi.FLD_SEGMENT_DEBITUR_PERORANGAN);
+                prosesDilimitedText.actionDilimitedTextDebitur(fileSent);
+                
+                /*proses debitur badan usaha*/
+                fileSent.setTypeSegment(Configurasi.FLD_SEGMENT_DEBITUR_BADAN_USAHA);
+                prosesDilimitedText.actionDilimitedTextDebitur(fileSent);
+                
+                /*proses kredit*/
+                fileSent.setTypeSegment(Configurasi.FLD_SEGMENT_KREDIT);
+                prosesDilimitedText.actionDilimitedTextDebitur(fileSent);
+                
+                /*proses kredit join*/
+                fileSent.setTypeSegment(Configurasi.FLD_SEGMENT_KREDIT_JOIN_ACCOUNT);
+                prosesDilimitedText.actionDilimitedTextDebitur(fileSent);
+                
+                /*surat berharga*/
+                fileSent.setTypeSegment(Configurasi.FLD_SEGMENT_SURAT_BERHARGA);
+                prosesDilimitedText.actionDilimitedTextDebitur(fileSent);
+                
+                /*irrevocable*/
+                fileSent.setTypeSegment(Configurasi.FLD_SEGMENT_IRREVOCABLE_LC);
+                prosesDilimitedText.actionDilimitedTextDebitur(fileSent);
+                
+                /*bank garansi*/ 
+                fileSent.setTypeSegment(Configurasi.FLD_SEGMENT_BANK_GARANSI);
+                prosesDilimitedText.actionDilimitedTextDebitur(fileSent);
+                
+                /*fasilitas lainnya*/
+                fileSent.setTypeSegment(Configurasi.FLD_SEGMENT_FASILITAS_LAINNYA);
+                prosesDilimitedText.actionDilimitedTextDebitur(fileSent);
+                
+                /*proses agunan*/
+                fileSent.setTypeSegment(Configurasi.FLD_SEGMENT_DATA_AGUNAN);
+                prosesDilimitedText.actionDilimitedTextDebitur(fileSent);
+                
+                /*penjamin*/
+                fileSent.setTypeSegment(Configurasi.FLD_SEGMENT_PENJAMIN);
+                prosesDilimitedText.actionDilimitedTextDebitur(fileSent);
+                
+                
+                /*proses pengurus dan pemilik*/
+                fileSent.setTypeSegment(Configurasi.FLD_SEGMENT_PENGURUS_PEMILIK);
+                prosesDilimitedText.actionDilimitedTextPengurusPemilik(fileSent);
+                
+                /*laporan keuangan*/
+                fileSent.setTypeSegment(Configurasi.FLD_SEGMENT_LAPORAN_KEUANGAN_DEBITUR);
+                prosesDilimitedText.actionDilimitedTextPengurusPemilik(fileSent);
+                
+                if(fileSent.isCreateSummary()){
+                    /*laporan keuangan*/
+                    fileSent.setTypeSegment(Configurasi.FLD_SEGMENT_SUMMARY_FASILITAS);
+                    prosesDilimitedText.actionDilimitedTextPengurusPemilik(fileSent);
+                }
+                
+                
+            } catch (Exception e) {
+                System.out.println("Interrupted " + e);
+            }
+            
+            ManagerDilimitedText.running=false;
+        }
+        System.out.println("stop .... ");
+    }
+}

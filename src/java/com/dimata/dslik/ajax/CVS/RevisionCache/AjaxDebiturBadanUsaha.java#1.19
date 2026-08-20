@@ -1,0 +1,1036 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package com.dimata.dslik.ajax;
+
+import com.dimata.dslik.entity.agunan.PstAgunan;
+import com.dimata.dslik.entity.bankgaransi.PstBankGaransi;
+import com.dimata.dslik.form.debiturbdnusaha.*;
+import com.dimata.dslik.entity.contentdata.*;
+import com.dimata.dslik.entity.debitur.PstDebitur;
+import com.dimata.dslik.entity.debiturbdnusaha.DebiturBdnUsaha;
+import com.dimata.dslik.entity.debiturbdnusaha.PstDebiturBdnUsaha;
+import com.dimata.dslik.entity.fasilitaslain.PstFasilitasLain;
+import com.dimata.dslik.entity.irrevocablelc.PstIrrevocableLc;
+import com.dimata.dslik.entity.kredit.PstKredit;
+import com.dimata.dslik.entity.kreditjoinaccount.PstKreditJoinAccount;
+import com.dimata.dslik.entity.laporankeuangandebitur.PstLaporanKeuanganDebitur;
+import com.dimata.dslik.entity.pengurusataupemilik.PstPengurusAtauPemilik;
+import com.dimata.dslik.entity.penjamin.PstPenjamin;
+import com.dimata.dslik.entity.suratberharga.PstSuratBerharga;
+import com.dimata.gui.jsp.ControlCombo;
+import com.dimata.qdep.form.FRMQueryString;
+import com.dimata.util.Command;
+import com.dimata.util.Formater;
+import java.io.IOException;
+import java.util.Date;
+import java.util.Vector;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+/**
+ *
+ * @author Ardiadi
+ */
+public class AjaxDebiturBadanUsaha extends HttpServlet {
+
+    //DATATABLES
+    private String searchTerm;
+    private String colName;
+    private int colOrder;
+    private String dir;
+    private int start;
+    private int amount;
+    
+    //OBJECT
+    private JSONObject jSONObject = new JSONObject();
+    private JSONArray jSONArray = new JSONArray();
+    
+    //LONG
+    private long oid = 0;
+    private long oidReturn = 0;
+    
+    //STRING
+    private String dataFor = "";
+    private String oidDelete = "";
+    private String approot = "";
+    private String htmlReturn = "";
+    private String dateStart = "";
+    private String dateEnd = "";
+    private String cif = "";
+    private String cifReturn = "";
+    
+    //INT
+    private int iCommand = 0;
+    private int iErrCode = 0;
+    
+    private long userId=0;
+    private String userName="";
+
+    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
+    throws ServletException, IOException {
+        
+        //LONG
+	this.oid = FRMQueryString.requestLong(request, "FRM_FIELD_OID");
+	this.oidReturn=0;
+	
+	//STRING
+	this.dataFor = FRMQueryString.requestString(request, "FRM_FIELD_DATA_FOR");
+	this.oidDelete = FRMQueryString.requestString(request, "FRM_FIELD_OID_DELETE");
+	this.approot = FRMQueryString.requestString(request, "FRM_FIELD_APPROOT");
+	this.htmlReturn = "";
+	
+	//INT
+	this.iCommand = FRMQueryString.requestCommand(request);
+	this.iErrCode = 0;
+	
+	//OBJECT
+	this.jSONObject = new JSONObject();
+	
+	switch(this.iCommand){
+	    case Command.SAVE :
+		commandSave(request);
+	    break;
+		
+	    case Command.LIST :
+		commandList(request, response);
+	    break;
+		
+	    case Command.DELETEALL : 
+		commandDeleteAll(request);
+	    break;
+	    
+	    case Command.DELETE : 
+		commandDelete(request);
+	    break;
+		
+	    default : commandNone(request);
+	}
+	try{
+	    
+	    this.jSONObject.put("FRM_FIELD_HTML", this.htmlReturn);
+	    this.jSONObject.put("FRM_FIELD_RETURN_OID", String.valueOf(this.oidReturn));
+	    this.jSONObject.put("FRM_FIELD_DATE_START", this.dateStart);
+	    this.jSONObject.put("FRM_FIELD_DATE_END", this.dateEnd);
+            this.jSONObject.put("FRM_FIELD_CIF_RETURN",this.cifReturn);
+	}catch(JSONException jSONException){
+	    jSONException.printStackTrace();
+	}
+	
+	response.getWriter().print(this.jSONObject);
+        
+    }
+    
+    public void commandNone(HttpServletRequest request){
+	if(this.dataFor.equals("showform")){
+	    this.htmlReturn = showForm(request);
+	}else if(this.dataFor.equals("searchform")){
+            this.htmlReturn = searchForm(request);
+        }else if(this.dataFor.equals("showlistbadanusaha")){
+            this.htmlReturn = showListForm(request);
+        }else if(this.dataFor.equals("loadsummary") || this.dataFor.equals("loadsummarynull")){
+            this.htmlReturn = getSummary(request);
+        }
+    }
+    
+    public void commandSave(HttpServletRequest request){
+	if (this.dataFor.equals("showform")) {
+             //history
+            this.htmlReturn = saveDebiturBdnUsaha(request);
+        }
+    }
+    
+    public String saveDebiturBdnUsaha(HttpServletRequest request) {
+        //history
+        userId = FRMQueryString.requestLong(request, "useroid");
+        userName = FRMQueryString.requestString(request, "username");
+        String returnData = "";
+        CtrlDebiturBdnUsaha ctrlDebiturBdnUsaha = new CtrlDebiturBdnUsaha(request);
+        ctrlDebiturBdnUsaha.action(iCommand, oid,userId,userName);
+        returnData = ctrlDebiturBdnUsaha.getMessage();
+        DebiturBdnUsaha entDebiturBdnUsaha = new DebiturBdnUsaha();
+        entDebiturBdnUsaha = ctrlDebiturBdnUsaha.getDebiturBdnUsaha();
+        this.oidReturn = entDebiturBdnUsaha.getOID();
+        this.cifReturn = entDebiturBdnUsaha.getCif();
+        return returnData;
+    }
+    
+    public void commandDeleteAll(HttpServletRequest request){
+	if(this.dataFor.equals("deleterateplan")){
+	    
+	}
+    }
+    
+    
+    
+    public void commandList(HttpServletRequest request, HttpServletResponse response){
+	if(this.dataFor.equals("listdatasearch")){
+	    String[] cols = { 
+                PstDebiturBdnUsaha.fieldNames[PstDebiturBdnUsaha.FLD_DEBITUR_BDN_USHA_OID],
+                PstDebiturBdnUsaha.fieldNames[PstDebiturBdnUsaha.FLD_CIF],
+                PstDebiturBdnUsaha.fieldNames[PstDebiturBdnUsaha.FLD_NO_AKTE],
+                PstDebiturBdnUsaha.fieldNames[PstDebiturBdnUsaha.FLD_NAMA]
+            };
+	    jSONObject = listDataTables(request, response, cols, this.dataFor, this.jSONObject);
+	}else if(this.dataFor.equals("showlistbadanusaha")){
+	    String[] cols = { 
+                PstDebiturBdnUsaha.fieldNames[PstDebiturBdnUsaha.FLD_DEBITUR_BDN_USHA_OID],
+                PstDebiturBdnUsaha.fieldNames[PstDebiturBdnUsaha.FLD_CIF],
+                PstDebiturBdnUsaha.fieldNames[PstDebiturBdnUsaha.FLD_NO_AKTE],
+                PstDebiturBdnUsaha.fieldNames[PstDebiturBdnUsaha.FLD_NAMA]
+            };
+	    jSONObject = listDataTables(request, response, cols, this.dataFor, this.jSONObject);
+	}
+    }
+    
+    public void commandDelete(HttpServletRequest request){
+	if(this.dataFor.equals("deleteitem")){
+	    this.htmlReturn = deleteItem(request);
+	}
+    }
+    
+    public JSONObject listDataTables (HttpServletRequest request, HttpServletResponse response, String[] cols, String dataFor, JSONObject result){
+        this.searchTerm = FRMQueryString.requestString(request, "sSearch");
+        int amount = 10;
+        int start = 0;
+        int col = 0;
+        String dir = "asc";
+        String sStart = request.getParameter("iDisplayStart");
+        String sAmount = request.getParameter("iDisplayLength");
+        String sCol = request.getParameter("iSortCol_0");
+        String sdir = request.getParameter("sSortDir_0");
+        
+        if (sStart != null) {
+            start = Integer.parseInt(sStart);
+            if (start < 0) {
+                start = 0;
+            }
+        }
+        if (sAmount != null) {
+            amount = Integer.parseInt(sAmount);
+            if (amount < 10) {
+                amount = 10;
+            }
+        }
+        if (sCol != null) {
+            col = Integer.parseInt(sCol);
+            if (col < 0 )
+                col = 0;
+        }
+        if (sdir != null) {
+            if (!sdir.equals("asc"))
+            dir = "desc";
+        }
+        
+	
+        String cif = FRMQueryString.requestString(request, "cif");
+        String noakte = FRMQueryString.requestString(request, "noakterawal");
+        String nama = FRMQueryString.requestString(request, "nama");
+        int type = FRMQueryString.requestInt(request, "type");
+        String status = FRMQueryString.requestString(request, "FRM_FIELD_STATUS_DATA");
+        int userGroup = FRMQueryString.requestInt(request, "usergroup");
+        String kodeCabang = FRMQueryString.requestString(request, "kodecabang");
+        String whereClause = "";
+        
+        if(userGroup != 4){
+            if(whereClause.length() > 0){
+                whereClause += " AND debitur."+PstDebitur.fieldNames[PstDebitur.FLD_KODE_KANTOR_CABANG]+"='"+kodeCabang+"'";
+            }else{
+                whereClause += " debitur."+PstDebitur.fieldNames[PstDebitur.FLD_KODE_KANTOR_CABANG]+"='"+kodeCabang+"'";
+            }
+        }
+        
+        if(dataFor.equals("listdatasearch")){
+	    
+        if(cif.length() > 0){
+            if(whereClause.length() > 0){
+                    whereClause += " AND debitur."+PstDebiturBdnUsaha.fieldNames[PstDebiturBdnUsaha.FLD_CIF]+"='"+cif+"'";
+                }else{
+                    whereClause += " debitur."+PstDebiturBdnUsaha.fieldNames[PstDebiturBdnUsaha.FLD_CIF]+"='"+cif+"'";
+                }
+            }
+
+            if(noakte.length() > 0){
+                if(whereClause.length() > 0){
+                    whereClause += " AND debitur."+PstDebiturBdnUsaha.fieldNames[PstDebiturBdnUsaha.FLD_NO_AKTE]+"='"+noakte+"'";
+                }else{
+                    whereClause += " debitur."+PstDebiturBdnUsaha.fieldNames[PstDebiturBdnUsaha.FLD_NO_AKTE]+"='"+noakte+"'";
+                }
+            }
+
+            if(nama.length() > 0){
+                if(whereClause.length() > 0){
+                    whereClause += " AND debitur."+PstDebiturBdnUsaha.fieldNames[PstDebiturBdnUsaha.FLD_NAMA]+" LIKE '%"+nama+"%'";
+                }else{
+                    whereClause += " debitur."+PstDebiturBdnUsaha.fieldNames[PstDebiturBdnUsaha.FLD_NAMA]+" LIKE '%"+nama+"%'";
+                }
+            }
+
+            if(type == 1){
+                if(whereClause.length() > 0){
+                    whereClause += " AND debitur."+PstDebiturBdnUsaha.fieldNames[PstDebiturBdnUsaha.FLD_KODE_JENIS_NSB]+"='"+type+"'";
+                }else{
+                    whereClause += " debitur."+PstDebiturBdnUsaha.fieldNames[PstDebiturBdnUsaha.FLD_KODE_JENIS_NSB]+"='"+type+"'";
+                }
+            }else{
+                if(whereClause.length() > 0){
+                    whereClause += " AND debitur."+PstDebiturBdnUsaha.fieldNames[PstDebiturBdnUsaha.FLD_KODE_JENIS_NSB]+"!='"+1+"'";
+                }else{
+                    whereClause += " debitur."+PstDebiturBdnUsaha.fieldNames[PstDebiturBdnUsaha.FLD_KODE_JENIS_NSB]+"!='"+1+"'";
+                }
+            }
+
+	    if(whereClause.length() > 0){
+		whereClause += " AND (debitur."+PstDebiturBdnUsaha.fieldNames[PstDebiturBdnUsaha.FLD_CIF]+" LIKE '%"+this.searchTerm+"%' "
+                        + "OR debitur."+PstDebiturBdnUsaha.fieldNames[PstDebiturBdnUsaha.FLD_NO_AKTE]+" LIKE '%"+this.searchTerm+"%' "
+                        + "OR debitur."+PstDebiturBdnUsaha.fieldNames[PstDebiturBdnUsaha.FLD_NAMA]+" LIKE '%"+this.searchTerm+"%')";
+	    }else{
+		whereClause += " (debitur."+PstDebiturBdnUsaha.fieldNames[PstDebiturBdnUsaha.FLD_CIF]+" LIKE '%"+this.searchTerm+"%' "
+                        + "OR debitur."+PstDebiturBdnUsaha.fieldNames[PstDebiturBdnUsaha.FLD_NO_AKTE]+" LIKE '%"+this.searchTerm+"%' "
+                        + "OR debitur."+PstDebiturBdnUsaha.fieldNames[PstDebiturBdnUsaha.FLD_NAMA]+" LIKE '%"+this.searchTerm+"%')";
+	    }
+	}else if(dataFor.equals("showlistbadanusaha")){
+            if(status.equals("0")){
+                if(whereClause.length() > 0){
+                    whereClause += " AND debitur."+PstDebiturBdnUsaha.fieldNames[PstDebiturBdnUsaha.FLD_STATUS_PERUBAHAN_DATA]+"='"+status+"'";
+                }else{
+                    whereClause += " debitur."+PstDebiturBdnUsaha.fieldNames[PstDebiturBdnUsaha.FLD_STATUS_PERUBAHAN_DATA]+"='"+status+"'";
+                }
+            }else{
+                if(whereClause.length() > 0){
+                    whereClause += " AND debitur."+PstDebiturBdnUsaha.fieldNames[PstDebiturBdnUsaha.FLD_STATUS_PERUBAHAN_DATA]+" IS NULL";
+                }else{
+                    whereClause += " debitur."+PstDebiturBdnUsaha.fieldNames[PstDebiturBdnUsaha.FLD_STATUS_PERUBAHAN_DATA]+" IS NULL";
+                }
+            }
+            if(whereClause.length() > 0){
+		whereClause += " AND (debitur."+PstDebiturBdnUsaha.fieldNames[PstDebiturBdnUsaha.FLD_CIF]+" LIKE '%"+this.searchTerm+"%' "
+                        + "OR debitur."+PstDebiturBdnUsaha.fieldNames[PstDebiturBdnUsaha.FLD_NO_AKTE]+" LIKE '%"+this.searchTerm+"%' "
+                        + "OR debitur."+PstDebiturBdnUsaha.fieldNames[PstDebiturBdnUsaha.FLD_NAMA]+" LIKE '%"+this.searchTerm+"%')";
+	    }else{
+		whereClause += " (debitur."+PstDebiturBdnUsaha.fieldNames[PstDebiturBdnUsaha.FLD_CIF]+" LIKE '%"+this.searchTerm+"%' "
+                        + "OR debitur."+PstDebiturBdnUsaha.fieldNames[PstDebiturBdnUsaha.FLD_NO_AKTE]+" LIKE '%"+this.searchTerm+"%' "
+                        + "OR debitur."+PstDebiturBdnUsaha.fieldNames[PstDebiturBdnUsaha.FLD_NAMA]+" LIKE '%"+this.searchTerm+"%')";
+	    }
+            
+            whereClause+=" AND debitur."+PstDebitur.fieldNames[PstDebitur.FLD_KODE_JENIS_NSB]+"!='1'";
+        }
+	
+        String colName = cols[col];
+        int total = -1;
+	
+	if(dataFor.equals("listdatasearch")){
+	    total = PstDebiturBdnUsaha.getCountJoin(whereClause);
+	}else if(dataFor.equals("showlistbadanusaha")){
+	    total = PstDebiturBdnUsaha.getCountJoin(whereClause);
+	}
+        
+        
+        this.amount = amount;
+       
+        this.colName = colName;
+        this.dir = dir;
+        this.start = start;
+        this.colOrder = col;
+        
+        try {
+            result = getData(total, request, dataFor);
+        } catch(Exception ex){
+            System.out.println(ex);
+        }
+       
+       return result;
+    }
+    
+    public JSONObject getData(int total, HttpServletRequest request, String datafor){
+        
+        int totalAfterFilter = total;
+        JSONObject result = new JSONObject();
+        JSONArray array = new JSONArray();
+        DebiturBdnUsaha debitur = new DebiturBdnUsaha();
+        Vector listData = new Vector();
+
+	String cif = FRMQueryString.requestString(request, "cif");
+        String noakte = FRMQueryString.requestString(request, "noakteawal");
+        String nama = FRMQueryString.requestString(request, "nama");
+        int type = FRMQueryString.requestInt(request, "type");
+        String status = FRMQueryString.requestString(request, "FRM_FIELD_STATUS_DATA");
+        String whereClause = "";
+        String order ="";
+	boolean privUpdate = FRMQueryString.requestBoolean(request, "privUpdate");
+        String appRoot = FRMQueryString.requestString(request, "FRM_FLD_APP_ROOT");
+        String kodeCabang = FRMQueryString.requestString(request, "kodecabang");
+        int userGroup = FRMQueryString.requestInt(request, "usergroup");
+        if(userGroup != 4){
+            if(whereClause.length() > 0){
+                whereClause += " AND debitur."+PstDebitur.fieldNames[PstDebitur.FLD_KODE_KANTOR_CABANG]+"='"+kodeCabang+"'";
+            }else{
+                whereClause += " debitur."+PstDebitur.fieldNames[PstDebitur.FLD_KODE_KANTOR_CABANG]+"='"+kodeCabang+"'";
+            }
+        }
+        if (this.searchTerm == null){
+            whereClause += "";                  
+        }else{
+	     if(datafor.equals("listdatasearch")){
+		if(cif.length() > 0){
+                    if(whereClause.length() > 0){
+                        whereClause += " AND debitur."+PstDebiturBdnUsaha.fieldNames[PstDebiturBdnUsaha.FLD_CIF]+"='"+cif+"'";
+                    }else{
+                        whereClause += " debitur."+PstDebiturBdnUsaha.fieldNames[PstDebiturBdnUsaha.FLD_CIF]+"='"+cif+"'";
+                    }
+                }
+
+                if(noakte.length() > 0){
+                    if(whereClause.length() > 0){
+                        whereClause += " AND debitur."+PstDebiturBdnUsaha.fieldNames[PstDebiturBdnUsaha.FLD_NO_AKTE]+"='"+noakte+"'";
+                    }else{
+                        whereClause += " debitur."+PstDebiturBdnUsaha.fieldNames[PstDebiturBdnUsaha.FLD_NO_AKTE]+"='"+noakte+"'";
+                    }
+                }
+
+                if(nama.length() > 0){
+                    if(whereClause.length() > 0){
+                        whereClause += " AND debitur."+PstDebiturBdnUsaha.fieldNames[PstDebiturBdnUsaha.FLD_NAMA]+" LIKE '%"+nama+"%'";
+                    }else{
+                        whereClause += " debitur."+PstDebiturBdnUsaha.fieldNames[PstDebiturBdnUsaha.FLD_NAMA]+" LIKE '%"+nama+"%'";
+                    }
+                }
+
+                if(type == 1){
+                    if(whereClause.length() > 0){
+                        whereClause += " AND debitur."+PstDebiturBdnUsaha.fieldNames[PstDebiturBdnUsaha.FLD_KODE_JENIS_NSB]+"='"+type+"'";
+                    }else{
+                        whereClause += " debitur."+PstDebiturBdnUsaha.fieldNames[PstDebiturBdnUsaha.FLD_KODE_JENIS_NSB]+"='"+type+"'";
+                    }
+                }else{
+                    if(whereClause.length() > 0){
+                        whereClause += " AND debitur."+PstDebiturBdnUsaha.fieldNames[PstDebiturBdnUsaha.FLD_KODE_JENIS_NSB]+"!='"+1+"'";
+                    }else{
+                        whereClause += " debitur."+PstDebiturBdnUsaha.fieldNames[PstDebiturBdnUsaha.FLD_KODE_JENIS_NSB]+"!='"+1+"'";
+                    }
+                }
+		if(whereClause.length() > 0){
+                    whereClause += " AND (debitur."+PstDebiturBdnUsaha.fieldNames[PstDebiturBdnUsaha.FLD_CIF]+" LIKE '%"+this.searchTerm+"%' "
+                            + "OR debitur."+PstDebiturBdnUsaha.fieldNames[PstDebiturBdnUsaha.FLD_NO_AKTE]+" LIKE '%"+this.searchTerm+"%' "
+                            + "OR debitur."+PstDebiturBdnUsaha.fieldNames[PstDebiturBdnUsaha.FLD_NAMA]+" LIKE '%"+this.searchTerm+"%')";
+                }else{
+                    whereClause += " (debitur."+PstDebiturBdnUsaha.fieldNames[PstDebiturBdnUsaha.FLD_CIF]+" LIKE '%"+this.searchTerm+"%' "
+                            + "OR debitur."+PstDebiturBdnUsaha.fieldNames[PstDebiturBdnUsaha.FLD_NO_AKTE]+" LIKE '%"+this.searchTerm+"%' "
+                            + "OR debitur."+PstDebiturBdnUsaha.fieldNames[PstDebiturBdnUsaha.FLD_NAMA]+" LIKE '%"+this.searchTerm+"%')";
+                }
+            }else if(dataFor.equals("showlistbadanusaha")){
+                if(status.equals("0")){
+                    if(whereClause.length() > 0){
+                        whereClause += " AND debitur."+PstDebiturBdnUsaha.fieldNames[PstDebiturBdnUsaha.FLD_STATUS_PERUBAHAN_DATA]+"='"+status+"'";
+                    }else{
+                        whereClause += " debitur."+PstDebiturBdnUsaha.fieldNames[PstDebiturBdnUsaha.FLD_STATUS_PERUBAHAN_DATA]+"='"+status+"'";
+                    }
+                }else{
+                    if(whereClause.length() > 0){
+                        whereClause += " AND debitur."+PstDebiturBdnUsaha.fieldNames[PstDebiturBdnUsaha.FLD_STATUS_PERUBAHAN_DATA]+" IS NULL";
+                    }else{
+                        whereClause += " debitur."+PstDebiturBdnUsaha.fieldNames[PstDebiturBdnUsaha.FLD_STATUS_PERUBAHAN_DATA]+" IS NULL";
+                    }
+                }
+                if(whereClause.length() > 0){
+                    whereClause += " AND (debitur."+PstDebiturBdnUsaha.fieldNames[PstDebiturBdnUsaha.FLD_CIF]+" LIKE '%"+this.searchTerm+"%' "
+                            + "OR debitur."+PstDebiturBdnUsaha.fieldNames[PstDebiturBdnUsaha.FLD_NO_AKTE]+" LIKE '%"+this.searchTerm+"%' "
+                            + "OR debitur."+PstDebiturBdnUsaha.fieldNames[PstDebiturBdnUsaha.FLD_NAMA]+" LIKE '%"+this.searchTerm+"%')";
+                }else{
+                    whereClause += " (debitur."+PstDebiturBdnUsaha.fieldNames[PstDebiturBdnUsaha.FLD_CIF]+" LIKE '%"+this.searchTerm+"%' "
+                            + "OR debitur."+PstDebiturBdnUsaha.fieldNames[PstDebiturBdnUsaha.FLD_NO_AKTE]+" LIKE '%"+this.searchTerm+"%' "
+                            + "OR debitur."+PstDebiturBdnUsaha.fieldNames[PstDebiturBdnUsaha.FLD_NAMA]+" LIKE '%"+this.searchTerm+"%')";
+                }
+
+                whereClause+=" AND debitur."+PstDebitur.fieldNames[PstDebitur.FLD_KODE_JENIS_NSB]+"!='1'";
+            }
+        }
+        
+        if (this.colOrder>=0){
+            order += ""+colName+" "+dir+"";
+        }
+         
+        listData = PstDebiturBdnUsaha.listJoin(start, amount, whereClause, order);
+        
+        for (int i =0 ; i<=listData.size()-1;i++){
+	    JSONArray ja = new JSONArray();
+	    if(datafor.equals("listdatasearch")){
+		debitur = (DebiturBdnUsaha) listData.get(i);
+		ja.put(""+(this.start+i+1));
+                ja.put(""+debitur.getCif());
+                ja.put(""+(debitur.getNoAkte() == null ? "-" : debitur.getNoAkte()));
+                ja.put(""+(debitur.getNama() == null ? "-" : debitur.getNama()));
+		ja.put("<button name='view' type='button' data-oid='"+debitur.getOID()+"' data-type='"+debitur.getKodeJenisNsb()+"' data-cif='"+debitur.getCif()+"'  data-target='AjaxDebiturBadanUsaha' class='btn btn-warning edit'><i class='fa fa-pencil'></i> Edit</button>");
+		
+		array.put(ja);
+	    }else if(datafor.equals("showlistbadanusaha")){
+		debitur = (DebiturBdnUsaha) listData.get(i);
+		ja.put(""+(this.start+i+1));
+                ja.put(""+debitur.getCif());
+                ja.put(""+(debitur.getNoAkte() == null ? "-" : debitur.getNoAkte()));
+                ja.put(""+(debitur.getNama() == null ? "-" : debitur.getNama()));
+		ja.put("<button name='view' type='button' data-oid='"+debitur.getOID()+"' data-type='"+debitur.getKodeJenisNsb()+"' data-cif='"+debitur.getCif()+"' data-target='AjaxDebiturBadanUsaha' class='btn btn-warning edit'><i class='fa fa-pencil'></i> Edit</button>");
+		
+		array.put(ja);
+	    }
+        }
+        
+        totalAfterFilter = total;
+        
+        try {
+            result.put("iTotalRecords", total);
+            result.put("iTotalDisplayRecords", totalAfterFilter);
+            result.put("aaData", array);
+        } catch (Exception e) {
+
+        }
+        
+        return result;
+    }
+    
+    
+    public String showForm(HttpServletRequest request){
+        Date dNow = new Date();
+        DebiturBdnUsaha debiturBdnUsaha = new DebiturBdnUsaha();
+        String tglAktePendirian = "";
+        String tglAktePerubahan = "";
+        String tglPemeringkat = "";
+        if (oid != 0) {
+            try {
+                debiturBdnUsaha = PstDebiturBdnUsaha.fetchExc(oid);
+            } catch (Exception e) {
+               String returnData = "alert('Terjadi Kesalahan "+e.getStackTrace()+"')";
+               e.printStackTrace();
+            }
+            if (debiturBdnUsaha.getTglAktePendirian()==null){
+                tglAktePendirian = "";
+            }else{
+                tglAktePendirian = Formater.formatDate(debiturBdnUsaha.getTglAktePendirian(), "yyyy-MM-dd");
+            }
+            if (debiturBdnUsaha.getTglAktePerubahan()==null){
+                tglAktePerubahan = "";
+            }else{
+                tglAktePerubahan = Formater.formatDate(debiturBdnUsaha.getTglAktePerubahan(), "yyyy-MM-dd");
+            }
+            if (debiturBdnUsaha.getTglPemeringkat()==null){
+                tglPemeringkat = "";
+            }else{
+                tglPemeringkat = Formater.formatDate(debiturBdnUsaha.getTglPemeringkat(), "yyyy-MM-dd");
+            }
+            
+        }
+        else {
+            tglAktePendirian = Formater.formatDate(dNow, "yyyy-MM-dd");
+            tglAktePerubahan = Formater.formatDate(dNow, "yyyy-MM-dd");
+            tglPemeringkat = Formater.formatDate(dNow, "yyyy-MM-dd");
+        }
+        
+        //tampilkan listIrrevocableLc berdasarkan cif
+        Vector listDebiturBdnUsaha = new Vector();
+        if(!cif.equals("")){
+                String where = PstDebiturBdnUsaha.fieldNames[PstDebiturBdnUsaha.FLD_CIF]+"='"+cif+"'";
+                listDebiturBdnUsaha = PstDebiturBdnUsaha.list(0,0, ""+where, "");
+        }
+        
+	String returnData = ""
+	+ "<div class='row'>"
+	    + "<div class='col-md-6'>"
+		+ "<div class='form-horizontal' style='padding:10px;background:#fff;border:5px solid #f1f1f1;'>"
+		    + "<h4>Basic Information</h4>"
+		    + "<div class='form-group'>"
+			+ "<label class='control-label col-sm-4'>CIF<font color='red'>*</font></label>"
+			+ "<div class='col-sm-8'>"
+			    + "<input type='text' name='"+ FrmDebiturBdnUsaha.fieldNames[FrmDebiturBdnUsaha.FRM_FIELD_CIF] +"' id='"+ FrmDebiturBdnUsaha.fieldNames[FrmDebiturBdnUsaha.FRM_FIELD_CIF] +"' value='"+debiturBdnUsaha.getCif()+"' class='form-control' required='required'>"
+			+ "</div>"
+		    + "</div>"
+		    + "<div class='form-group'>"
+			+ "<label class='control-label col-sm-4'>Nomor Identitas Badan Usaha<font color='red'>*</font></label>"
+			+ "<div class='col-sm-8'>"
+			    + "<input type='text' name='"+ FrmDebiturBdnUsaha.fieldNames[FrmDebiturBdnUsaha.FRM_FIELD_NO_IDENTITAS] +"' id='"+ FrmDebiturBdnUsaha.fieldNames[FrmDebiturBdnUsaha.FRM_FIELD_NO_IDENTITAS] +"' value='"+debiturBdnUsaha.getNoIdentitas()+"' class='form-control' required='required'>"
+			+ "</div>"
+		    + "</div>"
+		    + "<div class='form-group'>"
+			+ "<label class='control-label col-sm-4'>Nama Badan Usaha<font color='red'>*</font></label>"
+			+ "<div class='col-sm-8'>"
+			    + "<input type='text' name='"+ FrmDebiturBdnUsaha.fieldNames[FrmDebiturBdnUsaha.FRM_FIELD_NAMA] +"' id='"+ FrmDebiturBdnUsaha.fieldNames[FrmDebiturBdnUsaha.FRM_FIELD_NAMA] +"' value='"+debiturBdnUsaha.getNama()+"' class='form-control' required='required'>"
+			+ "</div>"
+		    + "</div>"
+		    + "<div class='form-group'>"
+			+ "<label class='control-label col-sm-4'>Kode Bentuk Badan Usaha<font color='red'>*</font></label>"
+			+ "<div class='col-sm-8'>";
+                                Vector vBntkBdnUsaha =  PstContentDataBentukBadanUsaha.listWithoutOid(0,0,"","");
+                                Vector valueBntkBdnUsaha = new Vector();
+                                Vector keyBntkBdnUsaha = new Vector();
+                                valueBntkBdnUsaha.add("");
+                                keyBntkBdnUsaha.add("-- Pilih --");
+                                for (int i = 0; i < vBntkBdnUsaha.size(); i++) {
+                                    ContentDataBentukBadanUsaha KdKab = (ContentDataBentukBadanUsaha) vBntkBdnUsaha.get(i);
+                                    valueBntkBdnUsaha.add(String.valueOf(KdKab.getKodeOjk()));
+                                    keyBntkBdnUsaha.add(""+KdKab.getBentukBadanUsaha());
+                                }
+                                returnData += ControlCombo.draw(""+FrmDebiturBdnUsaha.fieldNames[FrmDebiturBdnUsaha.FRM_FIELD_KODE_JENIS], null, ""+debiturBdnUsaha.getKodeJenis(), valueBntkBdnUsaha, keyBntkBdnUsaha, "required='required'", "form-control");
+                                //returnData += "</div>"
+			    //+ "<input type='text' name='"+ FrmDebiturBdnUsaha.fieldNames[FrmDebiturBdnUsaha.FRM_FIELD_KODE_JENIS] +"' id='"+ FrmDebiturBdnUsaha.fieldNames[FrmDebiturBdnUsaha.FRM_FIELD_KODE_JENIS] +"' value='"+debiturBdnUsaha.getKodeJenis()+"' class='form-control' required='required'>"
+			returnData +=""
+                        + "</div>"
+		    + "</div>"
+		    + "<div class='form-group'>"
+			+ "<label class='control-label col-sm-4'>Tempat Pendirian<font color='red'>*</font></label>"
+			+ "<div class='col-sm-8'>"
+			    + "<input type='text' name='"+ FrmDebiturBdnUsaha.fieldNames[FrmDebiturBdnUsaha.FRM_FIELD_TEMPAT] +"' id='"+ FrmDebiturBdnUsaha.fieldNames[FrmDebiturBdnUsaha.FRM_FIELD_TEMPAT] +"' value='"+debiturBdnUsaha.getTempat()+"' class='form-control' required='required'>"
+			+ "</div>"
+		    + "</div>"
+		    + "<div class='form-group'>"
+			+ "<label class='control-label col-sm-4'>No Akte Awal<font color='red'>*</font></label>"
+			+ "<div class='col-sm-8'>"
+			    + "<input type='text' name='"+ FrmDebiturBdnUsaha.fieldNames[FrmDebiturBdnUsaha.FRM_FIELD_NO_AKTE] +"' id='"+ FrmDebiturBdnUsaha.fieldNames[FrmDebiturBdnUsaha.FRM_FIELD_NO_AKTE] +"' value='"+debiturBdnUsaha.getNoAkte()+"' class='form-control' required='required'>"
+			+ "</div>"
+		    + "</div>"
+		    + "<div class='form-group'>"
+			+ "<label class='control-label col-sm-4'>Tanggal Akte Pendirian<font color='red'>*</font></label>"
+			+ "<div class='col-sm-8'>"
+			    + "<div class='input-group'>"
+				+ "<input type='text' name='"+ FrmDebiturBdnUsaha.fieldNames[FrmDebiturBdnUsaha.FRM_FIELD_TGL_AKTE_PENDIRIAN] +"' id='"+ FrmDebiturBdnUsaha.fieldNames[FrmDebiturBdnUsaha.FRM_FIELD_TGL_AKTE_PENDIRIAN] +"' value='"+tglAktePendirian+"' class='form-control datepicker' required='required'>"
+				+ "<div class='input-group-addon'>"
+				    + "<i class='fa fa-calendar'></i>"
+				+ "</div>"
+			    + "</div>"
+			+ "</div>"
+		    + "</div>"
+		    + "<div class='form-group'>"
+			+ "<label class='control-label col-sm-4'>No Akte Perubahan Terakhir KTP<font color='red'>*</font></label>"
+			+ "<div class='col-sm-8'>"
+			    + "<input type='text' name='"+ FrmDebiturBdnUsaha.fieldNames[FrmDebiturBdnUsaha.FRM_FIELD_NO_AKTE_PERUBAHAN] +"' id='"+ FrmDebiturBdnUsaha.fieldNames[FrmDebiturBdnUsaha.FRM_FIELD_NO_AKTE_PERUBAHAN] +"' value='"+debiturBdnUsaha.getNoAktePerubahan()+"' class='form-control' required='required'>"
+			+ "</div>"
+		    + "</div>"
+                    + "<div class='form-group'>"
+			+ "<label class='control-label col-sm-4'>Tanggal Akte Perubahan Terakhir<font color='red'>*</font></label>"
+			+ "<div class='col-sm-8'>"
+			    + "<div class='input-group'>"
+				+ "<input type='text' name='"+ FrmDebiturBdnUsaha.fieldNames[FrmDebiturBdnUsaha.FRM_FIELD_TGL_AKTE_PERUBAHAN] +"' id='"+ FrmDebiturBdnUsaha.fieldNames[FrmDebiturBdnUsaha.FRM_FIELD_TGL_AKTE_PERUBAHAN] +"' value='"+tglAktePerubahan+"' class='form-control datepicker' required='required'>"
+				+ "<div class='input-group-addon'>"
+				    + "<i class='fa fa-calendar'></i>"
+				+ "</div>"
+			    + "</div>"
+			+ "</div>"
+		    + "</div>"
+		    + "<div class='form-group'>"
+			+ "<label class='control-label col-sm-4'>Telepon<font color='red'>*</font></label>"
+			+ "<div class='col-sm-8'>"
+			    + "<input type='text' name='"+ FrmDebiturBdnUsaha.fieldNames[FrmDebiturBdnUsaha.FRM_FIELD_TELEPON] +"' id='"+ FrmDebiturBdnUsaha.fieldNames[FrmDebiturBdnUsaha.FRM_FIELD_TELEPON] +"' value='"+debiturBdnUsaha.getTelepon()+"' class='form-control' required='required'>"
+			+ "</div>"
+		    + "</div>"
+                    + "<div class='form-group'>"
+			+ "<label class='control-label col-sm-4'>No. Telephone Seluler<font color='red'>*</font></label>"
+			+ "<div class='col-sm-8'>"
+			    + "<input type='text' name='"+ FrmDebiturBdnUsaha.fieldNames[FrmDebiturBdnUsaha.FRM_FIELD_HP] +"' id='"+ FrmDebiturBdnUsaha.fieldNames[FrmDebiturBdnUsaha.FRM_FIELD_HP] +"' value='"+debiturBdnUsaha.getTeleponSeluler()+"' class='form-control' required='required'>"
+			+ "</div>"
+		    + "</div>"
+		    + "<div class='form-group'>"
+			+ "<label class='control-label col-sm-4'>Alamat Email</label>"
+			+ "<div class='col-sm-8'>"
+			    + "<input type='text' name='"+ FrmDebiturBdnUsaha.fieldNames[FrmDebiturBdnUsaha.FRM_FIELD_EMAIL] +"' id='"+ FrmDebiturBdnUsaha.fieldNames[FrmDebiturBdnUsaha.FRM_FIELD_EMAIL] +"' value='"+debiturBdnUsaha.getEmail()+"' class='form-control'>"
+			+ "</div>"
+		    + "</div>"
+		    + "<div class='form-group'>"
+			+ "<label class='control-label col-sm-4'>Alamat<font color='red'>*</font></label>"
+			+ "<div class='col-sm-8'>"
+			    + "<input type='text' name='"+ FrmDebiturBdnUsaha.fieldNames[FrmDebiturBdnUsaha.FRM_FIELD_ALAMAT] +"' id='"+ FrmDebiturBdnUsaha.fieldNames[FrmDebiturBdnUsaha.FRM_FIELD_ALAMAT] +"' value='"+debiturBdnUsaha.getAlamat()+"' class='form-control' required='required'>"
+			+ "</div>"
+		    + "</div>"
+		    + "<div class='form-group'>"
+			+ "<label class='control-label col-sm-4'>Kelurahan<font color='red'>*</font></label>"
+			+ "<div class='col-sm-8'>"
+			    + "<input type='text' name='"+ FrmDebiturBdnUsaha.fieldNames[FrmDebiturBdnUsaha.FRM_FIELD_KELURAHAN] +"' id='"+ FrmDebiturBdnUsaha.fieldNames[FrmDebiturBdnUsaha.FRM_FIELD_KELURAHAN] +"' value='"+debiturBdnUsaha.getKelurahan()+"' class='form-control' required='required'>"
+			+ "</div>"
+		    + "</div>"
+		    + "<div class='form-group'>"
+			+ "<label class='control-label col-sm-4'>Kecamatan<font color='red'>*</font></label>"
+			+ "<div class='col-sm-8'>"
+			    + "<input type='text' name='"+ FrmDebiturBdnUsaha.fieldNames[FrmDebiturBdnUsaha.FRM_FIELD_KECAMATAN] +"' id='"+ FrmDebiturBdnUsaha.fieldNames[FrmDebiturBdnUsaha.FRM_FIELD_KECAMATAN] +"' value='"+debiturBdnUsaha.getKecamatan()+"' class='form-control' required='required'>"
+			+ "</div>"
+		    + "</div>"
+		    + "<div class='form-group'>"
+			+ "<label class='control-label col-sm-4'>Kode Kab/Kota (Dati ii)<font color='red'>*</font></label>"
+			+ "<div class='col-sm-8'>";
+                                //start comboBox
+                                Vector vCdKab =  PstContentDataKabupatenKota.listWithoutOid(0,0,"","");
+                                Vector valueCdKab = new Vector();
+                                Vector keyCdKab = new Vector();
+                                valueCdKab.add("");
+                                keyCdKab.add("-- Pilih --");
+                                for (int i = 0; i < vCdKab.size(); i++) {
+                                    ContentDataKabupatenKota KdKab = (ContentDataKabupatenKota) vCdKab.get(i);
+                                    valueCdKab.add(String.valueOf(KdKab.getKodeOjk()));
+                                    keyCdKab.add(""+KdKab.getNamaKabupatenKota());
+                                }
+
+                                returnData += ControlCombo.draw(""+FrmDebiturBdnUsaha.fieldNames[FrmDebiturBdnUsaha.FRM_FIELD_KODE_KAB], null, ""+debiturBdnUsaha.getKodeKab(), valueCdKab, keyCdKab, "required='required' onchange=\"javascript:changeFunc();\" ", "form-control");
+                                returnData += "</div>"
+                                //end comboBox
+		    + "</div>"
+		    + "<div class='form-group'>"
+			+ "<label class='control-label col-sm-4'>Kode Pos<font color='red'>*</font></label>"
+			+ "<div class='col-sm-8'>"
+			    + "<input type='text' name='"+ FrmDebiturBdnUsaha.fieldNames[FrmDebiturBdnUsaha.FRM_FIELD_KODE_POS] +"' id='"+ FrmDebiturBdnUsaha.fieldNames[FrmDebiturBdnUsaha.FRM_FIELD_KODE_POS] +"' value='"+debiturBdnUsaha.getKodePos()+"' class='form-control' required='required'>"
+			+ "</div>"
+		    + "</div>"
+		    + "<div class='form-group'>"
+			+ "<label class='control-label col-sm-4'>Kode Negara Domisili<font color='red'>*</font></label>"
+			+ "<div class='col-sm-8'>";
+                                //start comboBox
+                                Vector vCdNegara =  PstContentDataKodeNegaraDomisili.listWithoutOid(0,0,"","");
+                                Vector valueCdNegara = new Vector();
+                                Vector keyCdNegara = new Vector();
+                                valueCdNegara.add("");
+                                keyCdNegara.add("-- Pilih --");
+                                for (int i = 0; i < vCdNegara.size(); i++) {
+                                    ContentDataKodeNegaraDomisili KdNegara = (ContentDataKodeNegaraDomisili) vCdNegara.get(i);
+                                    valueCdNegara.add(String.valueOf(KdNegara.getKodeOjk()));
+                                    keyCdNegara.add(""+KdNegara.getNamaNegara());
+                                }
+
+                                returnData += ControlCombo.draw(""+FrmDebiturBdnUsaha.fieldNames[FrmDebiturBdnUsaha.FRM_FIELD_KODE_NEGARA], null, ""+debiturBdnUsaha.getKodeNegara(), valueCdNegara, keyCdNegara, "required='required' onchange=\"javascript:changeFunc();\" ", "form-control");
+                                returnData += "</div>"
+                                //end comboBox
+		    + "</div>"
+		    + "<div class='form-group'>"
+			+ "<label class='control-label col-sm-4'>Kode Bidang Usaha<font color='red'>*</font></label>"
+			+ "<div class='col-sm-8'>";
+                                //start comboBox
+                                Vector vCdBidang =  PstContentDataBidangUsaha.listWithoutOid(0,0,"","");
+                                Vector valueCdBidang = new Vector();
+                                Vector keyCdBidang = new Vector();
+                                valueCdBidang.add("");
+                                keyCdBidang.add("-- Pilih --");
+                                for (int i = 0; i < vCdBidang.size(); i++) {
+                                    ContentDataBidangUsaha KdBidang = (ContentDataBidangUsaha) vCdBidang.get(i);
+                                    valueCdBidang.add(String.valueOf(KdBidang.getKodeOjk()));
+                                    keyCdBidang.add(""+KdBidang.getNamaBidangUsaha());
+                                }
+
+                                returnData += ControlCombo.draw(""+FrmDebiturBdnUsaha.fieldNames[FrmDebiturBdnUsaha.FRM_FIELD_KODE_BIDANG_USAHA], null, ""+debiturBdnUsaha.getKodeBidangUsaha(), valueCdBidang, keyCdBidang, "required='required' onchange=\"javascript:changeFunc();\" ", "form-control");
+                                returnData += "</div>"
+                                //end comboBox
+		    + "</div>"
+		    + "<div class='form-group'>"
+			+ "<label class='control-label col-sm-4'>Kode Hubungan dengan Pelapor<font color='red'>*</font></label>"
+			+ "<div class='col-sm-8'>";
+                                Vector listHubunganPelapor = PstContentDataHubDgnPelapor.listWithoutOid(0, 0, "", "");
+                                Vector hubunganKey = new Vector(1,1);
+                                Vector hubunganVal = new Vector(1,1);
+                                if(listHubunganPelapor.size() > 0){
+                                    for(int i = 0; i < listHubunganPelapor.size(); i++){
+                                        ContentDataHubDgnPelapor contentDataHubDgnPelapor = (ContentDataHubDgnPelapor) listHubunganPelapor.get(i);
+                                        hubunganKey.add(""+contentDataHubDgnPelapor.getKodeOjk());
+                                        hubunganVal.add(""+contentDataHubDgnPelapor.getHubunganDgnPelapor());
+                                    }
+                                }
+				returnData+=""
+			    + ControlCombo.draw(FrmDebiturBdnUsaha.fieldNames[FrmDebiturBdnUsaha.FRM_FIELD_KODE_HUB_LJK], "-- Pilih --", ""+debiturBdnUsaha.getKodeHubLjk(), hubunganKey, hubunganVal, "requried='required'", "form-control")
+			+ "</div>"
+		    + "</div>"
+		+ "</div>"
+	    + "</div>"
+	    + "<div class='col-md-6'>"
+		+ "<div class='form-horizontal' style='padding:10px;background:#fff;border:5px solid #f1f1f1;'>"
+		    + "<h4>Other Information</h4>"
+		    + "<div class='form-group'>"
+			+ "<label class='control-label col-sm-4'>Melanggar BMPK/BMPD/BMPP<font color='red'>*</font></label>"
+			+ "<div class='col-sm-8'>";
+                                Vector pisahHargaKey = new Vector(1,1);
+                                Vector pisahHargaVal = new Vector(1,1);
+                                for(int i = 0; i < PstDebitur.pisahHargaKey.length; i++){
+                                    pisahHargaKey.add(""+PstDebitur.pisahHargaKey[i]);
+                                    pisahHargaVal.add(""+PstDebitur.pisahHargaVal[i]);
+                                }
+                                returnData+=""
+                                + ControlCombo.draw(FrmDebiturBdnUsaha.fieldNames[FrmDebiturBdnUsaha.FRM_FIELD_MELANGGAR_BMPK], "-- Pilih --", ""+debiturBdnUsaha.getMelanggarBmpk(), pisahHargaKey, pisahHargaVal, "required='required'", "form-control")
+			+ "</div>"
+		    + "</div>"
+		    + "<div class='form-group'>"
+			+ "<label class='control-label col-sm-4'>Melampaui BMPK/BMPD/BMPP<font color='red'>*</font></label>"
+			+ "<div class='col-sm-8'>"
+			    + ControlCombo.draw(FrmDebiturBdnUsaha.fieldNames[FrmDebiturBdnUsaha.FRM_FIELD_MELAMPAUI_BMPK], "-- Pilih --", ""+debiturBdnUsaha.getMelampauiBmpk(), pisahHargaKey, pisahHargaVal, "required='required'", "form-control")
+			+ "</div>"
+		    + "</div>"
+		    + "<div class='form-group'>"
+			+ "<label class='control-label col-sm-4'>Go Public<font color='red'>*</font></label>"
+			+ "<div class='col-sm-8'>"
+			    + ControlCombo.draw(FrmDebiturBdnUsaha.fieldNames[FrmDebiturBdnUsaha.FRM_FIELD_GO_PUBLIC], "-- Pilih --", ""+debiturBdnUsaha.getMelampauiBmpk(), pisahHargaKey, pisahHargaVal, "required='required'", "form-control")
+			+ "</div>"
+		    + "</div>"
+		    + "<div class='form-group'>"
+			+ "<label class='control-label col-sm-4'>Kode Golongan Debitur<font color='red'>*</font></label>"
+			+ "<div class='col-sm-8'>";
+                                //start comboBox
+                                Vector vCdGolDeb =  PstContentDataGolonganDebitur.listWithoutOid(0,0,"","");
+                                Vector valueCdGolDeb = new Vector();
+                                Vector keyCdGolDeb = new Vector();
+                                valueCdGolDeb.add("");
+                                keyCdGolDeb.add("-- Pilih --");
+                                for (int i = 0; i < vCdGolDeb.size(); i++) {
+                                    ContentDataGolonganDebitur KdGolDeb = (ContentDataGolonganDebitur) vCdGolDeb.get(i);
+                                    valueCdGolDeb.add(String.valueOf(KdGolDeb.getKodeOjk()));
+                                    keyCdGolDeb.add(""+KdGolDeb.getGolonganDebitur());
+                                }
+
+                                returnData += ControlCombo.draw(""+FrmDebiturBdnUsaha.fieldNames[FrmDebiturBdnUsaha.FRM_FIELD_KODE_GOL], null, ""+debiturBdnUsaha.getKodeGol(), valueCdGolDeb, keyCdGolDeb, "required='required' onchange=\"javascript:changeFunc();\" ", "form-control");
+                                returnData += "</div>"
+                                //end comboBox
+		    + "</div>"
+		    + "<div class='form-group'>"
+			+ "<label class='control-label col-sm-4'>Peringkat/Ranking Debitur</label>"
+			+ "<div class='col-sm-8'>"
+			    + "<input type='text' name='"+ FrmDebiturBdnUsaha.fieldNames[FrmDebiturBdnUsaha.FRM_FIELD_PERINGKAT] +"' id='"+ FrmDebiturBdnUsaha.fieldNames[FrmDebiturBdnUsaha.FRM_FIELD_PERINGKAT] +"' value='"+debiturBdnUsaha.getPeringkat()+"' class='form-control'>"
+			+ "</div>"
+		    + "</div>"
+		    + "<div class='form-group'>"
+			+ "<label class='control-label col-sm-4'>Lembaga Pemeringkat/Rating</label>"
+			+ "<div class='col-sm-8'>";
+                                //start comboBox
+                                Vector vCdLembaga =  PstContentDataLembagaPemeringkat.listWithoutOid(0,0,"","");
+                                Vector valueCdLembaga = new Vector();
+                                Vector keyCdLembaga = new Vector();
+                                valueCdLembaga.add("");
+                                keyCdLembaga.add("-- Pilih --");
+                                for (int i = 0; i < vCdLembaga.size(); i++) {
+                                    ContentDataLembagaPemeringkat KdLembaga = (ContentDataLembagaPemeringkat) vCdLembaga.get(i);
+                                    valueCdLembaga.add(String.valueOf(KdLembaga.getKodeOjk()));
+                                    keyCdLembaga.add(""+KdLembaga.getNamaLembagaPemeringkat());
+                                }
+
+                                returnData += ControlCombo.draw(""+FrmDebiturBdnUsaha.fieldNames[FrmDebiturBdnUsaha.FRM_FIELD_LEMBAGA_PEMERINGKAT], null, ""+debiturBdnUsaha.getLembagaPemeringkat(), valueCdLembaga, keyCdLembaga, "required='required' onchange=\"javascript:changeFunc();\" ", "form-control");
+                                returnData += "</div>"
+                                //end comboBox
+		    + "</div>"
+		    + "<div class='form-group'>"
+			+ "<label class='control-label col-sm-4'>Tanggal Pemeringkat <font color='red'>*</font></label>"
+			+ "<div class='col-sm-8'>"
+			    + "<div class='input-group'>"
+				+ "<input type='text' name='"+ FrmDebiturBdnUsaha.fieldNames[FrmDebiturBdnUsaha.FRM_FIELD_TGLPEMERINGKAT] +"' id='"+ FrmDebiturBdnUsaha.fieldNames[FrmDebiturBdnUsaha.FRM_FIELD_TGLPEMERINGKAT] +"' value='"+tglPemeringkat+"' class='form-control datepicker' required='required'>"
+				+ "<div class='input-group-addon'>"
+				    + "<i class='fa fa-calendar'></i>"
+				+ "</div>"
+			    + "</div>"
+			+ "</div>"
+		    + "</div>"
+		    + "<div class='form-group'>"
+			+ "<label class='control-label col-sm-4'>Nama Group Debitur</label>"
+			+ "<div class='col-sm-8'>"
+			    + "<input type='text' name='"+ FrmDebiturBdnUsaha.fieldNames[FrmDebiturBdnUsaha.FRM_FIELD_NAMAGROUP] +"' id='"+ FrmDebiturBdnUsaha.fieldNames[FrmDebiturBdnUsaha.FRM_FIELD_NAMAGROUP] +"' value='"+debiturBdnUsaha.getNamaGroup()+"' class='form-control'>"
+			+ "</div>"
+		    + "</div>"
+		    + "<div class='form-group'>"
+			+ "<label class='control-label col-sm-4'>Kode Kantor Cabang<font color='red'>*</font></label>"
+			+ "<div class='col-sm-8'>";
+			    //start comboBox
+			    Vector vCdKantorCbg =  PstContentDataKantorCabang.list(0,0,"","");
+                            Vector valueCdKantorCbg = new Vector();
+                            Vector keyCdKantorCbg = new Vector();
+                            valueCdKantorCbg.add("");
+                            keyCdKantorCbg.add("-- Pilih --");
+                            for (int i = 0; i < vCdKantorCbg.size(); i++) {
+                                ContentDataKantorCabang kdKantorCbg = (ContentDataKantorCabang) vCdKantorCbg.get(i);
+                                valueCdKantorCbg.add(String.valueOf(kdKantorCbg.getKodeOjk()));
+                                keyCdKantorCbg.add(""+kdKantorCbg.getNamaKantorCabang());
+                            }
+                          
+                            returnData += ControlCombo.draw(""+FrmDebiturBdnUsaha.fieldNames[FrmDebiturBdnUsaha.FRM_FIELD_KODE_KANTOR_CABANG], null, ""+debiturBdnUsaha.getKodeKtrCabang(), valueCdKantorCbg, keyCdKantorCbg, "required='required' onchange=\"javascript:changeFunc();\" ", "form-control");
+                            returnData += "</div>"
+                            //end comboBox
+		    + "</div>"
+		    + "<div class='form-group'>"
+			+ "<label class='control-label col-sm-4'>Operasi Data<font color='red'>*</font></label>"
+			+ "<div class='col-sm-8'>";
+                            Vector operasiDataKey = new Vector(1,1);
+                            Vector operasiDataVal = new Vector(1,1);
+                            for(int i = 0; i < PstDebitur.operasiData.length; i++){
+                                operasiDataKey.add(""+PstDebitur.operasiDataKey[i]);
+                                operasiDataVal.add(""+PstDebitur.operasiData[i]);
+                            }
+			    returnData+=""
+                            + ControlCombo.draw(FrmDebiturBdnUsaha.fieldNames[FrmDebiturBdnUsaha.FRM_FIELD_OPERASI_DATA], "-- Pilih --", ""+debiturBdnUsaha.getOperasiData(), operasiDataKey, operasiDataVal, "required='required'", "form-control")
+                            + "<input type='hidden' name='"+FrmDebiturBdnUsaha.fieldNames[FrmDebiturBdnUsaha.FRM_FIELD_STATUS_DATA]+"' value='0'>"
+			+ "</div>"
+		    + "</div>"
+		+ "</div>"
+	    + "</div>"
+	+ "</div>";
+	
+	
+	return returnData;
+    }
+    
+    public String searchForm(HttpServletRequest request){
+        String returnData = ""
+        + "<div class='row'>"
+            + "<div class='col-sm-3'>"
+                + "<div class='form-group'>"
+                    + "<label>CIF</label>"
+                    + "<input type='text' name='cif' class='form-control' id='cif'>"
+                    + "<input type='hidden' name='type' id='type' value='2'>"
+                + "</div>"
+            + "</div>"
+            + "<div class='col-sm-3'>"
+                + "<div class='form-group'>"
+                    + "<label>No. Akte Awal</label>"
+                    + "<input type='text' name='noakteawal' class='form-control' id='noakteawal'>"
+                + "</div>"
+            + "</div>"
+            + "<div class='col-sm-3'>"
+                + "<div class='form-group'>"
+                    + "<label>Nama Badan Usaha</label>"
+                    + "<input type='text' name='nama' class='form-control' id='nama'>"
+                + "</div>"
+            + "</div>"
+             + "<div class='col-sm-3'>"
+                + "<div class='form-group'>"
+                    + "<label>&nbsp;</label>"
+                    + "<button name='search' type='button' class='btn btn-primary form-control' id='btnsearch'><i class='fa fa-search'></i> Cari</button>"
+                + "</div>"
+            + "</div>"
+        + "</div>"
+        + "<hr>"
+        + "<div class='row'>"
+            + "<div class='col-sm-12' id='searchElement'>"
+                + "<table class='table table-striped table-bordered'>"
+                    + "<thead>"
+                        + "<tr>"
+                            + "<th>No.</th>"
+                            + "<th>CIF</th>"
+                            + "<th>No. Akte Awal</th>"
+                            + "<th>Nama Badan Usaha</th>"
+                            + "<th>Aksi</th>"
+                        + "</tr>"
+                    + "</thead>"
+                + "</table>"
+            + "</div>"
+        + "</div>";
+        
+        return returnData;
+    }
+    
+    public String showListForm(HttpServletRequest request){
+        String returnData = "";
+        returnData+=""
+        + "<div id='showListElement'>"
+            + "<table class='table table-bordered table-striped'>"
+                + "<thead>"
+                    + "<tr>"
+                        + "<th>No.</th>"
+                        + "<th>CIF</th>"
+                        + "<th>No. Akte Awal</th>"
+                        + "<th>Nama Badan Usaha</th>"
+                        + "<th>Aksi</th>"
+                    + "</tr>"
+                + "</thead>"
+            + "</table>"
+        + "</div>";
+        return returnData;
+    }
+    
+    public String getSummary(HttpServletRequest request){
+        String returnData = "";
+        int userGroup = FRMQueryString.requestInt(request, "usergroup");
+        String kodeCabang = FRMQueryString.requestString(request, "kodecabang");
+        String whereClause = "";
+        if(this.dataFor.equals("loadsummary")){
+            whereClause = "debitur."+PstDebitur.fieldNames[PstDebitur.FLD_STATUS_PERUBAHAN_DATA]+"='0' AND debitur."+PstDebitur.fieldNames[PstDebitur.FLD_KODE_JENIS_NSB]+"!='1'";
+        }else{
+            whereClause = "debitur."+PstDebitur.fieldNames[PstDebitur.FLD_STATUS_PERUBAHAN_DATA]+" IS NULL AND debitur."+PstDebitur.fieldNames[PstDebitur.FLD_KODE_JENIS_NSB]+"!='1'";
+        }
+        
+        if(userGroup != 4){
+            whereClause += " AND debitur."+PstDebitur.fieldNames[PstDebitur.FLD_KODE_KANTOR_CABANG]+"='"+kodeCabang+"'";
+        }
+        
+        int summary = PstDebitur.getCountJoin(whereClause);
+        returnData +=""+summary;
+        return returnData;
+    }
+    
+    public String deleteItem(HttpServletRequest request){
+        String returnData = "";
+        String cif = FRMQueryString.requestString(request, "cif");
+        returnData += "<i class='fa fa-info'></i> ";
+        //CEK SEMUA KOMPONEN
+        int total = 0;
+        
+        total += PstPengurusAtauPemilik.getCount(""+PstPengurusAtauPemilik.fieldNames[PstPengurusAtauPemilik.FLD_CIF]+"='"+cif+"'");
+        total += PstKredit.getCount(""+PstKredit.fieldNames[PstKredit.FLD_CIF]+"='"+cif+"'");
+        total += PstBankGaransi.getCount(""+PstBankGaransi.fieldNames[PstBankGaransi.FLD_CIF]+"='"+cif+"'");
+        total += PstAgunan.getCount(""+PstAgunan.fieldNames[PstAgunan.FLD_CIF]+"='"+cif+"'");
+        total += PstPenjamin.getCount(""+PstPenjamin.fieldNames[PstPenjamin.FLD_CIF]+"='"+cif+"'");
+        total += PstLaporanKeuanganDebitur.getCount(""+PstLaporanKeuanganDebitur.fieldNames[PstLaporanKeuanganDebitur.FLD_CIF]+"='"+cif+"'");
+        total += PstSuratBerharga.getCount(""+PstSuratBerharga.fieldNames[PstSuratBerharga.FLD_CIF]+"='"+cif+"'");
+        total += PstKreditJoinAccount.getCount(""+PstKreditJoinAccount.fieldNames[PstKreditJoinAccount.FLD_CIF]+"='"+cif+"'");
+        total += PstIrrevocableLc.getCount(""+PstIrrevocableLc.fieldNames[PstIrrevocableLc.FLD_CIF]+"='"+cif+"'");
+        total += PstFasilitasLain.getCount(""+PstFasilitasLain.fieldNames[PstFasilitasLain.FLD_CIF]+"='"+cif+"'");
+        
+        if(total > 0){
+            returnData  +=" Data tidak dapat dihapus";
+            this.oidReturn = 0;
+        }else{
+            DebiturBdnUsaha debiturBdnUsaha = new DebiturBdnUsaha();
+            Vector listData = PstDebiturBdnUsaha.list(0, 0, ""+PstDebiturBdnUsaha.fieldNames[PstDebiturBdnUsaha.FLD_CIF]+"='"+cif+"'", "");
+            if(listData.size() > 0){
+                debiturBdnUsaha = (DebiturBdnUsaha) listData.get(0);
+            }
+            CtrlDebiturBdnUsaha ctrlDebiturBdnUsaha = new CtrlDebiturBdnUsaha(request);
+            ctrlDebiturBdnUsaha.action(iCommand, debiturBdnUsaha.getOID(), 0, "");
+            returnData +=""+ctrlDebiturBdnUsaha.getMessage();
+            this.oidReturn = 1;
+        }
+        
+        
+        return returnData;
+    }
+    
+    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
+    /**
+     * Handles the HTTP
+     * <code>GET</code> method.
+     *
+     * @param request servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     */
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+	    throws ServletException, IOException {
+	processRequest(request, response);
+    }
+
+    /**
+     * Handles the HTTP
+     * <code>POST</code> method.
+     *
+     * @param request servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     */
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+	    throws ServletException, IOException {
+	processRequest(request, response);
+    }
+
+    /**
+     * Returns a short description of the servlet.
+     *
+     * @return a String containing servlet description
+     */
+    @Override
+    public String getServletInfo() {
+	return "Short description";
+    }// </editor-fold>
+}

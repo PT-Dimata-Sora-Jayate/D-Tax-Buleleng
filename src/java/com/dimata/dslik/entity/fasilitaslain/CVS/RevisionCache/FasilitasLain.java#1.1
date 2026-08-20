@@ -1,0 +1,363 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package com.dimata.dslik.entity.fasilitaslain;
+
+import com.dimata.common.entity.logger.I_LogHistory;
+import com.dimata.qdep.entity.Entity;
+import java.util.Date;
+
+/**
+ *
+ * @author Dewa
+ */
+public class FasilitasLain extends Entity implements I_LogHistory{
+
+    private String flagDetail = "";
+    private String noRekening = "";
+    private String cif = "";
+    private String kodeJenisFasilitas = "";
+    private String sumberDana = "";
+    private Date tglMulai = null;
+    private Date tglJatuhTempo = null;
+    private double sukuBunga = 0;
+    private String kodeValuta = "";
+    private double nominalJmlKewajiban = 0;
+    private double nilaiMataUangAsal = 0;
+    private String kodeKolektibilitas = "";
+    private Date tglMacet = null;
+    private String kodeSebabMacet = "";
+    private double tunggakan = 0;
+    private double jmlHariTunggakan = 0;
+    private String kodeKondisi = "";
+    private Date tglKondisi = null;
+    private String keterangan = "";
+    private String kodeKantorCabang = "";
+    private String operasiData = "";
+    private Date openDate = null;
+    private int statusData = 0;
+
+    public String getFlagDetail() {
+        return flagDetail;
+    }
+
+    public void setFlagDetail(String flagDetail) {
+        this.flagDetail = flagDetail;
+    }
+
+    public String getNoRekening() {
+        return noRekening;
+    }
+
+    public void setNoRekening(String noRekening) {
+        this.noRekening = noRekening;
+    }
+
+    public String getCif() {
+        return cif;
+    }
+
+    public void setCif(String cif) {
+        this.cif = cif;
+    }
+
+    public String getKodeJenisFasilitas() {
+        return kodeJenisFasilitas;
+    }
+
+    public void setKodeJenisFasilitas(String kodeJenisFasilitas) {
+        this.kodeJenisFasilitas = kodeJenisFasilitas;
+    }
+
+    public String getSumberDana() {
+        return sumberDana;
+    }
+
+    public void setSumberDana(String sumberDana) {
+        this.sumberDana = sumberDana;
+    }
+
+    public Date getTglMulai() {
+        return tglMulai;
+    }
+
+    public void setTglMulai(Date tglMulai) {
+        this.tglMulai = tglMulai;
+    }
+
+    public Date getTglJatuhTempo() {
+        return tglJatuhTempo;
+    }
+
+    public void setTglJatuhTempo(Date tglJatuhTempo) {
+        this.tglJatuhTempo = tglJatuhTempo;
+    }
+
+    public double getSukuBunga() {
+        return sukuBunga;
+    }
+
+    public void setSukuBunga(double sukuBunga) {
+        this.sukuBunga = sukuBunga;
+    }
+
+    public String getKodeValuta() {
+        return kodeValuta;
+    }
+
+    public void setKodeValuta(String kodeValuta) {
+        this.kodeValuta = kodeValuta;
+    }
+
+    public double getNominalJmlKewajiban() {
+        return nominalJmlKewajiban;
+    }
+
+    public void setNominalJmlKewajiban(double nominalJmlKewajiban) {
+        this.nominalJmlKewajiban = nominalJmlKewajiban;
+    }
+
+    public double getNilaiMataUangAsal() {
+        return nilaiMataUangAsal;
+    }
+
+    public void setNilaiMataUangAsal(double nilaiMataUangAsal) {
+        this.nilaiMataUangAsal = nilaiMataUangAsal;
+    }
+
+    public String getKodeKolektibilitas() {
+        return kodeKolektibilitas;
+    }
+
+    public void setKodeKolektibilitas(String kodeKolektibilitas) {
+        this.kodeKolektibilitas = kodeKolektibilitas;
+    }
+
+    public Date getTglMacet() {
+        return tglMacet;
+    }
+
+    public void setTglMacet(Date tglMacet) {
+        this.tglMacet = tglMacet;
+    }
+
+    public String getKodeSebabMacet() {
+        return kodeSebabMacet;
+    }
+
+    public void setKodeSebabMacet(String kodeSebabMacet) {
+        this.kodeSebabMacet = kodeSebabMacet;
+    }
+
+    public double getTunggakan() {
+        return tunggakan;
+    }
+
+    public void setTunggakan(double tunggakan) {
+        this.tunggakan = tunggakan;
+    }
+
+    public double getJmlHariTunggakan() {
+        return jmlHariTunggakan;
+    }
+
+    public void setJmlHariTunggakan(double jmlHariTunggakan) {
+        this.jmlHariTunggakan = jmlHariTunggakan;
+    }
+
+    public String getKodeKondisi() {
+        return kodeKondisi;
+    }
+
+    public void setKodeKondisi(String kodeKondisi) {
+        this.kodeKondisi = kodeKondisi;
+    }
+
+    public Date getTglKondisi() {
+        return tglKondisi;
+    }
+
+    public void setTglKondisi(Date tglKondisi) {
+        this.tglKondisi = tglKondisi;
+    }
+
+    public String getKeterangan() {
+        return keterangan;
+    }
+
+    public void setKeterangan(String keterangan) {
+        this.keterangan = keterangan;
+    }
+
+    public String getKodeKantorCabang() {
+        return kodeKantorCabang;
+    }
+
+    public void setKodeKantorCabang(String kodeKantorCabang) {
+        this.kodeKantorCabang = kodeKantorCabang;
+    }
+
+    public String getOperasiData() {
+        return operasiData;
+    }
+
+    public void setOperasiData(String operasiData) {
+        this.operasiData = operasiData;
+    }
+
+    /**
+     * @return the OpenDate
+     */
+    public Date getOpenDate() {
+        return openDate;
+    }
+
+    /**
+     * @param OpenDate the OpenDate to set
+     */
+    public void setOpenDate(Date openDate) {
+        this.openDate = openDate;
+    }
+
+    /**
+     * @return the StatusData
+     */
+    public int getStatusData() {
+        return statusData;
+    }
+
+    /**
+     * @param StatusData the StatusData to set
+     */
+    public void setStatusData(int statusData) {
+        this.statusData = statusData;
+    }
+
+    @Override
+    public String getLogDetail(Entity prevDoc) {
+//        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        String history="";
+        FasilitasLain prevMat = (FasilitasLain)prevDoc;
+        
+        try {
+            if (!prevMat.getFlagDetail().equals(this.getFlagDetail())) {
+                history = history + " Flag detail diubah dari " + prevMat.getFlagDetail()+ " menjadi " + this.getFlagDetail()+ "/n";
+            }
+        } catch (Exception es) {}
+        try {
+            if (!prevMat.getNoRekening().equals(this.getNoRekening())) {
+                history = history + " Nomor rekening diubah dari " + prevMat.getNoRekening()+ " menjadi " + this.getNoRekening()+ "/n";
+            }
+        } catch (Exception es) {}
+        try {
+            if (!prevMat.getCif().equals(this.getCif())) {
+                history = history + " CIF diubah dari " + prevMat.getCif()+ " menjadi " + this.getCif()+ "/n";
+            }
+        } catch (Exception es) {}
+        try {
+            if (!prevMat.getKodeJenisFasilitas().equals(this.getKodeJenisFasilitas())) {
+                history = history + " Kode jenis fasilitas diubah dari " + prevMat.getKodeJenisFasilitas()+ " menjadi " + this.getKodeJenisFasilitas()+ "/n";
+            }
+        } catch (Exception es) {}
+        try {
+            if (!prevMat.getSumberDana().equals(this.getSumberDana())) {
+                history = history + " Sumber dana diubah dari " + prevMat.getSumberDana()+ " menjadi " + this.getSumberDana()+ "/n";
+            }
+        } catch (Exception es) {}
+        try {
+            if (!prevMat.getTglMulai().equals(this.getTglMulai())) {
+                history = history + " Tanggal mulai diubah dari " + prevMat.getTglMulai()+ " menjadi " + this.getTglMulai()+ "/n";
+            }
+        } catch (Exception es) {}
+        try {
+            if (!prevMat.getTglJatuhTempo().equals(this.getTglJatuhTempo())) {
+                history = history + " Tanggal jatuh tempo diubah dari " + prevMat.getTglJatuhTempo()+ " menjadi " + this.getTglJatuhTempo()+ "/n";
+            }
+        } catch (Exception es) {}
+        try {
+            if (prevMat.getSukuBunga() != this.getSukuBunga()) {
+                history = history + " Suku bunga diubah dari " + prevMat.getSukuBunga()+ " menjadi " + this.getSukuBunga()+ "/n";
+            }
+        } catch (Exception es) {}
+        try {
+            if (!prevMat.getKodeValuta().equals(this.getKodeValuta())) {
+                history = history + " Kode valuta diubah dari " + prevMat.getKodeValuta()+ " menjadi " + this.getKodeValuta()+ "/n";
+            }
+        } catch (Exception es) {}
+        try {
+            if (prevMat.getNominalJmlKewajiban() != this.getNominalJmlKewajiban()) {
+                history = history + " Nominal jumlah kewajiban diubah dari " + prevMat.getNominalJmlKewajiban()+ " menjadi " + this.getNominalJmlKewajiban()+ "/n";
+            }
+        } catch (Exception es) {}
+        try {
+            if (prevMat.getNilaiMataUangAsal() != this.getNilaiMataUangAsal()) {
+                history = history + " Nilai mata uang asal diubah dari " + prevMat.getNilaiMataUangAsal()+ " menjadi " + this.getNilaiMataUangAsal()+ "/n";
+            }
+        } catch (Exception es) {}
+        try {
+            if (!prevMat.getKodeKolektibilitas().equals(this.getKodeKolektibilitas())) {
+                history = history + " Kode kolektibilitas diubah dari " + prevMat.getKodeKolektibilitas()+ " menjadi " + this.getKodeKolektibilitas()+ "/n";
+            }
+        } catch (Exception es) {}
+        try {
+            if (!prevMat.getTglMacet().equals(this.getTglMacet())) {
+                history = history + " Tanggal macet diubah dari " + prevMat.getTglMacet()+ " menjadi " + this.getTglMacet()+ "/n";
+            }
+        } catch (Exception es) {}
+        try {
+            if (!prevMat.getKodeSebabMacet().equals(this.getKodeSebabMacet())) {
+                history = history + " Kode sebab macet diubah dari " + prevMat.getKodeSebabMacet()+ " menjadi " + this.getKodeSebabMacet()+ "/n";
+            }
+        } catch (Exception es) {}
+        try {
+            if (prevMat.getTunggakan() != this.getTunggakan()) {
+                history = history + " Tunggakan diubah dari " + prevMat.getTunggakan()+ " menjadi " + this.getTunggakan()+ "/n";
+            }
+        } catch (Exception es) {}
+        try {
+            if (prevMat.getJmlHariTunggakan()!= this.getJmlHariTunggakan()) {
+                history = history + " Jumlah hari tunggakan diubah dari " + prevMat.getJmlHariTunggakan()+ " menjadi " + this.getJmlHariTunggakan()+ "/n";
+            }
+        } catch (Exception es) {}
+        try {
+            if (!prevMat.getKodeKondisi().equals(this.getKodeKondisi())) {
+                history = history + " Kode kondisi diubah dari " + prevMat.getKodeKondisi()+ " menjadi " + this.getKodeKondisi()+ "/n";
+            }
+        } catch (Exception es) {}
+        try {
+            if (!prevMat.getTglKondisi().equals(this.getTglKondisi())) {
+                history = history + " Tanggal kondisi diubah dari " + prevMat.getTglKondisi()+ " menjadi " + this.getTglKondisi()+ "/n";
+            }
+        } catch (Exception es) {}
+        try {
+            if (!prevMat.getKeterangan().equals(this.getKeterangan())) {
+                history = history + " Keterangan diubah dari " + prevMat.getKeterangan()+ " menjadi " + this.getKeterangan()+ "/n";
+            }
+        } catch (Exception es) {}
+        try {
+            if (!prevMat.getKodeKantorCabang().equals(this.getKodeKantorCabang())) {
+                history = history + " Kode kantor cabang diubah dari " + prevMat.getKodeKantorCabang()+ " menjadi " + this.getKodeKantorCabang()+ "/n";
+            }
+        } catch (Exception es) {}
+        try {
+            if (!prevMat.getOperasiData().equals(this.getOperasiData())) {
+                history = history + " Operasi data diubah dari " + prevMat.getOperasiData()+ " menjadi " + this.getOperasiData()+ "/n";
+            }
+        } catch (Exception es) {}
+        try {
+            if (!prevMat.getOpenDate().equals(this.getOpenDate())) {
+                history = history + " Open date diubah dari " + prevMat.getOpenDate()+ " menjadi " + this.getOpenDate()+ "/n";
+            }
+        } catch (Exception es) {}
+        try {
+            if (prevMat.getStatusData() != this.getStatusData()) {
+                history = history + " Status data diubah dari " + prevMat.getStatusData()+ " menjadi " + this.getStatusData()+ "/n";
+            }
+        } catch (Exception es) {}
+        
+        return history;
+    }
+
+}

@@ -1,0 +1,753 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package com.dimata.dslik.entity.kreditjoinaccount;
+
+/**
+ *
+ * @author m20n9
+ */
+import com.dimata.common.entity.logger.I_LogHistory;
+import com.dimata.qdep.entity.Entity;
+import java.util.Date;
+
+public class KreditJoinAccount extends Entity implements I_LogHistory{
+
+    private String flagDetail = "";
+    private String noRekening = "";
+    private String cif = "";
+    private int squenceDebJoin = 0;
+    private String kodeSifat = "";
+    private String kodeJenis = "";
+    private String kodeAkad = "";
+    private String noAkadAwal = "";
+    private Date tglAkadAwal = null;
+    private String noAkadAkhir = "";
+    private Date tglAkadAkhir = null;
+    private int baruPerpanjangan = 0;
+    private Date tglAwalKredit = null;
+    private Date tglMulai = null;
+    private Date tglJatuhTempo = null;
+    private String kodeKatDeb = "";
+    private String kodeJenisPenggunaan = "";
+    private String kodeOrientasiPenggunaan = "";
+    private String kodeSektorEkonomi = "";
+    private String kodeKab = "";
+    private double nilaiProyek = 0;
+    private String kodeValuta = "";
+    private int prosentaseBunga = 0;
+    private String jenisBunga = "";
+    private String kreditPrgPemerintah = "";
+    private String takeover = "";
+    private String sumberDana = "";
+    private double plafonAwal = 0;
+    private double plafon = 0;
+    private double realisasi = 0;
+    private double denda = 0;
+    private double bakiDebet = 0;
+    private double nilaiUangAsal = 0;
+    private String kodeKolektibilitas = "";
+    private Date tglMacet = null;
+    private String kodeSebabMacet = "";
+    private double tunggakanPokok = 0;
+    private double tunggakanBunga = 0;
+    private int jmlHariTunggakan = 0;
+    private int frekuensiTunggakan = 0;
+    private int frekuensiRestrukturisasi = 0;
+    private Date tglRestrukturisasiAwal = null;
+    private Date tglRestruktirisasiAkhir = null;
+    private String kodeKondisi = "";
+    private String kodeCara = "";
+    private Date tglKondisi = null;
+    private String keterangan = "";
+    private String kodeKantorCabang = "";
+    private String operasiData = "";
+    private Date openDate = null;
+    private int statusData = 0;
+
+    public String getFlagDetail() {
+        return flagDetail;
+    }
+
+    public void setFlagDetail(String flagDetail) {
+        this.flagDetail = flagDetail;
+    }
+
+    public String getNoRekening() {
+        return noRekening;
+    }
+
+    public void setNoRekening(String noRekening) {
+        this.noRekening = noRekening;
+    }
+
+    public String getCif() {
+        return cif;
+    }
+
+    public void setCif(String cif) {
+        this.cif = cif;
+    }
+
+    public int getSquenceDebJoin() {
+        return squenceDebJoin;
+    }
+
+    public void setSquenceDebJoin(int squenceDebJoin) {
+        this.squenceDebJoin = squenceDebJoin;
+    }
+
+    public String getKodeSifat() {
+        return kodeSifat;
+    }
+
+    public void setKodeSifat(String kodeSifat) {
+        this.kodeSifat = kodeSifat;
+    }
+
+    public String getKodeJenis() {
+        return kodeJenis;
+    }
+
+    public void setKodeJenis(String kodeJenis) {
+        this.kodeJenis = kodeJenis;
+    }
+
+    public String getKodeAkad() {
+        return kodeAkad;
+    }
+
+    public void setKodeAkad(String kodeAkad) {
+        this.kodeAkad = kodeAkad;
+    }
+
+    public String getNoAkadAwal() {
+        return noAkadAwal;
+    }
+
+    public void setNoAkadAwal(String noAkadAwal) {
+        this.noAkadAwal = noAkadAwal;
+    }
+
+    public Date getTglAkadAwal() {
+        return tglAkadAwal;
+    }
+
+    public void setTglAkadAwal(Date tglAkadAwal) {
+        this.tglAkadAwal = tglAkadAwal;
+    }
+
+    public String getNoAkadAkhir() {
+        return noAkadAkhir;
+    }
+
+    public void setNoAkadAkhir(String noAkadAkhir) {
+        this.noAkadAkhir = noAkadAkhir;
+    }
+
+    public Date getTglAkadAkhir() {
+        return tglAkadAkhir;
+    }
+
+    public void setTglAkadAkhir(Date tglAkadAkhir) {
+        this.tglAkadAkhir = tglAkadAkhir;
+    }
+
+    public int getBaruPerpanjangan() {
+        return baruPerpanjangan;
+    }
+
+    public void setBaruPerpanjangan(int baruPerpanjangan) {
+        this.baruPerpanjangan = baruPerpanjangan;
+    }
+
+    public Date getTglAwalKredit() {
+        return tglAwalKredit;
+    }
+
+    public void setTglAwalKredit(Date tglAwalKredit) {
+        this.tglAwalKredit = tglAwalKredit;
+    }
+
+    public Date getTglMulai() {
+        return tglMulai;
+    }
+
+    public void setTglMulai(Date tglMulai) {
+        this.tglMulai = tglMulai;
+    }
+
+    public Date getTglJatuhTempo() {
+        return tglJatuhTempo;
+    }
+
+    public void setTglJatuhTempo(Date tglJatuhTempo) {
+        this.tglJatuhTempo = tglJatuhTempo;
+    }
+
+    public String getKodeKatDeb() {
+        return kodeKatDeb;
+    }
+
+    public void setKodeKatDeb(String kodeKatDeb) {
+        this.kodeKatDeb = kodeKatDeb;
+    }
+
+    public String getKodeJenisPenggunaan() {
+        return kodeJenisPenggunaan;
+    }
+
+    public void setKodeJenisPenggunaan(String kodeJenisPenggunaan) {
+        this.kodeJenisPenggunaan = kodeJenisPenggunaan;
+    }
+
+    public String getKodeOrientasiPenggunaan() {
+        return kodeOrientasiPenggunaan;
+    }
+
+    public void setKodeOrientasiPenggunaan(String kodeOrientasiPenggunaan) {
+        this.kodeOrientasiPenggunaan = kodeOrientasiPenggunaan;
+    }
+
+    public String getKodeSektorEkonomi() {
+        return kodeSektorEkonomi;
+    }
+
+    public void setKodeSektorEkonomi(String kodeSektorEkonomi) {
+        this.kodeSektorEkonomi = kodeSektorEkonomi;
+    }
+
+    public String getKodeKab() {
+        return kodeKab;
+    }
+
+    public void setKodeKab(String kodeKab) {
+        this.kodeKab = kodeKab;
+    }
+
+    public double getNilaiProyek() {
+        return nilaiProyek;
+    }
+
+    public void setNilaiProyek(double nilaiProyek) {
+        this.nilaiProyek = nilaiProyek;
+    }
+
+    public String getKodeValuta() {
+        return kodeValuta;
+    }
+
+    public void setKodeValuta(String kodeValuta) {
+        this.kodeValuta = kodeValuta;
+    }
+
+    public int getProsentaseBunga() {
+        return prosentaseBunga;
+    }
+
+    public void setProsentaseBunga(int prosentaseBunga) {
+        this.prosentaseBunga = prosentaseBunga;
+    }
+
+    public String getJenisBunga() {
+        return jenisBunga;
+    }
+
+    public void setJenisBunga(String jenisBunga) {
+        this.jenisBunga = jenisBunga;
+    }
+
+    public String getKreditPrgPemerintah() {
+        return kreditPrgPemerintah;
+    }
+
+    public void setKreditPrgPemerintah(String kreditPrgPemerintah) {
+        this.kreditPrgPemerintah = kreditPrgPemerintah;
+    }
+
+    public String getTakeover() {
+        return takeover;
+    }
+
+    public void setTakeover(String takeover) {
+        this.takeover = takeover;
+    }
+
+    public String getSumberDana() {
+        return sumberDana;
+    }
+
+    public void setSumberDana(String sumberDana) {
+        this.sumberDana = sumberDana;
+    }
+
+    public double getPlafonAwal() {
+        return plafonAwal;
+    }
+
+    public void setPlafonAwal(double plafonAwal) {
+        this.plafonAwal = plafonAwal;
+    }
+
+    public double getPlafon() {
+        return plafon;
+    }
+
+    public void setPlafon(double plafon) {
+        this.plafon = plafon;
+    }
+
+    public double getRealisasi() {
+        return realisasi;
+    }
+
+    public void setRealisasi(double realisasi) {
+        this.realisasi = realisasi;
+    }
+
+    public double getDenda() {
+        return denda;
+    }
+
+    public void setDenda(double denda) {
+        this.denda = denda;
+    }
+
+    public double getBakiDebet() {
+        return bakiDebet;
+    }
+
+    public void setBakiDebet(double bakiDebet) {
+        this.bakiDebet = bakiDebet;
+    }
+
+    public double getNilaiUangAsal() {
+        return nilaiUangAsal;
+    }
+
+    public void setNilaiUangAsal(double nilaiUangAsal) {
+        this.nilaiUangAsal = nilaiUangAsal;
+    }
+
+    public String getKodeKolektibilitas() {
+        return kodeKolektibilitas;
+    }
+
+    public void setKodeKolektibilitas(String kodeKolektibilitas) {
+        this.kodeKolektibilitas = kodeKolektibilitas;
+    }
+
+    public Date getTglMacet() {
+        return tglMacet;
+    }
+
+    public void setTglMacet(Date tglMacet) {
+        this.tglMacet = tglMacet;
+    }
+
+    public String getKodeSebabMacet() {
+        return kodeSebabMacet;
+    }
+
+    public void setKodeSebabMacet(String kodeSebabMacet) {
+        this.kodeSebabMacet = kodeSebabMacet;
+    }
+
+    public double getTunggakanPokok() {
+        return tunggakanPokok;
+    }
+
+    public void setTunggakanPokok(double tunggakanPokok) {
+        this.tunggakanPokok = tunggakanPokok;
+    }
+
+    public double getTunggakanBunga() {
+        return tunggakanBunga;
+    }
+
+    public void setTunggakanBunga(double tunggakanBunga) {
+        this.tunggakanBunga = tunggakanBunga;
+    }
+
+    public int getJmlHariTunggakan() {
+        return jmlHariTunggakan;
+    }
+
+    public void setJmlHariTunggakan(int jmlHariTunggakan) {
+        this.jmlHariTunggakan = jmlHariTunggakan;
+    }
+
+    public int getFrekuensiTunggakan() {
+        return frekuensiTunggakan;
+    }
+
+    public void setFrekuensiTunggakan(int frekuensiTunggakan) {
+        this.frekuensiTunggakan = frekuensiTunggakan;
+    }
+
+    public int getFrekuensiRestrukturisasi() {
+        return frekuensiRestrukturisasi;
+    }
+
+    public void setFrekuensiRestrukturisasi(int frekuensiRestrukturisasi) {
+        this.frekuensiRestrukturisasi = frekuensiRestrukturisasi;
+    }
+
+    public Date getTglRestrukturisasiAwal() {
+        return tglRestrukturisasiAwal;
+    }
+
+    public void setTglRestrukturisasiAwal(Date tglRestrukturisasiAwal) {
+        this.tglRestrukturisasiAwal = tglRestrukturisasiAwal;
+    }
+
+    public Date getTglRestruktirisasiAkhir() {
+        return tglRestruktirisasiAkhir;
+    }
+
+    public void setTglRestruktirisasiAkhir(Date tglRestruktirisasiAkhir) {
+        this.tglRestruktirisasiAkhir = tglRestruktirisasiAkhir;
+    }
+
+    public String getKodeKondisi() {
+        return kodeKondisi;
+    }
+
+    public void setKodeKondisi(String kodeKondisi) {
+        this.kodeKondisi = kodeKondisi;
+    }
+
+    public String getKodeCara() {
+        return kodeCara;
+    }
+
+    public void setKodeCara(String kodeCara) {
+        this.kodeCara = kodeCara;
+    }
+
+    public Date getTglKondisi() {
+        return tglKondisi;
+    }
+
+    public void setTglKondisi(Date tglKondisi) {
+        this.tglKondisi = tglKondisi;
+    }
+
+    public String getKeterangan() {
+        return keterangan;
+    }
+
+    public void setKeterangan(String keterangan) {
+        this.keterangan = keterangan;
+    }
+
+    public String getKodeKantorCabang() {
+        return kodeKantorCabang;
+    }
+
+    public void setKodeKantorCabang(String kodeKantorCabang) {
+        this.kodeKantorCabang = kodeKantorCabang;
+    }
+
+    public String getOperasiData() {
+        return operasiData;
+    }
+
+    public void setOperasiData(String operasiData) {
+        this.operasiData = operasiData;
+    }
+
+    /**
+     * @return the openDate
+     */
+    public Date getOpenDate() {
+        return openDate;
+    }
+
+    /**
+     * @param openDate the openDate to set
+     */
+    public void setOpenDate(Date openDate) {
+        this.openDate = openDate;
+    }
+
+    /**
+     * @return the statusData
+     */
+    public int getStatusData() {
+        return statusData;
+    }
+
+    /**
+     * @param statusData the statusData to set
+     */
+    public void setStatusData(int statusData) {
+        this.statusData = statusData;
+    }
+
+    @Override
+    public String getLogDetail(Entity prevDoc) {
+//        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        String history="";
+        KreditJoinAccount prevMat = (KreditJoinAccount)prevDoc;
+        
+        try {
+            if (!prevMat.getFlagDetail().equals(this.getFlagDetail())) {
+                history = history + " Flag detail diubah dari " + prevMat.getFlagDetail() + " menjadi " + this.getFlagDetail()+ "/n";
+            }
+        } catch (Exception es) {}
+        try {
+            if (!prevMat.getNoRekening().equals(this.getNoRekening())) {
+                history = history + " Nomor rekening diubah dari " + prevMat.getNoRekening()+ " menjadi " + this.getNoRekening()+ "/n";
+            }
+        } catch (Exception es) {}
+        try {
+            if (!prevMat.getCif().equals(this.getCif())) {
+                history = history + " CIF diubah dari " + prevMat.getCif()+ " menjadi " + this.getCif()+ "/n";
+            }
+        } catch (Exception es) {}
+        try {
+            if (prevMat.getSquenceDebJoin() != this.getSquenceDebJoin()) {
+                history = history + "  diubah dari " + prevMat.getSquenceDebJoin()+ " menjadi " + this.getSquenceDebJoin()+ "/n";
+            }
+        } catch (Exception es) {}
+        try {
+            if (!prevMat.getKodeSifat().equals(this.getKodeSifat())) {
+                history = history + " Kode sifat diubah dari " + prevMat.getKodeSifat()+ " menjadi " + this.getKodeSifat()+ "/n";
+            }
+        } catch (Exception es) {}
+        try {
+            if (!prevMat.getKodeJenis().equals(this.getKodeJenis())) {
+                history = history + " Kode jenis diubah dari " + prevMat.getKodeJenis()+ " menjadi " + this.getKodeJenis()+ "/n";
+            }
+        } catch (Exception es) {}
+        try {
+            if (!prevMat.getKodeAkad().equals(this.getKodeAkad())) {
+                history = history + " Kode akad diubah dari " + prevMat.getKodeAkad()+ " menjadi " + this.getKodeAkad()+ "/n";
+            }
+        } catch (Exception es) {}
+        try {
+            if (!prevMat.getNoAkadAwal().equals(this.getNoAkadAwal())) {
+                history = history + " Nomor akad awal diubah dari " + prevMat.getNoAkadAwal()+ " menjadi " + this.getNoAkadAwal()+ "/n";
+            }
+        } catch (Exception es) {}
+        try {
+            if (!prevMat.getTglAkadAwal().equals(this.getTglAkadAwal())) {
+                history = history + " Tanggal akad awal diubah dari " + prevMat.getTglAkadAwal()+ " menjadi " + this.getTglAkadAwal()+ "/n";
+            }
+        } catch (Exception es) {}
+        try {
+            if (!prevMat.getNoAkadAkhir().equals(this.getNoAkadAkhir())) {
+                history = history + " Nomor akad akhir diubah dari " + prevMat.getNoAkadAkhir()+ " menjadi " + this.getNoAkadAkhir()+ "/n";
+            }
+        } catch (Exception es) {}
+        try {
+            if (!prevMat.getTglAkadAkhir().equals(this.getTglAkadAkhir())) {
+                history = history + " Tanggal akad akhir diubah dari " + prevMat.getTglAkadAkhir()+ " menjadi " + this.getTglAkadAkhir()+ "/n";
+            }
+        } catch (Exception es) {}
+        try {
+            if (prevMat.getBaruPerpanjangan() != this.getBaruPerpanjangan()) {
+                history = history + "  diubah dari " + prevMat.getBaruPerpanjangan()+ " menjadi " + this.getBaruPerpanjangan()+ "/n";
+            }
+        } catch (Exception es) {}
+        try {
+            if (!prevMat.getTglAwalKredit().equals(this.getTglAwalKredit())) {
+                history = history + " Tanggal awal kredit diubah dari " + prevMat.getTglAwalKredit()+ " menjadi " + this.getTglAwalKredit()+ "/n";
+            }
+        } catch (Exception es) {}
+        try {
+            if (!prevMat.getTglMulai().equals(this.getTglMulai())) {
+                history = history + " Tanggal mulai diubah dari " + prevMat.getTglMulai()+ " menjadi " + this.getTglMulai()+ "/n";
+            }
+        } catch (Exception es) {}
+        try {
+            if (!prevMat.getTglJatuhTempo().equals(this.getTglJatuhTempo())) {
+                history = history + " Tanggal jatuh tempo diubah dari " + prevMat.getTglJatuhTempo()+ " menjadi " + this.getTglJatuhTempo()+ "/n";
+            }
+        } catch (Exception es) {}
+        try {
+            if (!prevMat.getKodeKatDeb().equals(this.getKodeKatDeb())) {
+                history = history + " Kode kategori debitur diubah dari " + prevMat.getKodeKatDeb()+ " menjadi " + this.getKodeKatDeb()+ "/n";
+            }
+        } catch (Exception es) {}
+        try {
+            if (!prevMat.getKodeJenisPenggunaan().equals(this.getKodeJenisPenggunaan())) {
+                history = history + " Kode jenis penggunaan diubah dari " + prevMat.getKodeJenisPenggunaan()+ " menjadi " + this.getKodeJenisPenggunaan()+ "/n";
+            }
+        } catch (Exception es) {}
+        try {
+            if (!prevMat.getKodeOrientasiPenggunaan().equals(this.getKodeOrientasiPenggunaan())) {
+                history = history + " kode orientasi penggunaan diubah dari " + prevMat.getKodeOrientasiPenggunaan()+ " menjadi " + this.getKodeOrientasiPenggunaan()+ "/n";
+            }
+        } catch (Exception es) {}
+        try {
+            if (!prevMat.getKodeSektorEkonomi().equals(this.getKodeSektorEkonomi())) {
+                history = history + " Kode sektor ekonomi diubah dari " + prevMat.getKodeSektorEkonomi()+ " menjadi " + this.getKodeSektorEkonomi()+ "/n";
+            }
+        } catch (Exception es) {}
+        try {
+            if (!prevMat.getKodeKab().equals(this.getKodeKab())) {
+                history = history + " Kode kabupaten diubah dari " + prevMat.getKodeKab()+ " menjadi " + this.getKodeKab()+ "/n";
+            }
+        } catch (Exception es) {}
+        try {
+            if (prevMat.getNilaiProyek() != this.getNilaiProyek()) {
+                history = history + " Nilai proyek diubah dari " + prevMat.getNilaiProyek()+ " menjadi " + this.getNilaiProyek()+ "/n";
+            }
+        } catch (Exception es) {}
+        try {
+            if (!prevMat.getKodeValuta().equals(this.getKodeValuta())) {
+                history = history + " Kode valuta diubah dari " + prevMat.getKodeValuta()+ " menjadi " + this.getKodeValuta()+ "/n";
+            }
+        } catch (Exception es) {}
+        try {
+            if (prevMat.getProsentaseBunga() != this.getProsentaseBunga()) {
+                history = history + " Prosentase diubah dari " + prevMat.getProsentaseBunga()+ " menjadi " + this.getProsentaseBunga()+ "/n";
+            }
+        } catch (Exception es) {}
+        try {
+            if (!prevMat.getJenisBunga().equals(this.getJenisBunga())) {
+                history = history + " Jenis bunga diubah dari " + prevMat.getJenisBunga()+ " menjadi " + this.getJenisBunga()+ "/n";
+            }
+        } catch (Exception es) {}
+        try {
+            if (!prevMat.getKreditPrgPemerintah().equals(this.getKreditPrgPemerintah())) {
+                history = history + " Kredit program pemerintah diubah dari " + prevMat.getKreditPrgPemerintah()+ " menjadi " + this.getKreditPrgPemerintah()+ "/n";
+            }
+        } catch (Exception es) {}
+        try {
+            if (!prevMat.getTakeover().equals(this.getTakeover())) {
+                history = history + " Take over diubah dari " + prevMat.getTakeover()+ " menjadi " + this.getTakeover()+ "/n";
+            }
+        } catch (Exception es) {}
+        try {
+            if (!prevMat.getSumberDana().equals(this.getSumberDana())) {
+                history = history + " Sumber dana diubah dari " + prevMat.getSumberDana()+ " menjadi " + this.getSumberDana()+ "/n";
+            }
+        } catch (Exception es) {}
+        try {
+            if (prevMat.getPlafonAwal() != this.getPlafonAwal()) {
+                history = history + " Plafon awal diubah dari " + prevMat.getPlafonAwal()+ " menjadi " + this.getPlafonAwal()+ "/n";
+            }
+        } catch (Exception es) {}
+        try {
+            if (prevMat.getPlafon() != this.getPlafon()) {
+                history = history + " Plafon diubah dari " + prevMat.getPlafon()+ " menjadi " + this.getPlafon()+ "/n";
+            }
+        } catch (Exception es) {}
+        try {
+            if (prevMat.getRealisasi() != this.getRealisasi()) {
+                history = history + " Realisasi diubah dari " + prevMat.getRealisasi()+ " menjadi " + this.getRealisasi()+ "/n";
+            }
+        } catch (Exception es) {}
+        try {
+            if (prevMat.getDenda() != this.getDenda()) {
+                history = history + " Denda diubah dari " + prevMat.getDenda()+ " menjadi " + this.getDenda()+ "/n";
+            }
+        } catch (Exception es) {}
+        try {
+            if (prevMat.getBakiDebet() != this.getBakiDebet()) {
+                history = history + " Baki debet diubah dari " + prevMat.getBakiDebet()+ " menjadi " + this.getBakiDebet()+ "/n";
+            }
+        } catch (Exception es) {}
+        try {
+            if (prevMat.getNilaiUangAsal() != this.getNilaiUangAsal()) {
+                history = history + " Nilai uang asal diubah dari " + prevMat.getNilaiUangAsal()+ " menjadi " + this.getNilaiUangAsal()+ "/n";
+            }
+        } catch (Exception es) {}
+        try {
+            if (!prevMat.getKodeKolektibilitas().equals(this.getKodeKolektibilitas())) {
+                history = history + " Kode kolektibilitas diubah dari " + prevMat.getKodeKolektibilitas()+ " menjadi " + this.getKodeKolektibilitas()+ "/n";
+            }
+        } catch (Exception es) {}
+        try {
+            if (!prevMat.getTglMacet().equals(this.getTglMacet())) {
+                history = history + " Tanggal macet diubah dari " + prevMat.getTglMacet()+ " menjadi " + this.getTglMacet()+ "/n";
+            }
+        } catch (Exception es) {}
+        try {
+            if (!prevMat.getKodeSebabMacet().equals(this.getKodeSebabMacet())) {
+                history = history + " Kode sebab macet diubah dari " + prevMat.getKodeSebabMacet()+ " menjadi " + this.getKodeSebabMacet()+ "/n";
+            }
+        } catch (Exception es) {}
+        try {
+            if (prevMat.getTunggakanPokok() != this.getTunggakanPokok()) {
+                history = history + " Tunggakan pokok diubah dari " + prevMat.getTunggakanPokok()+ " menjadi " + this.getTunggakanPokok()+ "/n";
+            }
+        } catch (Exception es) {}
+        try {
+            if (prevMat.getTunggakanBunga() != this.getTunggakanBunga()) {
+                history = history + " Tunggakan bunga diubah dari " + prevMat.getTunggakanBunga()+ " menjadi " + this.getTunggakanBunga()+ "/n";
+            }
+        } catch (Exception es) {}
+        try {
+            if (prevMat.getJmlHariTunggakan() != this.getJmlHariTunggakan()) {
+                history = history + " Jumlah hari tunggakan diubah dari " + prevMat.getJmlHariTunggakan()+ " menjadi " + this.getJmlHariTunggakan()+ "/n";
+            }
+        } catch (Exception es) {}
+        try {
+            if (prevMat.getFrekuensiTunggakan() != this.getFrekuensiTunggakan()) {
+                history = history + " Frekuensi tunggakan diubah dari " + prevMat.getFrekuensiTunggakan()+ " menjadi " + this.getFrekuensiTunggakan()+ "/n";
+            }
+        } catch (Exception es) {}
+        try {
+            if (prevMat.getFrekuensiRestrukturisasi() != this.getFrekuensiRestrukturisasi()) {
+                history = history + " Frekuensi restrukturisasi diubah dari " + prevMat.getFrekuensiRestrukturisasi()+ " menjadi " + this.getFrekuensiRestrukturisasi()+ "/n";
+            }
+        } catch (Exception es) {}
+        try {
+            if (!prevMat.getTglRestrukturisasiAwal().equals(this.getTglRestrukturisasiAwal())) {
+                history = history + " Tanggal restrukturisasi awal diubah dari " + prevMat.getTglRestrukturisasiAwal()+ " menjadi " + this.getTglRestrukturisasiAwal()+ "/n";
+            }
+        } catch (Exception es) {}
+        try {
+            if (!prevMat.getTglRestruktirisasiAkhir().equals(this.getTglRestruktirisasiAkhir())) {
+                history = history + " Tanggal restrukturisasi akhir diubah dari " + prevMat.getTglRestruktirisasiAkhir()+ " menjadi " + this.getTglRestruktirisasiAkhir()+ "/n";
+            }
+        } catch (Exception es) {}
+        try {
+            if (!prevMat.getKodeKondisi().equals(this.getKodeKondisi())) {
+                history = history + " Kode kondisi diubah dari " + prevMat.getKodeKondisi()+ " menjadi " + this.getKodeKondisi()+ "/n";
+            }
+        } catch (Exception es) {}
+        try {
+            if (!prevMat.getKodeCara().equals(this.getKodeCara())) {
+                history = history + " Kode cara diubah dari " + prevMat.getKodeCara()+ " menjadi " + this.getKodeCara()+ "/n";
+            }
+        } catch (Exception es) {}
+        try {
+            if (!prevMat.getTglKondisi().equals(this.getTglKondisi())) {
+                history = history + " Tanggal kondisi diubah dari " + prevMat.getTglKondisi()+ " menjadi " + this.getTglKondisi()+ "/n";
+            }
+        } catch (Exception es) {}
+        try {
+            if (!prevMat.getKeterangan().equals(this.getKeterangan())) {
+                history = history + " Keterangan diubah dari " + prevMat.getKeterangan()+ " menjadi " + this.getKeterangan()+ "/n";
+            }
+        } catch (Exception es) {}
+        try {
+            if (!prevMat.getKodeKantorCabang().equals(this.getKodeKantorCabang())) {
+                history = history + " Kode kantor cabang diubah dari " + prevMat.getKodeKantorCabang()+ " menjadi " + this.getKodeKantorCabang()+ "/n";
+            }
+        } catch (Exception es) {}
+        try {
+            if (!prevMat.getOperasiData().equals(this.getOperasiData())) {
+                history = history + " Operasi data diubah dari " + prevMat.getOperasiData()+ " menjadi " + this.getOperasiData()+ "/n";
+            }
+        } catch (Exception es) {}
+        try {
+            if (!prevMat.getOpenDate().equals(this.getOpenDate())) {
+                history = history + " Open data diubah dari " + prevMat.getOpenDate()+ " menjadi " + this.getOpenDate()+ "/n";
+            }
+        } catch (Exception es) {}
+        try {
+            if (prevMat.getStatusData() != this.getStatusData()) {
+                history = history + " Status data diubah dari " + prevMat.getStatusData()+ " menjadi " + this.getStatusData()+ "/n";
+            }
+        } catch (Exception es) {}
+        
+        return history;
+    }
+}

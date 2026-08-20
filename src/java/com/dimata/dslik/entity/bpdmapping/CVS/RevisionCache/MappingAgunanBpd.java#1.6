@@ -1,0 +1,364 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package com.dimata.dslik.entity.bpdmapping;
+
+import com.dimata.qdep.entity.Entity;
+import java.util.Date;
+
+/**
+ *
+ * @author Dewa
+ */
+public class MappingAgunanBpd extends Entity {
+
+    private String flagDetail = "";
+    private String kodeRegisterAgunan = "";
+    private String kodeJenisAgunan = "";
+    private String namaPemilikAgunan = "";
+    private String buktiKepemilikan = "";
+    private String alamatAgunan = "";
+    private String kodeKabLokasiAgunan = "";
+    private double nilaiAgunanNjop = 0;
+    private double nilaiAgunanLjk = 0;
+    
+    private String cif="";
+    private String noRekening="";
+    private String jenisIkatan="";
+    private Date tanggalPenilaian=null;
+    private String statusParipasu="";
+    private String kodeKantorCabang="";
+    private long periodeId=0;
+    
+    private int prosentaseParipasu=0;
+    
+    
+    private String kodeStatusAgunan="";
+    private String kodeLembagaPemeringkat="";
+    private Date tglPenilaianIndependent=null;
+    private String diAsuransikan="";
+    
+    private String statusKreditJoinAccount="";
+    private String kodeJenisSegementFasilitas="";
+    
+    //new 20160111
+    private String agunanDiAsuransikan="";
+    private Date tglPengikat=null;
+    
+    private double nilaiAgunanPenilaianIndependent=0.0;
+    
+    public String getFlagDetail() {
+        return flagDetail;
+    }
+
+    public void setFlagDetail(String flagDetail) {
+        this.flagDetail = flagDetail;
+    }
+
+    public String getKodeRegisterAgunan() {
+        return kodeRegisterAgunan;
+    }
+
+    public void setKodeRegisterAgunan(String kodeRegisterAgunan) {
+        this.kodeRegisterAgunan = kodeRegisterAgunan;
+    }
+
+    public String getKodeJenisAgunan() {
+        return kodeJenisAgunan;
+    }
+
+    public void setKodeJenisAgunan(String kodeJenisAgunan) {
+        this.kodeJenisAgunan = kodeJenisAgunan;
+    }
+
+    public String getNamaPemilikAgunan() {
+        return namaPemilikAgunan;
+    }
+
+    public void setNamaPemilikAgunan(String namaPemilikAgunan) {
+        this.namaPemilikAgunan = namaPemilikAgunan;
+    }
+
+    public String getBuktiKepemilikan() {
+        return buktiKepemilikan;
+    }
+
+    public void setBuktiKepemilikan(String buktiKepemilikan) {
+        this.buktiKepemilikan = buktiKepemilikan;
+    }
+
+    public String getAlamatAgunan() {
+        return alamatAgunan;
+    }
+
+    public void setAlamatAgunan(String alamatAgunan) {
+        this.alamatAgunan = alamatAgunan;
+    }
+
+    public String getKodeKabLokasiAgunan() {
+        return kodeKabLokasiAgunan;
+    }
+
+    public void setKodeKabLokasiAgunan(String kodeKabLokasiAgunan) {
+        this.kodeKabLokasiAgunan = kodeKabLokasiAgunan;
+    }
+
+    public double getNilaiAgunanNjop() {
+        return nilaiAgunanNjop;
+    }
+
+    public void setNilaiAgunanNjop(double nilaiAgunanNjop) {
+        this.nilaiAgunanNjop = nilaiAgunanNjop;
+    }
+
+    public double getNilaiAgunanLjk() {
+        return nilaiAgunanLjk;
+    }
+
+    public void setNilaiAgunanLjk(double nilaiAgunanLjk) {
+        this.nilaiAgunanLjk = nilaiAgunanLjk;
+    }
+
+    /**
+     * @return the cif
+     */
+    public String getCif() {
+        return cif;
+    }
+
+    /**
+     * @param cif the cif to set
+     */
+    public void setCif(String cif) {
+        this.cif = cif;
+    }
+
+    /**
+     * @return the noRekening
+     */
+    public String getNoRekening() {
+        return noRekening;
+    }
+
+    /**
+     * @param noRekening the noRekening to set
+     */
+    public void setNoRekening(String noRekening) {
+        this.noRekening = noRekening;
+    }
+
+    /**
+     * @return the jenisIkatan
+     */
+    public String getJenisIkatan() {
+        return jenisIkatan;
+    }
+
+    /**
+     * @param jenisIkatan the jenisIkatan to set
+     */
+    public void setJenisIkatan(String jenisIkatan) {
+        this.jenisIkatan = jenisIkatan;
+    }
+
+    /**
+     * @return the tanggalPenilaian
+     */
+    public Date getTanggalPenilaian() {
+        return tanggalPenilaian;
+    }
+
+    /**
+     * @param tanggalPenilaian the tanggalPenilaian to set
+     */
+    public void setTanggalPenilaian(Date tanggalPenilaian) {
+        this.tanggalPenilaian = tanggalPenilaian;
+    }
+
+    /**
+     * @return the kodeKantorCabang
+     */
+    public String getKodeKantorCabang() {
+        return kodeKantorCabang;
+    }
+
+    /**
+     * @param kodeKantorCabang the kodeKantorCabang to set
+     */
+    public void setKodeKantorCabang(String kodeKantorCabang) {
+        this.kodeKantorCabang = kodeKantorCabang;
+    }
+
+    /**
+     * @return the periodeId
+     */
+    public long getPeriodeId() {
+        return periodeId;
+    }
+
+    /**
+     * @param periodeId the periodeId to set
+     */
+    public void setPeriodeId(long periodeId) {
+        this.periodeId = periodeId;
+    }
+
+    /**
+     * @return the statusParipasu
+     */
+    public String getStatusParipasu() {
+        return statusParipasu;
+    }
+
+    /**
+     * @param statusParipasu the statusParipasu to set
+     */
+    public void setStatusParipasu(String statusParipasu) {
+        this.statusParipasu = statusParipasu;
+    }
+
+    /**
+     * @return the prosentaseParipasu
+     */
+    public int getProsentaseParipasu() {
+        return prosentaseParipasu;
+    }
+
+    /**
+     * @param prosentaseParipasu the prosentaseParipasu to set
+     */
+    public void setProsentaseParipasu(int prosentaseParipasu) {
+        this.prosentaseParipasu = prosentaseParipasu;
+    }
+
+    /**
+     * @return the kodeStatusAgunan
+     */
+    public String getKodeStatusAgunan() {
+        return kodeStatusAgunan;
+    }
+
+    /**
+     * @param kodeStatusAgunan the kodeStatusAgunan to set
+     */
+    public void setKodeStatusAgunan(String kodeStatusAgunan) {
+        this.kodeStatusAgunan = kodeStatusAgunan;
+    }
+
+    /**
+     * @return the kodeLembagaPemeringkat
+     */
+    public String getKodeLembagaPemeringkat() {
+        return kodeLembagaPemeringkat;
+    }
+
+    /**
+     * @param kodeLembagaPemeringkat the kodeLembagaPemeringkat to set
+     */
+    public void setKodeLembagaPemeringkat(String kodeLembagaPemeringkat) {
+        this.kodeLembagaPemeringkat = kodeLembagaPemeringkat;
+    }
+
+    /**
+     * @return the tglPenilaianIndependent
+     */
+    public Date getTglPenilaianIndependent() {
+        return tglPenilaianIndependent;
+    }
+
+    /**
+     * @param tglPenilaianIndependent the tglPenilaianIndependent to set
+     */
+    public void setTglPenilaianIndependent(Date tglPenilaianIndependent) {
+        this.tglPenilaianIndependent = tglPenilaianIndependent;
+    }
+
+    /**
+     * @return the diAsuransikan
+     */
+    public String getDiAsuransikan() {
+        return diAsuransikan;
+    }
+
+    /**
+     * @param diAsuransikan the diAsuransikan to set
+     */
+    public void setDiAsuransikan(String diAsuransikan) {
+        this.diAsuransikan = diAsuransikan;
+    }
+
+    /**
+     * @return the statusKreditJoinAccount
+     */
+    public String getStatusKreditJoinAccount() {
+        return statusKreditJoinAccount;
+    }
+
+    /**
+     * @param statusKreditJoinAccount the statusKreditJoinAccount to set
+     */
+    public void setStatusKreditJoinAccount(String statusKreditJoinAccount) {
+        this.statusKreditJoinAccount = statusKreditJoinAccount;
+    }
+
+    /**
+     * @return the kodeJenisSegementFasilitas
+     */
+    public String getKodeJenisSegementFasilitas() {
+        return kodeJenisSegementFasilitas;
+    }
+
+    /**
+     * @param kodeJenisSegementFasilitas the kodeJenisSegementFasilitas to set
+     */
+    public void setKodeJenisSegementFasilitas(String kodeJenisSegementFasilitas) {
+        this.kodeJenisSegementFasilitas = kodeJenisSegementFasilitas;
+    }
+
+    /**
+     * @return the nilaiAgunanPenilaianIndependent
+     */
+    public double getNilaiAgunanPenilaianIndependent() {
+        return nilaiAgunanPenilaianIndependent;
+    }
+
+    /**
+     * @param nilaiAgunanPenilaianIndependent the nilaiAgunanPenilaianIndependent to set
+     */
+    public void setNilaiAgunanPenilaianIndependent(double nilaiAgunanPenilaianIndependent) {
+        this.nilaiAgunanPenilaianIndependent = nilaiAgunanPenilaianIndependent;
+    }
+
+    /**
+     * @return the agunanDiAsuransikan
+     */
+    public String getAgunanDiAsuransikan() {
+        return agunanDiAsuransikan;
+    }
+
+    /**
+     * @param agunanDiAsuransikan the agunanDiAsuransikan to set
+     */
+    public void setAgunanDiAsuransikan(String agunanDiAsuransikan) {
+        this.agunanDiAsuransikan = agunanDiAsuransikan;
+    }
+
+    /**
+     * @return the tglPengikat
+     */
+    public Date getTglPengikat() {
+        return tglPengikat;
+    }
+
+    /**
+     * @param tglPengikat the tglPengikat to set
+     */
+    public void setTglPengikat(Date tglPengikat) {
+        this.tglPengikat = tglPengikat;
+    }
+
+
+
+}

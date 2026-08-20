@@ -1,0 +1,199 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package com.dimata.dslik.entity.bpdmapping;
+
+import com.dimata.qdep.entity.Entity;
+import java.util.Date;
+
+/**
+ *
+ * @author Dewa
+ */
+public class MappingBankGaransiBpd extends Entity {
+    
+    private String cif="";
+    private String flagDetail = "";
+    private String noRekening = "";
+    private String kodeJenisGaransi = "";
+    private String kodeTujuanGaransi = "";
+    private Date tglDiterbitkan = null;
+    private Date tglJatuhTempo = null;
+    private String noAkadAwal = "";
+    private Date tglAkadAwal = null;
+    private String noAkadAkhir = "";
+    private Date tglAkadAkhir = null;
+    private String namaYgDijamin = "";
+    
+    private double plafon = 0;
+    private double nominal = 0;
+    private double setoranJaminan = 0;
+    private String kodeKolektibilitas = "";
+    private Date tglWanPrestasi = null;
+    private String kodeKondisi = "";
+    private Date tglKondisi = null;
+    private String keterangan = "";
+    private String kodeKantorCabang = "";
+    private long periodeId=0;
+    
+    public String getFlagDetail() {
+        return flagDetail;
+    }
+
+    public void setFlagDetail(String flagDetail) {
+        this.flagDetail = flagDetail;
+    }
+
+    public String getNoRekening() {
+        return noRekening;
+    }
+
+    public void setNoRekening(String noRekening) {
+        this.noRekening = noRekening;
+    }
+
+    public String getKodeJenisGaransi() {
+        return kodeJenisGaransi;
+    }
+
+    public void setKodeJenisGaransi(String kodeJenisGaransi) {
+        this.kodeJenisGaransi = kodeJenisGaransi;
+    }
+
+    public String getKodeTujuanGaransi() {
+        return kodeTujuanGaransi;
+    }
+
+    public void setKodeTujuanGaransi(String kodeTujuanGaransi) {
+        this.kodeTujuanGaransi = kodeTujuanGaransi;
+    }
+
+    public Date getTglDiterbitkan() {
+        return tglDiterbitkan;
+    }
+
+    public void setTglDiterbitkan(Date tglDiterbitkan) {
+        this.tglDiterbitkan = tglDiterbitkan;
+    }
+
+    public Date getTglJatuhTempo() {
+        return tglJatuhTempo;
+    }
+
+    public void setTglJatuhTempo(Date tglJatuhTempo) {
+        this.tglJatuhTempo = tglJatuhTempo;
+    }
+
+    public String getNoAkadAwal() {
+        return noAkadAwal;
+    }
+
+    public void setNoAkadAwal(String noAkadAwal) {
+        this.noAkadAwal = noAkadAwal;
+    }
+
+    public Date getTglAkadAwal() {
+        return tglAkadAwal;
+    }
+
+    public void setTglAkadAwal(Date tglAkadAwal) {
+        this.tglAkadAwal = tglAkadAwal;
+    }
+
+    public String getNoAkadAkhir() {
+        return noAkadAkhir;
+    }
+
+    public void setNoAkadAkhir(String noAkadAkhir) {
+        this.noAkadAkhir = noAkadAkhir;
+    }
+
+    public Date getTglAkadAkhir() {
+        return tglAkadAkhir;
+    }
+
+    public void setTglAkadAkhir(Date tglAkadAkhir) {
+        this.tglAkadAkhir = tglAkadAkhir;
+    }
+
+    public String getNamaYgDijamin() {
+        return namaYgDijamin;
+    }
+
+    public void setNamaYgDijamin(String namaYgDijamin) {
+        this.namaYgDijamin = namaYgDijamin;
+    }
+
+
+    public double getPlafon() {
+        return plafon;
+    }
+
+    public void setPlafon(double plafon) {
+        this.plafon = plafon;
+    }
+
+    public double getNominal() {
+        return nominal;
+    }
+
+    public void setNominal(double nominal) {
+        this.nominal = nominal;
+    }
+
+    public double getSetoranJaminan() {
+        return setoranJaminan;
+    }
+
+    public void setSetoranJaminan(double setoranJaminan) {
+        this.setoranJaminan = setoranJaminan;
+    }
+
+    public String getKodeKolektibilitas() {
+        return kodeKolektibilitas;
+    }
+
+    public void setKodeKolektibilitas(String kodeKolektibilitas) {
+        this.kodeKolektibilitas = kodeKolektibilitas;
+    }
+
+
+    public String getKodeKantorCabang() {
+        return kodeKantorCabang;
+    }
+
+    public void setKodeKantorCabang(String kodeKantorCabang) {
+        this.kodeKantorCabang = kodeKantorCabang;
+    }
+
+    /**
+     * @return the cif
+     */
+    public String getCif() {
+        return cif;
+    }
+
+    /**
+     * @param cif the cif to set
+     */
+    public void setCif(String cif) {
+        this.cif = cif;
+    }
+
+    /**
+     * @return the periodeId
+     */
+    public long getPeriodeId() {
+        return periodeId;
+    }
+
+    /**
+     * @param periodeId the periodeId to set
+     */
+    public void setPeriodeId(long periodeId) {
+        this.periodeId = periodeId;
+    }
+
+}

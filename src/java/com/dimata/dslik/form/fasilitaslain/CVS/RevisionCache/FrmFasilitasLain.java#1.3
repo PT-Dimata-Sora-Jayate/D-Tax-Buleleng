@@ -1,0 +1,175 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package com.dimata.dslik.form.fasilitaslain;
+
+import com.dimata.dslik.entity.fasilitaslain.FasilitasLain;
+import com.dimata.qdep.form.FRMHandler;
+import com.dimata.qdep.form.I_FRMInterface;
+import com.dimata.qdep.form.I_FRMType;
+import com.dimata.util.Formater;
+import javax.servlet.http.HttpServletRequest;
+
+/**
+ *
+ * @author Dewa
+ */
+public class FrmFasilitasLain extends FRMHandler implements I_FRMInterface, I_FRMType {
+
+    private FasilitasLain entFasilitasLain;
+    public static final String FRM_NAME_FASILITAS_LAIN = "FRM_NAME_FASILITAS_LAIN";
+    public static final int FRM_FIELD_FASILITAS_LAIN_OID = 0;
+    public static final int FRM_FIELD_FLAG_DETAIL = 1;
+    public static final int FRM_FIELD_NO_REKENING = 2;
+    public static final int FRM_FIELD_CIF = 3;
+    public static final int FRM_FIELD_KODE_JENIS_FASILITAS = 4;
+    public static final int FRM_FIELD_SUMBER_DANA = 5;
+    public static final int FRM_FIELD_TGL_MULAI = 6;
+    public static final int FRM_FIELD_TGL_JATUH_TEMPO = 7;
+    public static final int FRM_FIELD_SUKU_BUNGA = 8;
+    public static final int FRM_FIELD_KODE_VALUTA = 9;
+    public static final int FRM_FIELD_NOMINAL_JML_KEWAJIBAN = 10;
+    public static final int FRM_FIELD_NILAI_MATA_UANG_ASAL = 11;
+    public static final int FRM_FIELD_KODE_KOLEKTIBILITAS = 12;
+    public static final int FRM_FIELD_TGL_MACET = 13;
+    public static final int FRM_FIELD_KODE_SEBAB_MACET = 14;
+    public static final int FRM_FIELD_TUNGGAKAN = 15;
+    public static final int FRM_FIELD_JML_HARI_TUNGGAKAN = 16;
+    public static final int FRM_FIELD_KODE_KONDISI = 17;
+    public static final int FRM_FIELD_TGL_KONDISI = 18;
+    public static final int FRM_FIELD_KETERANGAN = 19;
+    public static final int FRM_FIELD_KODE_KANTOR_CABANG = 20;
+    public static final int FRM_FIELD_OPERASI_DATA = 21;
+    public static final int FRM_FIELD_OPEN_DATE = 22;
+    public static final int FRM_FIELD_STATUS_DATA = 23;
+    public static final int FRM_FIELD_PERIODE_ID = 24;
+
+    public static String[] fieldNames = {
+        "FRM_FIELD_FASILITAS_LAIN_OID",
+        "FRM_FIELD_FLAG_DETAIL",
+        "FRM_FIELD_NO_REKENING",
+        "FRM_FIELD_CIF",
+        "FRM_FIELD_KODE_JENISFASILITAS",
+        "FRM_FIELD_SUMBER_DANA",
+        "FRM_FIELD_TGL_MULAI",
+        "FRM_FIELD_TGL_JATUH_TEMPO",
+        "FRM_FIELD_SUKU_BUNGA",
+        "FRM_FIELD_KODE_VALUTA",
+        "FRM_FIELD_NOMINAL_JML_KEWAJIBAN",
+        "FRM_FIELD_NILAI_MATA_UANG_ASAL",
+        "FRM_FIELD_KODE_KOLEKTIBILITAS",
+        "FRM_FIELD_TGL_MACET",
+        "FRM_FIELD_KODE_SEBAB_MACET",
+        "FRM_FIELD_TUNGGAKAN",
+        "FRM_FIELD_JML_HARI_TUNGGAKAN",
+        "FRM_FIELD_KODE_KONDISI",
+        "FRM_FIELD_TGL_KONDISI",
+        "FRM_FIELD_KETERANGAN",
+        "FRM_FIELD_KODE_KANTOR_CABANG",
+        "FRM_FIELD_OPERASI_DATA",
+        "FRM_FIELD_OPEN_DATE",
+        "FRM_FIELD_STATUS_DATA",
+        "FRM_FIELD_PERIODE_ID"
+    };
+
+    public static int[] fieldTypes = {
+        TYPE_LONG,
+        TYPE_STRING,
+        TYPE_STRING,
+        TYPE_STRING,
+        TYPE_STRING,
+        TYPE_STRING,
+        TYPE_STRING,
+        TYPE_STRING,
+        TYPE_FLOAT,
+        TYPE_STRING,
+        TYPE_FLOAT,
+        TYPE_FLOAT,
+        TYPE_STRING,
+        TYPE_STRING,
+        TYPE_STRING,
+        TYPE_FLOAT,
+        TYPE_FLOAT,
+        TYPE_STRING,
+        TYPE_STRING,
+        TYPE_STRING,
+        TYPE_STRING,
+        TYPE_STRING,
+        TYPE_STRING,
+        TYPE_INT,
+        TYPE_LONG
+    };
+
+    public FrmFasilitasLain() {
+    }
+
+    public FrmFasilitasLain(FasilitasLain entFasilitasLain) {
+        this.entFasilitasLain = entFasilitasLain;
+    }
+
+    public FrmFasilitasLain(HttpServletRequest request, FasilitasLain entFasilitasLain) {
+        super(new FrmFasilitasLain(entFasilitasLain), request);
+        this.entFasilitasLain = entFasilitasLain;
+    }
+
+    public String getFormName() {
+        return FRM_NAME_FASILITAS_LAIN;
+    }
+
+    public int[] getFieldTypes() {
+        return fieldTypes;
+    }
+
+    public String[] getFieldNames() {
+        return fieldNames;
+    }
+
+    public int getFieldSize() {
+        return fieldNames.length;
+    }
+
+    public FasilitasLain getEntityObject() {
+        return entFasilitasLain;
+    }
+
+    public void requestEntityObject(FasilitasLain entFasilitasLain) {
+        try {
+            this.requestParam();
+//            entFasilitasLain.setFasilitasLainOid(getLong(FRM_FIELD_FASILITASLAINOID));
+            entFasilitasLain.setFlagDetail(getString(FRM_FIELD_FLAG_DETAIL));
+            entFasilitasLain.setNoRekening(getString(FRM_FIELD_NO_REKENING));
+            entFasilitasLain.setCif(getString(FRM_FIELD_CIF));
+            entFasilitasLain.setKodeJenisFasilitas(getString(FRM_FIELD_KODE_JENIS_FASILITAS));
+            entFasilitasLain.setSumberDana(getString(FRM_FIELD_SUMBER_DANA));
+            String tglMulai = getString(FRM_FIELD_TGL_MULAI);
+            entFasilitasLain.setTglMulai(Formater.formatDate(tglMulai, "yyyy-MM-dd"));
+            String tglJatuhTempo = getString(FRM_FIELD_TGL_JATUH_TEMPO);
+            entFasilitasLain.setTglJatuhTempo(Formater.formatDate(tglJatuhTempo, "yyyy-MM-dd"));
+            entFasilitasLain.setSukuBunga(getFloat(FRM_FIELD_SUKU_BUNGA));
+            entFasilitasLain.setKodeValuta(getString(FRM_FIELD_KODE_VALUTA));
+            entFasilitasLain.setNominalJmlKewajiban(getFloat(FRM_FIELD_NOMINAL_JML_KEWAJIBAN));
+            entFasilitasLain.setNilaiMataUangAsal(getFloat(FRM_FIELD_NILAI_MATA_UANG_ASAL));
+            entFasilitasLain.setKodeKolektibilitas(getString(FRM_FIELD_KODE_KOLEKTIBILITAS));
+            String tglMacet = getString(FRM_FIELD_TGL_MACET);
+            entFasilitasLain.setTglMacet(Formater.formatDate(tglMacet, "yyyy-MM-dd"));
+            entFasilitasLain.setKodeSebabMacet(getString(FRM_FIELD_KODE_SEBAB_MACET));
+            entFasilitasLain.setTunggakan(getFloat(FRM_FIELD_TUNGGAKAN));
+            entFasilitasLain.setJmlHariTunggakan(getFloat(FRM_FIELD_JML_HARI_TUNGGAKAN));
+            entFasilitasLain.setKodeKondisi(getString(FRM_FIELD_KODE_KONDISI));
+            String tglKondisi = getString(FRM_FIELD_TGL_KONDISI);
+            entFasilitasLain.setTglKondisi(Formater.formatDate(tglKondisi, "yyyy-MM-dd"));
+            entFasilitasLain.setKeterangan(getString(FRM_FIELD_KETERANGAN));
+            entFasilitasLain.setKodeKantorCabang(getString(FRM_FIELD_KODE_KANTOR_CABANG));
+            entFasilitasLain.setOperasiData(getString(FRM_FIELD_OPERASI_DATA));
+            String openDate = getString(FRM_FIELD_OPEN_DATE);
+            entFasilitasLain.setOpenDate(Formater.formatDate(openDate, "yyyy-MM-dd"));
+            entFasilitasLain.setStatusData(getInt(FRM_FIELD_STATUS_DATA));
+            entFasilitasLain.setPeriodeId(getLong(FRM_FIELD_PERIODE_ID));
+        } catch (Exception e) {
+            System.out.println("Error on requestEntityObject : " + e.toString());
+        }
+    }
+
+}

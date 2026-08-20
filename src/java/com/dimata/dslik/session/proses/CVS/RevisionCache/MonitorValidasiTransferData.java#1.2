@@ -1,0 +1,153 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package com.dimata.dslik.session.proses;
+
+import com.dimata.dslik.entity.debitur.Debitur;
+import com.dimata.dslik.entity.debitur.PstDebitur;
+import com.dimata.dslik.entity.masterdata.Periode;
+import com.dimata.dslik.entity.masterdata.PstPeriode;
+import static com.dimata.qdep.db.DBHandler.execUpdate;
+import com.dimata.util.Formater;
+import java.util.Date;
+import java.util.Vector;
+
+/**
+ *
+ * @author dimata005
+ */
+public class MonitorValidasiTransferData implements Runnable {
+
+    private String Proggess = "";
+
+    public MonitorValidasiTransferData() {
+
+    }
+
+    public void run() {
+
+        System.out.println("start .... ");
+
+        while (ManagerValidasiTransferData.running) {
+
+            try {
+
+                /*proses transfer*/
+                ManagerValidasiTransferData.setStatusProses("Proses Berjalan <br>");
+                ManagerValidasiTransferData.setStatusProses("Cek Data <br>");
+
+                long periodeId = 0;
+                long prevPeriodeId = 0;
+                Vector vperiode = PstPeriode.list(0, 0, PstPeriode.fieldNames[PstPeriode.FLD_POSTED] + "='0'", "");
+                Periode periode = new Periode();
+                if (vperiode.size() > 0) {
+                    periode = (Periode) vperiode.get(0);
+                    periodeId = periode.getOID();
+
+                    //cek previouse periode
+                    try {
+                        Periode periodePrev = new Periode();
+                        Vector listPeriode = PstPeriode.list(0, 1, "" + PstPeriode.fieldNames[PstPeriode.FLD_PERIODE_ID] + "='" + periodeId + "'", "");
+                        if (listPeriode != null) {
+                            periodePrev = (Periode) listPeriode.get(0);
+                            periodePrev.getTglAwal().setMonth(periodePrev.getTglAwal().getMonth() - 1);
+                            Vector listPeriodex = PstPeriode.list(0, 1, "" + PstPeriode.fieldNames[PstPeriode.FLD_TGL_AWAL] + " BETWEEN '" + Formater.formatDate(periodePrev.getTglAwal(), "yyyy-MM-dd") + "' AND '" + Formater.formatDate(periodePrev.getTglAwal(), "yyyy-MM-dd") + "'", "");
+                            if (listPeriodex != null) {
+                                if (listPeriodex.size() > 0) {
+                                    periodePrev = (Periode) listPeriodex.get(0);
+                                    prevPeriodeId = periodePrev.getOID();
+                                }
+                            }
+                        }
+                    } catch (Exception ex) {
+                    }
+                }
+
+                /*Vector vDebitur = SessValidasiTransferData.list(0, 0, "", "", periodeId, prevPeriodeId);
+                if(vDebitur!=null){
+                    if(vDebitur.size()>0){
+                        ManagerValidasiTransferData.setStatusProses("Proses penyesuaian penambahan data debitur <br>");
+                        for (int i = 0; i < vDebitur.size(); i++) {
+                            Debitur debitur = (Debitur) vDebitur.get(i);
+                            try{
+                                long xx = PstDebitur.insertExc(debitur);
+                            }catch(Exception ex){
+                            }
+                        }
+                    }
+                }*/
+                 //pengecekan debitur
+                try {
+                    if (periodeId != 0 && prevPeriodeId!=0) {
+                        String sql = ""+ 
+                                    "INSERT INTO dslik_debitur " +
+                                    "( " +
+                                    "DEBITUR_OID,KODE_JENIS_NSB,FLAG_DETAIL,CIF,JENIS_IDENTITAS,NIK,NAMA_IDENTITAS,NAMA_LENGKAP,KODE_STATUS_GELAR,JEKEL,TEMPAT_LAHIR, " +
+                                    "TANGGAL_LAHIR,NPWP,ALAMAT,KELURAHAN,KECAMATAN,KODE_KAB,KODE_POS,TELEPON,NOMOR_HP,EMAIL,KODE_DOMISILI,KODE_PEKERJAAN,TEMPAT_BEKERJA, " +
+                                    "KODE_USAHA_TEMPAT_BEKERJA,ALAMAT_TEMPAT_BEKERJA,PENGHASILAN_KOTOR,KODE_PENGHASILAN,JML_TANGGUNGAN,KODE_HUB,KODE_GOL,STATUS, " +
+                                    "NIK_PASANGAN,NAMA_PASANGAN,TGL_LAHIR_PASANGAN,PERJANJIAN_PISAH_HARGA,MELANGGAR_BMPK,MELAMPAUI_BMPK,NAMA_IBU_KANDUNG,KODE_KANTOR_CABANG, " +
+                                    "NO_IDENTITAS,NAMA_BADAN_USAHA,KODE_JENIS_USAHA,TEMPAT_PENDIRIAN,NO_AKTE,TGL_AKTE_PENDIRIAN,NO_AKTE_PERUBAHAN,TGL_AKTE_PERUBAHAN, " +
+                                    "KODE_BIDANG_USAHA,KODE_HUB_LJK,GO_PUBLIC,PERINGKAT,LEMBAGA_PEMERINGKAT,TGL_PEMERINGKAT,NAMA_GROUP,OPERASI_DATA,OPEN_DATE,STATUS_DATA, " +
+                                    "PERIODE_ID,STATUS_OPERASI_DATA  " +
+                                    ") " +
+                                    "SELECT  " +
+                                    "DEBITUR_OID+201710090001 AS DEBITUR_OID,KODE_JENIS_NSB,FLAG_DETAIL,CIF,JENIS_IDENTITAS,NIK,NAMA_IDENTITAS,NAMA_LENGKAP,KODE_STATUS_GELAR,JEKEL,TEMPAT_LAHIR, " +
+                                    "TANGGAL_LAHIR,NPWP,ALAMAT,KELURAHAN,KECAMATAN,KODE_KAB,KODE_POS,TELEPON,NOMOR_HP,EMAIL,KODE_DOMISILI,KODE_PEKERJAAN,TEMPAT_BEKERJA, " +
+                                    "KODE_USAHA_TEMPAT_BEKERJA,ALAMAT_TEMPAT_BEKERJA,PENGHASILAN_KOTOR,KODE_PENGHASILAN,JML_TANGGUNGAN,KODE_HUB,KODE_GOL,STATUS, " +
+                                    "NIK_PASANGAN,NAMA_PASANGAN,TGL_LAHIR_PASANGAN,PERJANJIAN_PISAH_HARGA,MELANGGAR_BMPK,MELAMPAUI_BMPK,NAMA_IBU_KANDUNG,KODE_KANTOR_CABANG, " +
+                                    "NO_IDENTITAS,NAMA_BADAN_USAHA,KODE_JENIS_USAHA,TEMPAT_PENDIRIAN,NO_AKTE,TGL_AKTE_PENDIRIAN,NO_AKTE_PERUBAHAN,TGL_AKTE_PERUBAHAN, " +
+                                    "KODE_BIDANG_USAHA,KODE_HUB_LJK,GO_PUBLIC,PERINGKAT,LEMBAGA_PEMERINGKAT,TGL_PEMERINGKAT,NAMA_GROUP,OPERASI_DATA,OPEN_DATE,STATUS_DATA, " +
+                                    "'"+periodeId+"' AS PERIODE_ID,STATUS_OPERASI_DATA  " +
+                                    "FROM dslik_debitur WHERE periode_id='"+prevPeriodeId+"' AND cif IN  " +
+                                    "( " +
+                                        "SELECT cif FROM dslik_kredit  WHERE periode_id='"+periodeId+"'  AND cif  " +
+                                        "NOT IN (SELECT cif FROM dslik_debitur WHERE periode_id='"+periodeId+"') " +
+                                    ")";
+
+                        int result = execUpdate(sql);
+                    }
+                } catch (Exception e) {
+
+                }
+                
+                //update agunan
+                try {
+                    if (periodeId != 0 && prevPeriodeId!=0) {
+                        String sql = ""+ 
+                                     " UPDATE dslik_agunan SET peringkat_agunan='' WHERE peringkat_agunan='0' AND kode_lembaga_pemeringkat='' "+ 
+                                     " AND periode_id='"+periodeId+"'";
+
+                        int result = execUpdate(sql);
+                    }
+                } catch (Exception e) {
+
+                }
+                
+                 //update agunan
+                try {
+                    if (periodeId != 0 && prevPeriodeId!=0) {
+                        String sql = ""+ 
+                                     " UPDATE dslik_penjamin SET KODE_JENIS_SEGMENT_FASILITAS='F01' WHERE periode_id='"+periodeId+"'";
+
+                        int result = execUpdate(sql);
+                    }
+                } catch (Exception e) {
+
+                }
+               
+            } catch (Exception e) {
+                System.out.println("Interrupted " + e);
+            }
+
+            Date newDate = new Date();
+
+            ManagerValidasiTransferData.statusEnd = " Proses Berakhir  .... datae/time : " + Formater.formatDate(newDate, "dd-MM-yyyy kk:mm");
+
+            ManagerValidasiTransferData.running = false;
+        }
+        System.out.println("stop .... ");
+    }
+
+}
